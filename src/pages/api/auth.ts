@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import jwt, { JwtPayload } from "jsonwebtoken";
 // import { getUserByEmail } from "@/lib/db"; // Busca usuário no PostgreSQL
 
-const SECRET = process.env.JWT_SECRET as string; // Garante que a chave seja string
+const SECRET = "eHrwcYIdN35zcrbaWh!_GNlod+S$p7#BpNUN*!7G_A$H!VtQk@" as string; // Garante que a chave seja string
 
 function getUserByEmail(userEmail: String) {
    const email = 'dados@rzkdigital.com.br'
