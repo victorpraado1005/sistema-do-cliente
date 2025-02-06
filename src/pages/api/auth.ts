@@ -71,6 +71,11 @@ export default async function handler(
       `authToken=${newToken}; Domain=sistema-do-cliente.vercel.app; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=604800`
     );
 
+    console.log(
+      "Set-Cookie enviado:",
+      `authToken=${newToken}; Domain=sistema-do-cliente.vercel.app; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=604800`
+    );
+
     // Retorna a URL para redirecionamento
     return res.status(200).json({
       success: true,
