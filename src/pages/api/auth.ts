@@ -51,13 +51,13 @@ export default async function handler(
     // Define o token em um httpOnly Cookie seguro
     res.setHeader(
       "Set-Cookie",
-      `authToken=${newToken}; HttpOnly; Secure; Path=/; Max-Age=604800`
+      `authToken=${newToken}; HttpOnly; Secure; Path=/simulador; Max-Age=604800`
     );
 
     // Retorna a URL para redirecionamento
     return res.status(200).json({
       success: true,
-      redirectUrl: "https://seusistema.com/dashboard",
+      redirectUrl: "https://sistema-do-cliente.vercel.app/simulador",
     });
   } catch (err) {
     console.error("Erro de autenticação:", err);
