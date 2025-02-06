@@ -8,13 +8,18 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // Captura o domínio de origem da requisição
+  const origin = req.headers.origin || "";
+
+  console.log("🚀 Origem da requisição:", origin);
+
   const allowedOrigins = [
     "https://rzkdigital.retool.com",
     "https://retool-edge.com",
+    "https://app.retool.com", // Algumas versões do Retool usam esse domínio
   ];
 
-  const origin = req.headers.origin || "";
-
+  // Se a origem estiver na lista, libera CORS para esse domínio
   if (allowedOrigins.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
@@ -22,7 +27,9 @@ export default async function handler(
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
+  // Lida com preflight (OPTIONS)
   if (req.method === "OPTIONS") {
+    console.log("🟢 Preflight CORS tratado com sucesso!");
     return res.status(200).end();
   }
 
