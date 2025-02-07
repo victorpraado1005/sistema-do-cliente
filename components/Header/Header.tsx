@@ -13,7 +13,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-background text-rzk_dark w-full h-[50px] flex items-center pt-10">
+    <header className="bg-background text-rzk_dark w-full h-[50px] flex items-center pt-10 pb-12">
       <div className="flex justify-between w-full">
         <div className="flex items-center w-[410px] space-x-4">
           <Image
@@ -28,11 +28,10 @@ export default function Header() {
               <li>
                 <Link
                   href="/dashboard"
-                  className={`${
-                    isActive("/dashboard")
-                      ? "font-extrabold"
-                      : "font-extralight"
-                  }`}
+                  className={`${isActive("/dashboard")
+                    ? "font-extrabold"
+                    : "font-extralight"
+                    }`}
                 >
                   Dashboard
                 </Link>
@@ -40,11 +39,10 @@ export default function Header() {
               <li>
                 <Link
                   href="/campanhas"
-                  className={`${
-                    isActive("/campanhas")
-                      ? "font-extrabold"
-                      : "font-extralight"
-                  }`}
+                  className={`${isActive("/campanhas")
+                    ? "font-extrabold"
+                    : "font-extralight"
+                    }`}
                 >
                   Campanhas
                 </Link>
@@ -52,11 +50,10 @@ export default function Header() {
               <li>
                 <Link
                   href="/simulador"
-                  className={`${
-                    isActive("/simulador")
-                      ? "font-extrabold"
-                      : "font-extralight"
-                  }`}
+                  className={`${isActive("/simulador")
+                    ? "font-extrabold"
+                    : "font-extralight"
+                    }`}
                 >
                   Simulador
                 </Link>

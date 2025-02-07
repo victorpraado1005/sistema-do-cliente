@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-br">
       <body className={`${k2d.className} antialiased`}>
-        <div className="flex flex-col min-h-screen w-[1080px] m-auto">
+        <div className="flex flex-col min-h-screen w-[1200px] m-auto">
           <Header />
 
           {/* Conteúdo principal */}
