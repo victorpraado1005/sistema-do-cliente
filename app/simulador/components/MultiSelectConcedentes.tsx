@@ -19,6 +19,7 @@ type Checked = DropdownMenuCheckboxItemProps["checked"];
 
 export function MultiSelectConcedentes() {
   const { register, valores } = useSimulador();
+  const [open, setOpen] = React.useState(false);
 
   // Lista de opções do dropdown
   const concedentes = [
@@ -30,27 +31,34 @@ export function MultiSelectConcedentes() {
   // Controlar os itens selecionados
   const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
 
-  // Alternar seleção
-  const toggleSelection = (id: string) => {
+  // Alternar seleção sem fechar o dropdown
+  const toggleSelection = (id: string, event: React.MouseEvent) => {
+    event.preventDefault();
+
     setSelectedItems((prev) => {
       const newSelection = prev.includes(id)
         ? prev.filter((item) => item !== id)
         : [...prev, id];
 
       // Atualizar o valor no React Hook Form
-      //setValue("concedentes", newSelection);
+      // setValue("concedentes", newSelection);
+
+      // Manter o menu aberto após selecionar
+      setOpen(true);
+
       return newSelection;
     });
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild className="w-24">
         <Button
           variant="outline"
           className="flex items-center gap-1 w-24 bg-gray-100"
         >
-          Selecione <ChevronDown className="size-4" />
+          {!selectedItems.length ? "Selecione" : selectedItems.length}{" "}
+          <ChevronDown className="size-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
@@ -60,7 +68,7 @@ export function MultiSelectConcedentes() {
           <DropdownMenuCheckboxItem
             key={item.id}
             checked={selectedItems.includes(item.id)}
-            onCheckedChange={() => toggleSelection(item.id)}
+            onClick={(event) => toggleSelection(item.id, event)}
           >
             {item.label}
           </DropdownMenuCheckboxItem>

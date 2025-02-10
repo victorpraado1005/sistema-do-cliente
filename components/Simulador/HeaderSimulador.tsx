@@ -18,6 +18,8 @@ export default function HeaderSimulador() {
       ...valores,
       dias_bonificados: 0,
     });
+
+    setActiveTab("pago");
   };
 
   return (
