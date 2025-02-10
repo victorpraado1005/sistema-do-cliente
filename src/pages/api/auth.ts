@@ -71,7 +71,6 @@ export default async function handler(
       { expiresIn: "7d" } // Expira em 7 dias
     );
 
-    // Define o token em um httpOnly Cookie seguro
     res.setHeader(
       "Set-Cookie",
       `authToken=${newToken}; Domain=sistema-do-cliente.vercel.app; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=604800`
