@@ -74,7 +74,7 @@ export default async function handler(
     // Define o token em um httpOnly Cookie seguro
     res.setHeader(
       "Set-Cookie",
-      "authToken=${newToken}; Domain=sistema-do-cliente.vercel.app; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=604800"
+      `authToken=${newToken}; Domain=sistema-do-cliente.vercel.app; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=604800`
     );
 
     // Retorna a URL para redirecionamento
