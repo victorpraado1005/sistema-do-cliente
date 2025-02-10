@@ -1,7 +1,10 @@
 import HeaderSimulador from "@/components/Simulador/HeaderSimulador";
+import ComboboxDemo from "@/components/ui/combobox";
 
 export default function Simulador() {
   return (
-    <HeaderSimulador />
+    <div>
+      <HeaderSimulador />
+    </div>
   );
 }
