@@ -11,6 +11,8 @@ export default async function handler(
   // Captura o domínio de origem da requisição
   const origin = req.headers.origin || "";
 
+  console.log("🚀 Origem da requisição:", origin);
+
   const allowedOrigins = [
     "https://rzkdigital.retool.com",
     "https://retool-edge.com",
@@ -25,8 +27,15 @@ export default async function handler(
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-  // Lida com preflight (OPTIONS)
   if (req.method === "OPTIONS") {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization"
+    );
+    console.log("🟢 Preflight OPTIONS tratado com sucesso");
     return res.status(200).end();
   }
 
@@ -62,10 +71,15 @@ export default async function handler(
       { expiresIn: "7d" } // Expira em 7 dias
     );
 
+    // Define o token em um httpOnly Cookie seguro
+    res.setHeader(
+      "Set-Cookie",
+      "authToken=${newToken}; Domain=sistema-do-cliente.vercel.app; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=604800"
+    );
+
     // Retorna a URL para redirecionamento
     return res.status(200).json({
       success: true,
-      token: newToken,
       redirectUrl: "https://sistema-do-cliente.vercel.app/simulador",
     });
   } catch (err) {
