@@ -5,7 +5,7 @@ export default function CardNumerosCampanhaPaga() {
   const { resultados } = useSimulador();
 
   return (
-    <div className="w-[750px] border border-rzk_ligth rounded-2xl flex flex-col mt-4 py-4 px-6 gap-4">
+    <div className="w-[850px] border border-rzk_ligth rounded-2xl flex flex-col mt-4 py-4 px-6 gap-4">
       <h2 className="text-xl font-bold">Campanha:</h2>
       <div className="grid grid-cols-4 gap-5 text-rzk_regular">
         <div className="space-y-4">

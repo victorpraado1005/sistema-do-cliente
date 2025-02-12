@@ -37,7 +37,6 @@ export function MultiSelectDropdown({
     });
   };
 
-
   const toggleAllSelection = (event: React.MouseEvent) => {
     event.preventDefault();
 
