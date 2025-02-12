@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,25 +11,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import { useSimulador } from "@/app/simulador/context/SimuladorContext";
 
-type Checked = DropdownMenuCheckboxItemProps["checked"];
+interface MultiSelectDropdownProps {
+  label: string;
+  options: { id: string; label: string }[];
+  selectedItems: string[];
+  setSelectedItems: (items: string[]) => void;
+}
 
-export function MultiSelectConcedentes() {
-  const { register, valores } = useSimulador();
+export function MultiSelectDropdown({
+  label,
+  options,
+  selectedItems,
+  setSelectedItems,
+}: MultiSelectDropdownProps) {
   const [open, setOpen] = React.useState(false);
 
-  // Lista de opções do dropdown
-  const concedentes = [
-    { id: "status-bar", label: "Status Bar" },
-    { id: "activity-bar", label: "Activity Bar" },
-    { id: "panel", label: "Panel" },
-  ];
-
-  // Controlar os itens selecionados
-  const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
-
-  // Alternar seleção sem fechar o dropdown
   const toggleSelection = (id: string, event: React.MouseEvent) => {
     event.preventDefault();
 
@@ -40,29 +35,17 @@ export function MultiSelectConcedentes() {
         ? prev.filter((item) => item !== id)
         : [...prev, id];
 
-      // Atualizar o valor no React Hook Form
-      // setValue("concedentes", newSelection);
-
-      // Manter o menu aberto após selecionar
-      setOpen(true);
-
       return newSelection;
     });
   };
 
-  // Alternar entre selecionar todos ou desmarcar todos
   const toggleAllSelection = (event: React.MouseEvent) => {
     event.preventDefault();
 
-    if (selectedItems.length === concedentes.length) {
-      // Se todos estão selecionados, desmarcar todos
+    if (selectedItems.length === options.length) {
       setSelectedItems([]);
-      // setValue("concedentes", []);
     } else {
-      // Se não estão todos selecionados, selecionar todos
-      const allItems = concedentes.map((item) => item.id);
-      setSelectedItems(allItems);
-      // setValue("concedentes", allItems);
+      setSelectedItems(options.map((item) => item.id));
     }
   };
 
@@ -78,18 +61,19 @@ export function MultiSelectConcedentes() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel className="font-extrabold text-rzk_darker">Concedentes</DropdownMenuLabel>
+        <DropdownMenuLabel className="font-extrabold text-rzk_darker">{label}</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
         <DropdownMenuCheckboxItem
-          checked={selectedItems.length === concedentes.length}
+          checked={selectedItems.length === options.length}
           onClick={toggleAllSelection}
         >
-          {selectedItems.length === concedentes.length ? "Desmarcar Todos" : "Selecionar Todos"}
+          {selectedItems.length === options.length ? "Desmarcar Todos" : "Selecionar Todos"}
         </DropdownMenuCheckboxItem>
 
         <DropdownMenuSeparator />
-        {concedentes.map((item) => (
+
+        {options.map((item) => (
           <DropdownMenuCheckboxItem
             key={item.id}
             checked={selectedItems.includes(item.id)}

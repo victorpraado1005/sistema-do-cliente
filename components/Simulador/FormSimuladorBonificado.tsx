@@ -9,17 +9,32 @@ import {
   Percent,
 } from "lucide-react";
 import { Input } from "../ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { MultiSelectConcedentes } from "@/app/simulador/components/MultiSelectConcedentes";
+import { MultiSelectDropdown } from "../ui/MultiSelectDropdown";
+import { useMemo, useState } from "react";
+import { MultiSelectCombobox } from "../ui/combobox";
+
+const pontos = [
+  { id_ponto: 1, concedente: 'nova-mobi', praca: 'sao-paulo', ponto: 'Ana Rosa' },
+  { id_ponto: 2, concedente: 'socicam', praca: 'sao-paulo', ponto: 'Carrão' },
+  { id_ponto: 3, concedente: 'unitah', praca: 'abc', ponto: 'São Bernardo' },
+  { id_ponto: 4, concedente: 'unitah', praca: 'sao-paulo', ponto: 'Pinheiros' },
+  { id_ponto: 5, concedente: 'nova-mobi', praca: 'recife', ponto: 'Pelópidas' },
+  { id_ponto: 6, concedente: 'socicam', praca: 'sao-paulo', ponto: 'Piritoba' },
+]
 
 export default function FormSimuladorBonificado() {
   const { valores, register } = useSimulador();
+  const [selectedConcedentes, setSelectedConcedentes] = useState<string[]>([]);
+  const [selectedPracas, setSelectedPracas] = useState<string[]>([]);
+  const [selectedPontos, setSelectedPontos] = useState<string[]>([]);
+
+  const filteredPontos = useMemo(() => {
+    return pontos.filter(
+      (ponto) =>
+        (selectedConcedentes.length === 0 || selectedConcedentes.includes(ponto.concedente)) &&
+        (selectedPracas.length === 0 || selectedPracas.includes(ponto.praca))
+    );
+  }, [selectedConcedentes, selectedPracas]);
 
   return (
     <div className="grid grid-cols-3 gap-6 w-full">
@@ -34,6 +49,11 @@ export default function FormSimuladorBonificado() {
             step="1"
             min="0"
             {...register("dias_bonificados", { valueAsNumber: true })}
+            onKeyDown={(e) => {
+              if (e.key === "-") {
+                e.preventDefault();
+              }
+            }}
             className="w-20 h-9 bg-gray-100 border-none text-center font-bold text-sm text-rzk_darker"
             placeholder="10"
           />
@@ -46,6 +66,11 @@ export default function FormSimuladorBonificado() {
           <Input
             className="w-20 h-9 bg-gray-100 border-none text-center font-bold text-sm text-rzk_darker"
             placeholder="1.00"
+            onKeyDown={(e) => {
+              if (e.key === "-") {
+                e.preventDefault();
+              }
+            }}
           />
         </div>
       </div>
@@ -67,16 +92,16 @@ export default function FormSimuladorBonificado() {
             <Building className="size-4" />
             <strong className="text-sm">Concedente:</strong>
           </div>
-          {/* <Select>
-            <SelectTrigger className="w-full bg-gray-100 h-9">
-              <SelectValue placeholder="Selecione" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="light">Next</SelectItem>
-              <SelectItem value="dark">SpTrans</SelectItem>
-            </SelectContent>
-          </Select> */}
-          <MultiSelectConcedentes />
+          <MultiSelectDropdown
+            label="Concedentes"
+            options={[
+              { id: "unitah", label: "Unitah" },
+              { id: "socicam", label: "Socicam" },
+              { id: "nova-mobi", label: "Nova Mobi" },
+            ]}
+            selectedItems={selectedConcedentes}
+            setSelectedItems={setSelectedConcedentes}
+          />
         </div>
       </div>
 
@@ -86,32 +111,30 @@ export default function FormSimuladorBonificado() {
             <Map className="size-4" />
             <strong className="text-sm">Praça:</strong>
           </div>
-          <Select>
-            <SelectTrigger className="w-30 bg-gray-100 h-9">
-              <SelectValue placeholder="Selecione" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="abc">ABC</SelectItem>
-              <SelectItem value="sao-paulo">São Paulo</SelectItem>
-              <SelectItem value="recife">Recife</SelectItem>
-            </SelectContent>
-          </Select>
+          <MultiSelectDropdown
+            label="Praças"
+            options={[
+              { id: "sao-paulo", label: "São Paulo" },
+              { id: "abc", label: "ABC" },
+              { id: "recife", label: "Recife" },
+            ]}
+            selectedItems={selectedPracas}
+            setSelectedItems={setSelectedPracas}
+          />
         </div>
         <div className="flex gap-2 items-center justify-between mb-2">
           <div className="flex gap-1 items-center">
             <MapPin className="size-4" />
             <strong className="text-sm">Pontos:</strong>
           </div>
-          <Select>
-            <SelectTrigger className="w-30 bg-gray-100 h-9">
-              <SelectValue placeholder="10 Pontos" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="abc">Ana Rosa</SelectItem>
-              <SelectItem value="sao-paulo">Bandeira</SelectItem>
-              <SelectItem value="recife">Carrão</SelectItem>
-            </SelectContent>
-          </Select>
+          <MultiSelectCombobox
+            options={filteredPontos.map((ponto) => ({
+              id_ponto: ponto.id_ponto,
+              ponto: ponto.ponto,
+            }))}
+            selectedValues={selectedPontos}
+            setSelectedValues={setSelectedPontos}
+          />
         </div>
       </div>
     </div>

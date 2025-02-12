@@ -3,9 +3,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import HeaderSimulador from "@/components/Simulador/HeaderSimulador";
-import { SimuladorProvider } from "./context/SimuladorContext";
+import { SimuladorProvider, useSimulador } from "./context/SimuladorContext";
 import { simuladorSchema } from "./schemas/simuladorSchema";
-import CardNumerosSimulador from "./components/Resultados";
+import LayoutCards from "./components/LayoutCards";
 
 export default function Simulador() {
   const { register, watch, reset } = useForm({
@@ -24,8 +24,8 @@ export default function Simulador() {
   return (
     <SimuladorProvider valores={valores} register={register} reset={reset}>
       <HeaderSimulador />
-      <div className="flex gap-4">
-        <CardNumerosSimulador />
+      <div className="">
+        <LayoutCards />
       </div>
     </SimuladorProvider>
   );
