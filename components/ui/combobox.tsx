@@ -40,8 +40,6 @@ export function MultiSelectCombobox({
     );
   };
 
-
-  // Alternar entre selecionar todos ou desmarcar todos
   const toggleAllSelection = () => {
     if (selectedValues.length === options.length) {
       setSelectedValues([]);

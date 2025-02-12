@@ -16,7 +16,7 @@ interface MultiSelectDropdownProps {
   label: string;
   options: { id: string; label: string }[];
   selectedItems: string[];
-  setSelectedItems: (items: string[]) => void;
+  setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export function MultiSelectDropdown({
@@ -30,14 +30,13 @@ export function MultiSelectDropdown({
   const toggleSelection = (id: string, event: React.MouseEvent) => {
     event.preventDefault();
 
-    setSelectedItems((prev) => {
-      const newSelection = prev.includes(id)
+    setSelectedItems((prev: string[]) => {
+      return prev.includes(id)
         ? prev.filter((item) => item !== id)
         : [...prev, id];
-
-      return newSelection;
     });
   };
+
 
   const toggleAllSelection = (event: React.MouseEvent) => {
     event.preventDefault();
