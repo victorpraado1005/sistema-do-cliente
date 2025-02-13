@@ -14,7 +14,10 @@ const mapContainerStyle = {
   borderRadius: "16px",
 };
 
-export default function CardMapsInvestimento({ latitude, longitude }: CardMapsProps) {
+export default function CardMapsInvestimento({
+  latitude,
+  longitude,
+}: CardMapsProps) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   if (!apiKey) {
@@ -22,12 +25,17 @@ export default function CardMapsInvestimento({ latitude, longitude }: CardMapsPr
   }
 
   return (
-    <div className="w-[270px] h-[250px] rounded-lg overflow-hidden border border-rzk_ligth shadow-md">
+    <div className="w-[270px] h-[250px] rounded-2xl overflow-hidden border border-rzk_ligth shadow-md">
       <LoadScript googleMapsApiKey={apiKey}>
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={{ lat: latitude, lng: longitude }}
           zoom={15}
+          options={{
+            fullscreenControl: false,
+            streetViewControl: false,
+            mapTypeControl: false,
+          }}
         >
           <Marker position={{ lat: latitude, lng: longitude }} />
         </GoogleMap>

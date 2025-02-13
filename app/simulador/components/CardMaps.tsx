@@ -22,12 +22,17 @@ export default function CardMaps({ latitude, longitude }: CardMapsProps) {
   }
 
   return (
-    <div className="w-full h-[600px] rounded-lg mt-4 overflow-hidden border border-rzk_ligth shadow-md">
+    <div className="w-full h-auto mb-2 rounded-2xl mt-4 overflow-hidden border border-rzk_ligth shadow-md">
       <LoadScript googleMapsApiKey={apiKey}>
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={{ lat: latitude, lng: longitude }}
           zoom={15}
+          options={{
+            fullscreenControl: false,
+            streetViewControl: false,
+            mapTypeControl: false,
+          }}
         >
           {/* 📍 Adiciona um marcador no local */}
           <Marker position={{ lat: latitude, lng: longitude }} />
