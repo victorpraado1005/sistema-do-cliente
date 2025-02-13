@@ -13,25 +13,24 @@ import { MultiSelectDropdown } from "../ui/MultiSelectDropdown";
 import { useMemo, useState } from "react";
 import { MultiSelectCombobox } from "../ui/combobox";
 
-const pontos = [
-  { id_ponto: 1, concedente: 'nova-mobi', praca: 'sao-paulo', ponto: 'Ana Rosa' },
-  { id_ponto: 2, concedente: 'socicam', praca: 'sao-paulo', ponto: 'Carrão' },
-  { id_ponto: 3, concedente: 'unitah', praca: 'abc', ponto: 'São Bernardo' },
-  { id_ponto: 4, concedente: 'unitah', praca: 'sao-paulo', ponto: 'Pinheiros' },
-  { id_ponto: 5, concedente: 'nova-mobi', praca: 'recife', ponto: 'Pelópidas' },
-  { id_ponto: 6, concedente: 'socicam', praca: 'sao-paulo', ponto: 'Piritoba' },
-]
+interface IPonto {
+  id_ponto: number;
+  nome: string;
+  nome_concedente: string;
+  praca: string;
+}
 
 export default function FormSimuladorBonificado() {
-  const { valores, register } = useSimulador();
+  const { register, dadosBackEnd } = useSimulador();
   const [selectedConcedentes, setSelectedConcedentes] = useState<string[]>([]);
   const [selectedPracas, setSelectedPracas] = useState<string[]>([]);
   const [selectedPontos, setSelectedPontos] = useState<string[]>([]);
 
   const filteredPontos = useMemo(() => {
-    return pontos.filter(
-      (ponto) =>
-        (selectedConcedentes.length === 0 || selectedConcedentes.includes(ponto.concedente)) &&
+    return dadosBackEnd.filter(
+      (ponto: IPonto) =>
+        (selectedConcedentes.length === 0 ||
+          selectedConcedentes.includes(ponto.nome_concedente)) &&
         (selectedPracas.length === 0 || selectedPracas.includes(ponto.praca))
     );
   }, [selectedConcedentes, selectedPracas]);
@@ -45,17 +44,21 @@ export default function FormSimuladorBonificado() {
             <strong className="text-sm">Qtd. de Dias:</strong>
           </div>
           <Input
+            {...register("dias_bonificados", {
+              setValueAs: (v) => {
+                if (v === "" || v === null || v === undefined) return 0;
+                const num = parseInt(v.toString().replace(",", "."), 10);
+                return isNaN(num) ? 0 : num;
+              },
+            })}
             type="number"
             step="1"
             min="0"
-            {...register("dias_bonificados", { valueAsNumber: true })}
-            onKeyDown={(e) => {
-              if (e.key === "-") {
-                e.preventDefault();
-              }
-            }}
             className="w-20 h-9 bg-gray-100 border-none text-center font-bold text-sm text-rzk_darker"
-            placeholder="10"
+            placeholder="0"
+            onKeyDown={(e) => {
+              if (e.key === "-") e.preventDefault();
+            }}
           />
         </div>
         <div className="flex gap-2 items-center justify-between">
@@ -64,12 +67,21 @@ export default function FormSimuladorBonificado() {
             <strong className="text-sm">Saturação:</strong>
           </div>
           <Input
+            {...register("saturacao_bonificada", {
+              setValueAs: (v) => {
+                if (v === "" || v === null || v === undefined) return 0;
+                const num = parseFloat(v.toString().replace(",", "."));
+                return isNaN(num) ? 0 : num;
+              },
+            })}
+            type="number"
+            step="0.01"
+            min="0"
+            max="1"
             className="w-20 h-9 bg-gray-100 border-none text-center font-bold text-sm text-rzk_darker"
-            placeholder="1.00"
+            placeholder="0"
             onKeyDown={(e) => {
-              if (e.key === "-") {
-                e.preventDefault();
-              }
+              if (e.key === "-") e.preventDefault();
             }}
           />
         </div>
@@ -128,9 +140,9 @@ export default function FormSimuladorBonificado() {
             <strong className="text-sm">Pontos:</strong>
           </div>
           <MultiSelectCombobox
-            options={filteredPontos.map((ponto) => ({
+            options={filteredPontos.map((ponto: IPonto) => ({
               id_ponto: ponto.id_ponto,
-              ponto: ponto.ponto,
+              ponto: ponto.nome,
             }))}
             selectedValues={selectedPontos}
             setSelectedValues={setSelectedPontos}

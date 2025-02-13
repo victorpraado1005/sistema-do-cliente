@@ -1,8 +1,25 @@
-import { BadgeDollarSign, CalendarDays, ChartLine, CircleDollarSign, CirclePercent, CirclePlay, DollarSign, History, Map, MapPin, Smartphone, SquareUser, Target, UserRoundCheck, UsersRound, View } from "lucide-react";
+import {
+  BadgeDollarSign,
+  CalendarDays,
+  ChartLine,
+  CircleDollarSign,
+  CirclePercent,
+  CirclePlay,
+  DollarSign,
+  History,
+  Map,
+  MapPin,
+  Smartphone,
+  SquareUser,
+  Target,
+  UserRoundCheck,
+  UsersRound,
+  View,
+} from "lucide-react";
 import { useSimulador } from "../context/SimuladorContext";
 
 export default function CardNumerosCampanhaPaga() {
-  const { resultados } = useSimulador();
+  const { resultados, valores } = useSimulador();
 
   return (
     <div className="w-[850px] border border-rzk_ligth rounded-2xl flex flex-col mt-4 py-4 px-6 gap-4">
@@ -14,7 +31,9 @@ export default function CardNumerosCampanhaPaga() {
               <CalendarDays className="size-5" />
               <span className="text-lg font-semibold">Período (dias)</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {valores.dias}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -22,7 +41,9 @@ export default function CardNumerosCampanhaPaga() {
               <MapPin className="size-5" />
               <span className="text-lg font-semibold">Pontos</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -30,7 +51,9 @@ export default function CardNumerosCampanhaPaga() {
               <Smartphone className="size-5" />
               <span className="text-lg font-semibold">Faces</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -38,7 +61,9 @@ export default function CardNumerosCampanhaPaga() {
               <Map className="size-5" />
               <span className="text-lg font-semibold">Praças</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -46,7 +71,9 @@ export default function CardNumerosCampanhaPaga() {
               <History className="size-5" />
               <span className="text-lg font-semibold">Saturação</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {valores.saturacao}
+            </span>
           </div>
         </div>
 
@@ -56,7 +83,9 @@ export default function CardNumerosCampanhaPaga() {
               <CirclePlay className="size-5" />
               <span className="text-lg font-semibold">Inserções</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -64,7 +93,9 @@ export default function CardNumerosCampanhaPaga() {
               <Target className="size-5" />
               <span className="text-lg font-semibold">Impactos</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -72,7 +103,9 @@ export default function CardNumerosCampanhaPaga() {
               <SquareUser className="size-5" />
               <span className="text-lg font-semibold">Freq. Média</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -80,7 +113,9 @@ export default function CardNumerosCampanhaPaga() {
               <ChartLine className="size-5" />
               <span className="text-lg font-semibold">TRP</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
         </div>
 
@@ -90,7 +125,9 @@ export default function CardNumerosCampanhaPaga() {
               <View className="size-5" />
               <span className="text-lg font-semibold">Visitas</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -98,7 +135,9 @@ export default function CardNumerosCampanhaPaga() {
               <UserRoundCheck className="size-5" />
               <span className="text-lg font-semibold">Usuários únicos</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -106,7 +145,9 @@ export default function CardNumerosCampanhaPaga() {
               <SquareUser className="size-5" />
               <span className="text-lg font-semibold">Pop. 12+ (IBGE)</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -114,7 +155,9 @@ export default function CardNumerosCampanhaPaga() {
               <UsersRound className="size-5" />
               <span className="text-lg font-semibold">Alcance</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
         </div>
 
@@ -124,7 +167,9 @@ export default function CardNumerosCampanhaPaga() {
               <CircleDollarSign className="size-5" />
               <span className="text-lg font-semibold">Preço de Tabela</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">R$ {resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              R$ {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -132,7 +177,9 @@ export default function CardNumerosCampanhaPaga() {
               <CirclePercent className="size-5" />
               <span className="text-lg font-semibold">Desconto</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -140,7 +187,9 @@ export default function CardNumerosCampanhaPaga() {
               <DollarSign className="size-5" />
               <span className="text-lg font-semibold">Investimento</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">R$ {resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              R$ {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -148,10 +197,12 @@ export default function CardNumerosCampanhaPaga() {
               <BadgeDollarSign className="size-5" />
               <span className="text-lg font-semibold">CPM Médio</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">R$ {resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              R$ {resultados.investimento}
+            </span>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

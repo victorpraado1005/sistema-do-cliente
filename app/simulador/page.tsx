@@ -6,9 +6,10 @@ import HeaderSimulador from "@/components/Simulador/HeaderSimulador";
 import { SimuladorProvider, useSimulador } from "./context/SimuladorContext";
 import { simuladorSchema } from "./schemas/simuladorSchema";
 import LayoutCards from "./components/LayoutCards";
+import { pontos } from "@/utils/pontos";
 
 export default function Simulador() {
-  const { register, watch, reset } = useForm({
+  const { register, watch, reset, setValue } = useForm({
     resolver: zodResolver(simuladorSchema),
     defaultValues: {
       desconto: 0,
@@ -22,7 +23,13 @@ export default function Simulador() {
   const valores = watch();
 
   return (
-    <SimuladorProvider valores={valores} register={register} reset={reset}>
+    <SimuladorProvider
+      valores={valores}
+      register={register}
+      reset={reset}
+      setValue={setValue}
+      initialData={pontos}
+    >
       <HeaderSimulador />
       <div className="">
         <LayoutCards />

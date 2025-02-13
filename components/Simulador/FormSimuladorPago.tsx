@@ -1,12 +1,24 @@
 import { useSimulador } from "@/app/simulador/context/SimuladorContext";
-import { Building, CalendarDays, History, Map, MapPin, Percent } from "lucide-react";
+import {
+  Building,
+  CalendarDays,
+  History,
+  Map,
+  MapPin,
+  Percent,
+} from "lucide-react";
 import { Input } from "../ui/input";
 import { useState, useMemo } from "react";
 import { MultiSelectDropdown } from "../ui/MultiSelectDropdown";
 import { MultiSelectCombobox } from "../ui/combobox";
 
 const pontos = [
-  { id_ponto: 1, concedente: "nova-mobi", praca: "sao-paulo", ponto: "Ana Rosa" },
+  {
+    id_ponto: 1,
+    concedente: "nova-mobi",
+    praca: "sao-paulo",
+    ponto: "Ana Rosa",
+  },
   { id_ponto: 2, concedente: "socicam", praca: "sao-paulo", ponto: "Carrão" },
   { id_ponto: 3, concedente: "unitah", praca: "abc", ponto: "São Bernardo" },
   { id_ponto: 4, concedente: "unitah", praca: "sao-paulo", ponto: "Pinheiros" },
@@ -15,7 +27,7 @@ const pontos = [
 ];
 
 export default function FormSimuladorPago() {
-  const { valores, register } = useSimulador();
+  const { register, setValue } = useSimulador();
   const [selectedConcedentes, setSelectedConcedentes] = useState<string[]>([]);
   const [selectedPracas, setSelectedPracas] = useState<string[]>([]);
   const [selectedPontos, setSelectedPontos] = useState<string[]>([]);
@@ -23,7 +35,8 @@ export default function FormSimuladorPago() {
   const filteredPontos = useMemo(() => {
     return pontos.filter(
       (ponto) =>
-        (selectedConcedentes.length === 0 || selectedConcedentes.includes(ponto.concedente)) &&
+        (selectedConcedentes.length === 0 ||
+          selectedConcedentes.includes(ponto.concedente)) &&
         (selectedPracas.length === 0 || selectedPracas.includes(ponto.praca))
     );
   }, [selectedConcedentes, selectedPracas]);
@@ -38,15 +51,21 @@ export default function FormSimuladorPago() {
               <strong className="text-sm">Qtd. de Dias:</strong>
             </div>
             <Input
+              {...register("dias", {
+                setValueAs: (v) => {
+                  if (v === "" || v === null || v === undefined) return 0;
+                  const num = parseInt(v.toString().replace(",", "."), 10);
+                  return isNaN(num) ? 0 : num;
+                },
+              })}
               type="number"
               step="1"
               min="0"
-              {...register("dias", { valueAsNumber: true })}
+              className="w-20 h-9 bg-gray-100 border-none text-center font-bold text-sm text-rzk_darker"
+              placeholder="0"
               onKeyDown={(e) => {
                 if (e.key === "-") e.preventDefault();
               }}
-              className="w-20 h-9 bg-gray-100 border-none text-center font-bold text-sm text-rzk_darker"
-              placeholder="10"
             />
           </div>
 
@@ -56,14 +75,21 @@ export default function FormSimuladorPago() {
               <strong className="text-sm">Saturação:</strong>
             </div>
             <Input
-              {...register("saturacao", { valueAsNumber: true })}
+              {...register("saturacao", {
+                setValueAs: (v) => {
+                  if (v === "" || v === null || v === undefined) return 0;
+                  const num = parseFloat(v.toString().replace(",", "."));
+                  return isNaN(num) ? 0 : num;
+                },
+              })}
               type="number"
+              step="0.01"
+              min="0"
+              max="1"
               className="w-20 h-9 bg-gray-100 border-none text-center font-bold text-sm text-rzk_darker"
-              placeholder="1.00"
+              placeholder="0"
               onKeyDown={(e) => {
-                if (e.key === "-") {
-                  e.preventDefault();
-                }
+                if (e.key === "-") e.preventDefault();
               }}
             />
           </div>
@@ -76,18 +102,27 @@ export default function FormSimuladorPago() {
               <strong className="text-sm">Desconto:</strong>
             </div>
             <Input
+              {...register("desconto", {
+                setValueAs: (v) => {
+                  if (v === "" || v === null || v === undefined) return 0;
+                  let num = parseFloat(v.toString().replace(",", "."));
+                  if (isNaN(num)) return 0;
+                  return Math.min(Math.max(num, 0), 100);
+                },
+              })}
               type="number"
+              step="0.1"
               min="0"
               max="100"
-              {...register("desconto", { valueAsNumber: true })}
               className="w-20 h-9 bg-gray-100 border-none text-center font-bold text-sm text-rzk_darker"
-              placeholder="%"
+              placeholder="0%"
               onKeyDown={(e) => {
                 if (e.key === "-") e.preventDefault();
               }}
               onInput={(e) => {
                 const input = e.target as HTMLInputElement;
                 if (parseFloat(input.value) > 100) input.value = "100";
+                100;
               }}
             />
           </div>
