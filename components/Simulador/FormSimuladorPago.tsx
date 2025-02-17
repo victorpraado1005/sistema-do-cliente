@@ -12,31 +12,32 @@ import { useState, useMemo } from "react";
 import { MultiSelectDropdown } from "../ui/MultiSelectDropdown";
 import { MultiSelectCombobox } from "../ui/combobox";
 
-const pontos = [
-  {
-    id_ponto: 1,
-    concedente: "nova-mobi",
-    praca: "sao-paulo",
-    ponto: "Ana Rosa",
-  },
-  { id_ponto: 2, concedente: "socicam", praca: "sao-paulo", ponto: "Carrão" },
-  { id_ponto: 3, concedente: "unitah", praca: "abc", ponto: "São Bernardo" },
-  { id_ponto: 4, concedente: "unitah", praca: "sao-paulo", ponto: "Pinheiros" },
-  { id_ponto: 5, concedente: "nova-mobi", praca: "recife", ponto: "Pelópidas" },
-  { id_ponto: 6, concedente: "socicam", praca: "sao-paulo", ponto: "Pirituba" },
-];
-
 export default function FormSimuladorPago() {
-  const { register, setValue } = useSimulador();
+  const { register, concessoes, pontos } = useSimulador();
   const [selectedConcedentes, setSelectedConcedentes] = useState<string[]>([]);
   const [selectedPracas, setSelectedPracas] = useState<string[]>([]);
   const [selectedPontos, setSelectedPontos] = useState<string[]>([]);
+
+  const concedentes = concessoes.map((item) => ({
+    id: item.id_concessao,
+    label: item.empresa.nome,
+  }));
+
+  const pracas = pontos
+    .map((item) => ({
+      id: item.praca,
+      label: item.praca,
+    }))
+    .filter(
+      (item, index, self) =>
+        index === self.findIndex((obj) => obj.id === item.id)
+    );
 
   const filteredPontos = useMemo(() => {
     return pontos.filter(
       (ponto) =>
         (selectedConcedentes.length === 0 ||
-          selectedConcedentes.includes(ponto.concedente)) &&
+          selectedConcedentes.includes(ponto.concessoes[0].id_concessao)) &&
         (selectedPracas.length === 0 || selectedPracas.includes(ponto.praca))
     );
   }, [selectedConcedentes, selectedPracas]);
@@ -133,11 +134,7 @@ export default function FormSimuladorPago() {
             </div>
             <MultiSelectDropdown
               label="Concedentes"
-              options={[
-                { id: "unitah", label: "Unitah" },
-                { id: "socicam", label: "Socicam" },
-                { id: "nova-mobi", label: "Nova Mobi" },
-              ]}
+              options={concedentes}
               selectedItems={selectedConcedentes}
               setSelectedItems={setSelectedConcedentes}
             />
@@ -152,11 +149,7 @@ export default function FormSimuladorPago() {
             </div>
             <MultiSelectDropdown
               label="Praças"
-              options={[
-                { id: "sao-paulo", label: "São Paulo" },
-                { id: "abc", label: "ABC" },
-                { id: "recife", label: "Recife" },
-              ]}
+              options={pracas}
               selectedItems={selectedPracas}
               setSelectedItems={setSelectedPracas}
             />
@@ -169,7 +162,7 @@ export default function FormSimuladorPago() {
             <MultiSelectCombobox
               options={filteredPontos.map((ponto) => ({
                 id_ponto: ponto.id_ponto,
-                ponto: ponto.ponto,
+                ponto: ponto.nome,
               }))}
               selectedValues={selectedPontos}
               setSelectedValues={setSelectedPontos}

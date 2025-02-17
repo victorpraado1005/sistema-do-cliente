@@ -21,16 +21,31 @@ interface IPonto {
 }
 
 export default function FormSimuladorBonificado() {
-  const { register, dadosBackEnd } = useSimulador();
+  const { register, pontos, concessoes } = useSimulador();
   const [selectedConcedentes, setSelectedConcedentes] = useState<string[]>([]);
   const [selectedPracas, setSelectedPracas] = useState<string[]>([]);
   const [selectedPontos, setSelectedPontos] = useState<string[]>([]);
 
+  const concedentes = concessoes.map((item) => ({
+    id: item.id_concessao,
+    label: item.empresa.nome,
+  }));
+
+  const pracas = pontos
+    .map((item) => ({
+      id: item.praca,
+      label: item.praca,
+    }))
+    .filter(
+      (item, index, self) =>
+        index === self.findIndex((obj) => obj.id === item.id)
+    );
+
   const filteredPontos = useMemo(() => {
-    return dadosBackEnd.filter(
-      (ponto: IPonto) =>
+    return pontos.filter(
+      (ponto) =>
         (selectedConcedentes.length === 0 ||
-          selectedConcedentes.includes(ponto.nome_concedente)) &&
+          selectedConcedentes.includes(ponto.concessoes[0].id_concessao)) &&
         (selectedPracas.length === 0 || selectedPracas.includes(ponto.praca))
     );
   }, [selectedConcedentes, selectedPracas]);
@@ -106,11 +121,7 @@ export default function FormSimuladorBonificado() {
           </div>
           <MultiSelectDropdown
             label="Concedentes"
-            options={[
-              { id: "unitah", label: "Unitah" },
-              { id: "socicam", label: "Socicam" },
-              { id: "nova-mobi", label: "Nova Mobi" },
-            ]}
+            options={concedentes}
             selectedItems={selectedConcedentes}
             setSelectedItems={setSelectedConcedentes}
           />
@@ -125,11 +136,7 @@ export default function FormSimuladorBonificado() {
           </div>
           <MultiSelectDropdown
             label="Praças"
-            options={[
-              { id: "sao-paulo", label: "São Paulo" },
-              { id: "abc", label: "ABC" },
-              { id: "recife", label: "Recife" },
-            ]}
+            options={pracas}
             selectedItems={selectedPracas}
             setSelectedItems={setSelectedPracas}
           />

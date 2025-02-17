@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import HeaderSimulador from "@/components/Simulador/HeaderSimulador";
-import { SimuladorProvider, useSimulador } from "./context/SimuladorContext";
+import { SimuladorProvider } from "./context/SimuladorContext";
 import { simuladorSchema } from "./schemas/simuladorSchema";
 import LayoutCards from "./components/LayoutCards";
 import { pontos } from "@/utils/pontos";
