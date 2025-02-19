@@ -19,11 +19,10 @@ import {
 } from "@/components/ui/popover";
 
 interface MultiSelectComboboxProps {
-  options: { id_ponto: number; ponto: string }[];
-  selectedValues: string[];
-  setSelectedValues: React.Dispatch<React.SetStateAction<string[]>>;
+  options: IPonto[];
+  selectedValues: number[];
+  setSelectedValues: React.Dispatch<React.SetStateAction<number[]>>;
 }
-
 
 export function MultiSelectCombobox({
   options,
@@ -31,20 +30,25 @@ export function MultiSelectCombobox({
   setSelectedValues,
 }: MultiSelectComboboxProps) {
   const [open, setOpen] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState("");
 
-  const toggleSelection = (currentValue: string) => {
-    setSelectedValues((prev: string[]) =>
-      prev.includes(currentValue)
-        ? prev.filter((item) => item !== currentValue)
-        : [...prev, currentValue]
+  const filteredOptions = React.useMemo(() => {
+    return options.filter((option) =>
+      option.nome.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm, options]);
+
+  const toggleSelection = (id: number) => {
+    setSelectedValues((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
 
   const toggleAllSelection = () => {
-    if (selectedValues.length === options.length) {
+    if (selectedValues.length === filteredOptions.length) {
       setSelectedValues([]);
     } else {
-      setSelectedValues(options.map((option) => option.ponto));
+      setSelectedValues(filteredOptions.map((option) => option.id_ponto));
     }
   };
 
@@ -57,54 +61,71 @@ export function MultiSelectCombobox({
           aria-expanded={open}
           className="flex items-center gap-1 w-24 bg-gray-100"
         >
-          {selectedValues.length === 1 ? '1 Ponto' : selectedValues.length > 1 ? `${selectedValues.length} Pontos` : "Selecione"}
+          {selectedValues.length === 1
+            ? "1 Ponto"
+            : selectedValues.length > 1
+              ? `${selectedValues.length} Pontos`
+              : "Selecione"}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[250px] p-0">
         <Command>
-          <CommandInput placeholder="Buscar..." />
+          <CommandInput
+            placeholder="Buscar..."
+            value={searchTerm}
+            onValueChange={(value) => setSearchTerm(value.trim())}
+          />
           <CommandList>
-            <CommandEmpty>Nenhum encontrado.</CommandEmpty>
+            {filteredOptions.length === 0 ? (
+              <CommandEmpty>Nenhum ponto encontrado.</CommandEmpty>
+            ) : (
+              <>
+                <CommandGroup>
+                  <CommandItem
+                    onSelect={() => {
+                      toggleAllSelection();
+                    }}
+                  >
+                    <div className="flex items-center gap-2">
+                      {selectedValues.length === filteredOptions.length ? (
+                        <CheckSquare className="h-4 w-4" />
+                      ) : (
+                        <Square className="h-4 w-4" />
+                      )}
+                      <span>
+                        {selectedValues.length === filteredOptions.length
+                          ? "Desmarcar Todos"
+                          : "Selecionar Todos"}
+                      </span>
+                    </div>
+                  </CommandItem>
+                </CommandGroup>
 
-            <CommandGroup>
-              {/* Botão de Selecionar Todos */}
-              <CommandItem onSelect={toggleAllSelection}>
-                <div className="flex items-center gap-2">
-                  {selectedValues.length === options.length ? (
-                    <CheckSquare className="h-4 w-4" />
-                  ) : (
-                    <Square className="h-4 w-4" />
-                  )}
-                  <span>
-                    {selectedValues.length === options.length
-                      ? "Desmarcar Todos"
-                      : "Selecionar Todos"}
-                  </span>
-                </div>
-              </CommandItem>
-            </CommandGroup>
+                <CommandSeparator />
 
-            <CommandSeparator />
-
-            <CommandGroup>
-              {options.map((option) => (
-                <CommandItem
-                  key={option.id_ponto}
-                  value={option.ponto}
-                  onSelect={() => toggleSelection(option.ponto)}
-                >
-                  <div className="flex items-center gap-2">
-                    {selectedValues.includes(option.ponto) ? (
-                      <CheckSquare className="h-4 w-4" />
-                    ) : (
-                      <Square className="h-4 w-4" />
-                    )}
-                    {option.ponto}
-                  </div>
-                </CommandItem>
-              ))}
-            </CommandGroup>
+                <CommandGroup>
+                  {filteredOptions.map((option) => (
+                    <CommandItem
+                      key={option.id_ponto}
+                      value={option.nome}
+                      onSelect={() => {
+                        toggleSelection(option.id_ponto);
+                      }}
+                    >
+                      <div className="flex items-center gap-2">
+                        {selectedValues.includes(option.id_ponto) ? (
+                          <CheckSquare className="h-4 w-4" />
+                        ) : (
+                          <Square className="h-4 w-4" />
+                        )}
+                        {option.nome}
+                      </div>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </>
+            )}
           </CommandList>
         </Command>
       </PopoverContent>

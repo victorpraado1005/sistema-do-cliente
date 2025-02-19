@@ -8,15 +8,15 @@ import {
   Percent,
 } from "lucide-react";
 import { Input } from "../ui/input";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { MultiSelectDropdown } from "../ui/MultiSelectDropdown";
 import { MultiSelectCombobox } from "../ui/combobox";
 
 export default function FormSimuladorPago() {
-  const { register, concessoes, pontos } = useSimulador();
+  const { register, concessoes, pontos, setValue } = useSimulador();
   const [selectedConcedentes, setSelectedConcedentes] = useState<string[]>([]);
   const [selectedPracas, setSelectedPracas] = useState<string[]>([]);
-  const [selectedPontos, setSelectedPontos] = useState<string[]>([]);
+  const [selectedPontos, setSelectedPontos] = useState<number[]>([]);
 
   const concedentes = concessoes.map((item) => ({
     id: item.id_concessao,
@@ -40,7 +40,15 @@ export default function FormSimuladorPago() {
           selectedConcedentes.includes(ponto.concessoes[0].id_concessao)) &&
         (selectedPracas.length === 0 || selectedPracas.includes(ponto.praca))
     );
-  }, [selectedConcedentes, selectedPracas]);
+  }, [pontos, selectedConcedentes, selectedPracas]);
+
+  useEffect(() => {
+    setValue("pontos", selectedPontos);
+  }, [selectedPontos, setValue]);
+
+  useEffect(() => {
+    setValue("pracas", selectedPracas.join(', '));
+  }, [selectedPracas, setValue]);
 
   return (
     <div className="w-full">
@@ -149,6 +157,7 @@ export default function FormSimuladorPago() {
             </div>
             <MultiSelectDropdown
               label="Praças"
+              {...register('pracas')}
               options={pracas}
               selectedItems={selectedPracas}
               setSelectedItems={setSelectedPracas}
@@ -160,10 +169,7 @@ export default function FormSimuladorPago() {
               <strong className="text-sm">Pontos:</strong>
             </div>
             <MultiSelectCombobox
-              options={filteredPontos.map((ponto) => ({
-                id_ponto: ponto.id_ponto,
-                ponto: ponto.nome,
-              }))}
+              options={filteredPontos}
               selectedValues={selectedPontos}
               setSelectedValues={setSelectedPontos}
             />

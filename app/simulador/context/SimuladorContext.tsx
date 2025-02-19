@@ -11,6 +11,8 @@ import { z } from "zod";
 import { useQueries } from "@tanstack/react-query";
 import { fetchConcessoes, fetchPontos, fetchProdutos } from "@/lib/api";
 import { IConcedente } from "@/app/types/IConcedente";
+import { pontos } from "@/utils/pontos";
+import { IProduto } from "@/app/types/IProduto";
 
 type SimuladorContextType = {
   valores: z.infer<typeof simuladorSchema>;
@@ -21,9 +23,9 @@ type SimuladorContextType = {
     investimento: string;
     cpmMedio: string;
     dias_totais: number;
+    faces_totais: number;
   };
   isBonificadoPreenchido: boolean;
-  dadosBackEnd: any;
   pontos: any[];
   concessoes: any[];
   produtos: any[];
@@ -48,7 +50,6 @@ export const SimuladorProvider = ({
   setValue: SimuladorContextType["setValue"];
   initialData: any;
 }) => {
-  const [dadosBackEnd] = useState(initialData);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<any>(null);
 
@@ -72,15 +73,24 @@ export const SimuladorProvider = ({
     ],
   });
 
-  const [pontosQuery, concessoesQuery, produtosQuery] = results;
+  const [pontosQuery, concessoesQuery, produtosQuery] = results as [
+    { data: any[]; isLoading: boolean; error: any },
+    { data: IConcedente[]; isLoading: boolean; error: any },
+    { data: IProduto[]; isLoading: boolean; error: any }
+  ];
 
-  const concedentes = concessoesQuery.data.map((item: IConcedente) => ({
-    id: item.id_concessao,
-    label: item.empresa.nome,
-  }));
+  // const concedentes = concessoesQuery.data.map((item) => ({
+  //   id: item.id_concessao,
+  //   label: item.empresa.nome,
+  // }));
+
+  const selectedProducts = produtosQuery.data?.filter(item =>
+    valores.pontos.includes(item.id_concessao_ponto) && !item.data_venda_termino
+  );
+  // apos isso, fazer um reduce para calculcar a qtd_faces dos pontos selecionados
+  const faces_totais = selectedProducts?.reduce((acc, item) => acc + item.qtd_faces, 0)
 
   // Lógica dos cálculos
-  // adicionar os calculos reais
   const precoTabela = 77040;
   const impactos = 1699056;
 
@@ -112,9 +122,9 @@ export const SimuladorProvider = ({
           investimento,
           cpmMedio,
           dias_totais,
+          faces_totais
         },
         isBonificadoPreenchido,
-        dadosBackEnd,
       }}
     >
       {children}

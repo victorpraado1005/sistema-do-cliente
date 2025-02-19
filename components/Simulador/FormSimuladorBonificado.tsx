@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Input } from "../ui/input";
 import { MultiSelectDropdown } from "../ui/MultiSelectDropdown";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MultiSelectCombobox } from "../ui/combobox";
 
 interface IPonto {
@@ -21,10 +21,10 @@ interface IPonto {
 }
 
 export default function FormSimuladorBonificado() {
-  const { register, pontos, concessoes } = useSimulador();
+  const { register, pontos, concessoes, setValue } = useSimulador();
   const [selectedConcedentes, setSelectedConcedentes] = useState<string[]>([]);
   const [selectedPracas, setSelectedPracas] = useState<string[]>([]);
-  const [selectedPontos, setSelectedPontos] = useState<string[]>([]);
+  const [selectedPontos, setSelectedPontos] = useState<number[]>([]);
 
   const concedentes = concessoes.map((item) => ({
     id: item.id_concessao,
@@ -48,7 +48,11 @@ export default function FormSimuladorBonificado() {
           selectedConcedentes.includes(ponto.concessoes[0].id_concessao)) &&
         (selectedPracas.length === 0 || selectedPracas.includes(ponto.praca))
     );
-  }, [selectedConcedentes, selectedPracas]);
+  }, [pontos, selectedConcedentes, selectedPracas]);
+
+  useEffect(() => {
+    setValue("pontos_bonificados", selectedPontos);
+  }, [selectedPontos, setValue]);
 
   return (
     <div className="grid grid-cols-3 gap-6 w-full">
@@ -147,10 +151,7 @@ export default function FormSimuladorBonificado() {
             <strong className="text-sm">Pontos:</strong>
           </div>
           <MultiSelectCombobox
-            options={filteredPontos.map((ponto: IPonto) => ({
-              id_ponto: ponto.id_ponto,
-              ponto: ponto.nome,
-            }))}
+            options={filteredPontos}
             selectedValues={selectedPontos}
             setSelectedValues={setSelectedPontos}
           />

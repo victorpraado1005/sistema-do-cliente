@@ -10,7 +10,8 @@ export const simuladorSchema = z.object({
     .number({ required_error: "O campo é obrigatório" })
     .int("O valor deve ser um número inteiro")
     .min(0, "O valor mínimo é 1"),
-  pontos: z.number().min(0, "Os pontos não podem ser negativos"),
+  pontos: z.array(z.number()),
+  pracas: z.array(z.string()),
   // bonificado
   dias_bonificados: z
     .number()

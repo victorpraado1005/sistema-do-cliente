@@ -19,11 +19,13 @@ import {
 import { useSimulador } from "../context/SimuladorContext";
 
 export default function CardNumerosCampanhaPaga() {
-  const { resultados, valores } = useSimulador();
+  const { resultados, valores, pontos } = useSimulador();
+
+  const pracas = pontos.filter((item) => valores.pontos.includes(item.id_ponto)).map((item) => item.praca)
 
   return (
     <div className="w-[850px] border border-rzk_ligth rounded-2xl flex flex-col mt-4 py-4 px-6 gap-4">
-      <h2 className="text-xl font-bold">Campanha:</h2>
+      <h2 className="text-xl text-rzk_darker font-extrabold">Campanha:</h2>
       <div className="grid grid-cols-4 gap-5 text-rzk_regular">
         <div className="space-y-4">
           <div className="flex flex-col">
@@ -42,7 +44,7 @@ export default function CardNumerosCampanhaPaga() {
               <span className="text-lg font-semibold">Pontos</span>
             </div>
             <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.investimento}
+              {valores.pontos.length}
             </span>
           </div>
 
@@ -52,7 +54,7 @@ export default function CardNumerosCampanhaPaga() {
               <span className="text-lg font-semibold">Faces</span>
             </div>
             <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.investimento}
+              {resultados.faces_totais}
             </span>
           </div>
 
@@ -62,7 +64,7 @@ export default function CardNumerosCampanhaPaga() {
               <span className="text-lg font-semibold">Praças</span>
             </div>
             <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.investimento}
+              {[...new Set(pracas)].length === 0 ? 0 : [...new Set(pracas)].join(', ')}
             </span>
           </div>
 
@@ -178,7 +180,7 @@ export default function CardNumerosCampanhaPaga() {
               <span className="text-lg font-semibold">Desconto</span>
             </div>
             <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.investimento}
+              {valores.desconto}%
             </span>
           </div>
 

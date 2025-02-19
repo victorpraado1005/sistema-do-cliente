@@ -15,8 +15,9 @@ export default function Simulador() {
       desconto: 0,
       saturacao: 1.0,
       dias: 0,
-      pontos: 10,
+      pontos: [],
       dias_bonificados: 0,
+      pracas: [],
     },
   });
 
