@@ -13,10 +13,16 @@ import { MultiSelectDropdown } from "../ui/MultiSelectDropdown";
 import { MultiSelectCombobox } from "../ui/combobox";
 
 export default function FormSimuladorPago() {
-  const { register, concessoes, pontos, setValue } = useSimulador();
+  const {
+    register,
+    concessoes,
+    pontos,
+    setValue,
+    selectedPontos,
+    setSelectedPontos,
+  } = useSimulador();
   const [selectedConcedentes, setSelectedConcedentes] = useState<string[]>([]);
   const [selectedPracas, setSelectedPracas] = useState<string[]>([]);
-  const [selectedPontos, setSelectedPontos] = useState<number[]>([]);
 
   const concedentes = concessoes.map((item) => ({
     id: item.id_concessao,
@@ -47,7 +53,7 @@ export default function FormSimuladorPago() {
   }, [selectedPontos, setValue]);
 
   useEffect(() => {
-    setValue("pracas", selectedPracas.join(', '));
+    setValue("pracas", selectedPracas.join(", "));
   }, [selectedPracas, setValue]);
 
   return (
@@ -157,7 +163,7 @@ export default function FormSimuladorPago() {
             </div>
             <MultiSelectDropdown
               label="Praças"
-              {...register('pracas')}
+              {...register("pracas")}
               options={pracas}
               selectedItems={selectedPracas}
               setSelectedItems={setSelectedPracas}

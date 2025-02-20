@@ -21,7 +21,9 @@ import { useSimulador } from "../context/SimuladorContext";
 export default function CardNumerosCampanhaPaga() {
   const { resultados, valores, pontos } = useSimulador();
 
-  const pracas = pontos.filter((item) => valores.pontos.includes(item.id_ponto)).map((item) => item.praca)
+  const pracas = pontos
+    .filter((item) => valores.pontos.includes(item.id_ponto))
+    .map((item) => item.praca);
 
   return (
     <div className="w-[850px] border border-rzk_ligth rounded-2xl flex flex-col mt-4 py-4 px-6 gap-4">
@@ -54,7 +56,7 @@ export default function CardNumerosCampanhaPaga() {
               <span className="text-lg font-semibold">Faces</span>
             </div>
             <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.faces_totais}
+              {resultados.faces_totais_pagas}
             </span>
           </div>
 
@@ -64,7 +66,9 @@ export default function CardNumerosCampanhaPaga() {
               <span className="text-lg font-semibold">Praças</span>
             </div>
             <span className="font-extrabold text-lg text-rzk_green text-center">
-              {[...new Set(pracas)].length === 0 ? 0 : [...new Set(pracas)].join(', ')}
+              {[...new Set(pracas)].length === 0
+                ? 0
+                : [...new Set(pracas)].join(", ")}
             </span>
           </div>
 
@@ -86,7 +90,7 @@ export default function CardNumerosCampanhaPaga() {
               <span className="text-lg font-semibold">Inserções</span>
             </div>
             <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.investimento}
+              {resultados.insercoes.toLocaleString("pt-br")}
             </span>
           </div>
 
@@ -96,7 +100,7 @@ export default function CardNumerosCampanhaPaga() {
               <span className="text-lg font-semibold">Impactos</span>
             </div>
             <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.investimento}
+              {resultados.impactos.toLocaleString("pt-br")}
             </span>
           </div>
 

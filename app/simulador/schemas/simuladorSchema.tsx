@@ -17,4 +17,6 @@ export const simuladorSchema = z.object({
     .number()
     .int("O valor deve ser um número inteiro")
     .min(0, "O valor mínimo é 1"),
+  saturacao_bonificada: z.number().min(0.1, "A saturação deve ser maior que 0"),
+  pontos_bonificados: z.array(z.number()),
 });

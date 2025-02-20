@@ -16,8 +16,10 @@ export default function Simulador() {
       saturacao: 1.0,
       dias: 0,
       pontos: [],
-      dias_bonificados: 0,
       pracas: [],
+      dias_bonificados: 0,
+      saturacao_bonificada: 1.0,
+      pontos_bonificados: [],
     },
   });
 
@@ -29,7 +31,6 @@ export default function Simulador() {
       register={register}
       reset={reset}
       setValue={setValue}
-      initialData={pontos}
     >
       <HeaderSimulador />
       <div className="">

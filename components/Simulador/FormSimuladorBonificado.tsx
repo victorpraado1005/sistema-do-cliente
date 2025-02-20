@@ -13,18 +13,17 @@ import { MultiSelectDropdown } from "../ui/MultiSelectDropdown";
 import { useEffect, useMemo, useState } from "react";
 import { MultiSelectCombobox } from "../ui/combobox";
 
-interface IPonto {
-  id_ponto: number;
-  nome: string;
-  nome_concedente: string;
-  praca: string;
-}
-
 export default function FormSimuladorBonificado() {
-  const { register, pontos, concessoes, setValue } = useSimulador();
+  const {
+    register,
+    pontos,
+    concessoes,
+    setValue,
+    selectedPontosBonificados,
+    setSelectedPontosBonificados,
+  } = useSimulador();
   const [selectedConcedentes, setSelectedConcedentes] = useState<string[]>([]);
   const [selectedPracas, setSelectedPracas] = useState<string[]>([]);
-  const [selectedPontos, setSelectedPontos] = useState<number[]>([]);
 
   const concedentes = concessoes.map((item) => ({
     id: item.id_concessao,
@@ -51,8 +50,8 @@ export default function FormSimuladorBonificado() {
   }, [pontos, selectedConcedentes, selectedPracas]);
 
   useEffect(() => {
-    setValue("pontos_bonificados", selectedPontos);
-  }, [selectedPontos, setValue]);
+    setValue("pontos_bonificados", selectedPontosBonificados);
+  }, [selectedPontosBonificados, setValue]);
 
   return (
     <div className="grid grid-cols-3 gap-6 w-full">
@@ -152,8 +151,8 @@ export default function FormSimuladorBonificado() {
           </div>
           <MultiSelectCombobox
             options={filteredPontos}
-            selectedValues={selectedPontos}
-            setSelectedValues={setSelectedPontos}
+            selectedValues={selectedPontosBonificados}
+            setSelectedValues={setSelectedPontosBonificados}
           />
         </div>
       </div>

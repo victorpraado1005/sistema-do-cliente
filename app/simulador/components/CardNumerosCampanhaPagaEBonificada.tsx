@@ -1,7 +1,17 @@
 import {
-  BadgeDollarSign, ChartLine, CircleDollarSign, CirclePercent,
-  CirclePlay, DollarSign, Map, Smartphone,
-  SquareUser, Target, UserRoundCheck, UsersRound, View
+  BadgeDollarSign,
+  ChartLine,
+  CircleDollarSign,
+  CirclePercent,
+  CirclePlay,
+  DollarSign,
+  Map,
+  Smartphone,
+  SquareUser,
+  Target,
+  UserRoundCheck,
+  UsersRound,
+  View,
 } from "lucide-react";
 import { useSimulador } from "../context/SimuladorContext";
 
@@ -17,7 +27,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <Smartphone className="size-5" />
               <span className="text-lg font-semibold">Faces Totais</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.faces_totais}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -25,7 +37,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <Map className="size-5" />
               <span className="text-lg font-semibold">Praças</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -33,7 +47,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <CirclePlay className="size-5" />
               <span className="text-lg font-semibold">Inserções</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -41,7 +57,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <Target className="size-5" />
               <span className="text-lg font-semibold">Impactos</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -49,7 +67,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <SquareUser className="size-5" />
               <span className="text-lg font-semibold">Freq. Média</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
         </div>
 
@@ -59,7 +79,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <UserRoundCheck className="size-5" />
               <span className="text-lg font-semibold">Usuários únicos</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -67,7 +89,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <UsersRound className="size-5" />
               <span className="text-lg font-semibold">Alcance</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -75,7 +99,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <View className="size-5" />
               <span className="text-lg font-semibold">Visitas</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -83,7 +109,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <ChartLine className="size-5" />
               <span className="text-lg font-semibold">TRP</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -91,7 +119,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <SquareUser className="size-5" />
               <span className="text-lg font-semibold">Pop. 12+ (IBGE)</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}
+            </span>
           </div>
         </div>
 
@@ -101,7 +131,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <CircleDollarSign className="size-5" />
               <span className="text-lg font-semibold">Preço de Tabela</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">R$ {resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              R$ {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -109,7 +141,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <CirclePercent className="size-5" />
               <span className="text-lg font-semibold">Desconto</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">{resultados.investimento}%</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              {resultados.investimento}%
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -117,7 +151,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <DollarSign className="size-5" />
               <span className="text-lg font-semibold">Investimento</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">R$ {resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              R$ {resultados.investimento}
+            </span>
           </div>
 
           <div className="flex flex-col">
@@ -125,10 +161,12 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               <BadgeDollarSign className="size-5" />
               <span className="text-lg font-semibold">CPM Médio</span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">R$ {resultados.investimento}</span>
+            <span className="font-extrabold text-lg text-rzk_green text-center">
+              R$ {resultados.investimento}
+            </span>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
