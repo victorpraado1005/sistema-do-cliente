@@ -142,7 +142,7 @@ export default function CardNumerosCampanhaPaga() {
               <span className="text-lg font-semibold">Usuários únicos</span>
             </div>
             <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.usuarios_unicos?.toLocaleString("pt-br")}
+              {resultados.usuarios_unicos?.toLocaleString('pt-br')}
             </span>
           </div>
 

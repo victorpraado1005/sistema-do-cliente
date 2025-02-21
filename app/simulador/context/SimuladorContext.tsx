@@ -164,8 +164,10 @@ export const SimuladorProvider = ({
     })
     .reduce((acc, item) => acc + item, 0);
 
+
+  let usuarios_unicos = 0
   // Cálculo de usuarios unicos
-  const usuarios_unicos_terminais =
+  usuarios_unicos =
     selectedPontos
       ?.map((ponto) => {
         const fluxo = fluxos.find((item) => item.id_ponto === ponto);
@@ -181,11 +183,20 @@ export const SimuladorProvider = ({
           );
         }
 
+        console.log(total)
+
         return total;
       })
-      .reduce((acc, total) => acc + total, 0) * 0.77;
+      .reduce((acc, total) => acc + total, 0)
 
-  const usuarios_unicos_shopping = selectedPontos
+
+  if (fluxos.filter(
+    (fluxo) => selectedPontos.includes(fluxo.id_ponto) && fluxo.Tipo === "Terminal"
+  ).length > 1) {
+    usuarios_unicos = usuarios_unicos * 0.73
+  }
+
+  usuarios_unicos += selectedPontos
     ?.map((ponto) => {
       const fluxo = fluxos.find((item) => item.id_ponto === ponto);
 
@@ -195,12 +206,24 @@ export const SimuladorProvider = ({
         total = fnUsuariosUnicosShopping(dias, fluxo?.parametros_grupo_2_a);
       }
 
+      console.log(total)
+
       return total;
     })
     .reduce((acc, total) => acc + total, 0);
 
-  const usuarios_unicos = usuarios_unicos_terminais + usuarios_unicos_shopping;
 
+  if (fluxos.filter(
+    (fluxo) => selectedPontos.includes(12)).length > 0 && selectedPontos.length > 1) {
+    usuarios_unicos = usuarios_unicos * 0.95
+  }
+
+  if (fluxos.filter(
+    (fluxo) => selectedPontos.includes(21)).length > 0 && selectedPontos.length > 1) {
+    usuarios_unicos = usuarios_unicos * 0.01
+  }
+
+  console.log(usuarios_unicos)
   // Lógica dos cálculos
   const precoTabela = 77040;
   const impactos_a = 1699056;
