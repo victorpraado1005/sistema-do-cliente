@@ -31,6 +31,7 @@ type SimuladorContextType = {
     cpmMedio: string;
     insercoes: number;
     impactos: number;
+    usuarios_unicos: number;
     dias_totais: number;
     faces_totais_pagas: number;
     faces_totais_bonificadas: number;
@@ -164,22 +165,41 @@ export const SimuladorProvider = ({
     .reduce((acc, item) => acc + item, 0);
 
   // Cálculo de usuarios unicos
-  const usuario_unicos = selectedPontos?.map((ponto) => {
-    const fluxo = fluxos.find((item) => item.id_ponto === ponto);
+  const usuarios_unicos_terminais =
+    selectedPontos
+      ?.map((ponto) => {
+        const fluxo = fluxos.find((item) => item.id_ponto === ponto);
 
-    let total = 0;
+        let total = 0;
 
-    if (fluxo?.Tipo === "Terminal") {
-      total = fnUsuariosUnicosTerminal(
-        dias,
-        fluxo.parametros_grupo_1_a,
-        fluxo.parametros_grupo_1_b,
-        fluxo.parametros_grupo_1_c
-      );
-    } else {
-      total = fnUsuariosUnicosShopping(dias, fluxo?.parametros_grupo_2_a);
-    }
-  });
+        if (fluxo?.Tipo === "Terminal") {
+          total = fnUsuariosUnicosTerminal(
+            dias,
+            fluxo.parametros_grupo_1_a,
+            fluxo.parametros_grupo_1_b,
+            fluxo.parametros_grupo_1_c
+          );
+        }
+
+        return total;
+      })
+      .reduce((acc, total) => acc + total, 0) * 0.77;
+
+  const usuarios_unicos_shopping = selectedPontos
+    ?.map((ponto) => {
+      const fluxo = fluxos.find((item) => item.id_ponto === ponto);
+
+      let total = 0;
+
+      if (fluxo?.Tipo === "Shopping") {
+        total = fnUsuariosUnicosShopping(dias, fluxo?.parametros_grupo_2_a);
+      }
+
+      return total;
+    })
+    .reduce((acc, total) => acc + total, 0);
+
+  const usuarios_unicos = usuarios_unicos_terminais + usuarios_unicos_shopping;
 
   // Lógica dos cálculos
   const precoTabela = 77040;
@@ -213,6 +233,7 @@ export const SimuladorProvider = ({
           investimento,
           insercoes,
           impactos,
+          usuarios_unicos,
           cpmMedio,
           dias_totais,
           faces_totais_pagas,

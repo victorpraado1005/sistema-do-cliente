@@ -90,7 +90,7 @@ export default function CardNumerosCampanhaPaga() {
               <span className="text-lg font-semibold">Inserções</span>
             </div>
             <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.insercoes.toLocaleString("pt-br")}
+              {resultados.insercoes?.toLocaleString("pt-br")}
             </span>
           </div>
 
@@ -100,7 +100,7 @@ export default function CardNumerosCampanhaPaga() {
               <span className="text-lg font-semibold">Impactos</span>
             </div>
             <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.impactos.toLocaleString("pt-br")}
+              {resultados.impactos?.toLocaleString("pt-br")}
             </span>
           </div>
 
@@ -142,7 +142,7 @@ export default function CardNumerosCampanhaPaga() {
               <span className="text-lg font-semibold">Usuários únicos</span>
             </div>
             <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.investimento}
+              {resultados.usuarios_unicos?.toLocaleString("pt-br")}
             </span>
           </div>
 
