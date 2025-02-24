@@ -12,10 +12,16 @@ import { useQueries } from "@tanstack/react-query";
 import { fetchConcessoes, fetchPontos, fetchProdutos } from "@/lib/api";
 import { IConcedente } from "@/app/types/IConcedente";
 import { IProduto } from "@/app/types/IProduto";
-import { fluxos } from "@/utils/fluxos";
 import { fnCalcularSegundosFuncionamento } from "@/utils/fnCalcularSegundosFuncionamento";
-import { fnUsuariosUnicosShopping } from "@/utils/fnUsuariosUnicosShopping";
-import { fnUsuariosUnicosTerminal } from "@/utils/fnUsuariosUnicosTerminal";
+import { fnCalcularUsuariosUnicos } from "@/utils/fnCalcularUsuariosUnicos";
+import { fnCalculcarInsercoes } from "@/utils/fnCalcularInsercoes";
+import { fnCalcularImpactos } from "@/utils/fnCalculcarImpactos";
+import { fnCalcularFrequenciaMedia } from "@/utils/fnCalcularFrequenciaMedia";
+import { fnCalcularPop12Mais } from "@/utils/fnCalcularPop12Mais";
+import { fnCalcularAlcance } from "@/utils/fnCalcularAlcance";
+import { fnCalculcarTRP } from "@/utils/fnCalcularTRP";
+import { fnCalcularVisitas } from "@/utils/fnCalcularVisitas";
+import { fnCalcularPrecoTabela } from "@/utils/fnCalcularPrecoTabela";
 
 type SimuladorContextType = {
   valores: z.infer<typeof simuladorSchema>;
@@ -26,12 +32,19 @@ type SimuladorContextType = {
   setSelectedPontos: React.Dispatch<React.SetStateAction<number[]>>;
   selectedPontosBonificados: number[];
   setSelectedPontosBonificados: React.Dispatch<React.SetStateAction<number[]>>;
+  pracas: string[];
   resultados: {
-    investimento: string;
-    cpmMedio: string;
+    investimento: number;
+    cpm_medio: string;
     insercoes: number;
     impactos: number;
     usuarios_unicos: number;
+    frequencia_media: number;
+    populacao_12_mais: number;
+    alcance: number;
+    trp: number;
+    visitas: number;
+    preco_tabela: number;
     dias_totais: number;
     faces_totais_pagas: number;
     faces_totais_bonificadas: number;
@@ -97,6 +110,18 @@ export const SimuladorProvider = ({
   const dias_bonificados = Number(valores.dias_bonificados) || 0;
   const desconto = Number(valores.desconto) || 0;
 
+  const pracas = [
+    ...new Set(
+      pontosQuery.data
+        ?.filter((item) => valores.pontos.includes(item.id_ponto))
+        .map((item) => item.praca)
+    ),
+  ];
+
+  if (selectedPontos.includes(12) && !pracas.includes("ABD")) {
+    pracas.push("ABD");
+  }
+
   // const concedentes = concessoesQuery.data.map((item) => ({
   //   id: item.id_concessao,
   //   label: item.empresa.nome,
@@ -113,7 +138,6 @@ export const SimuladorProvider = ({
     (acc, item) => acc + item.qtd_faces,
     0
   );
-
   // Varíavel para armazenar os produtos selecionados (Formulário Pago)
   const selectedProductsBonificados = produtosQuery.data?.filter(
     (item) =>
@@ -125,7 +149,6 @@ export const SimuladorProvider = ({
     (acc, item) => acc + item.qtd_faces,
     0
   );
-
   // Varíavel para armazenar todos os produtos selecionados (Pagos + Bonificados)
   // Usando Set para remover os pontos duplicados desse array
   const productsTotais = [
@@ -136,101 +159,40 @@ export const SimuladorProvider = ({
     (acc, item) => acc + item.qtd_faces,
     0
   );
-
   // Cálculo de inserções totais da campanha (Paga)
-  const insercoes = selectedProducts
-    ?.map((product) => {
-      const horario_inicio = product.horario_funcionamento_inicio;
-      const horario_termino = product.horario_funcionamento_termino;
-
-      const segundos_funcionamento = fnCalcularSegundosFuncionamento(
-        horario_inicio,
-        horario_termino
-      );
-
-      const insercoes_diarias =
-        segundos_funcionamento / product.qtd_segundos_loop;
-
-      return insercoes_diarias * product.qtd_faces * dias * valores.saturacao;
-    })
-    .reduce((acc, item) => acc + item, 0);
-
+  const insercoes = fnCalculcarInsercoes(
+    selectedProducts,
+    dias,
+    valores.saturacao
+  );
   // Cálculo de impactos totais da campanha (Paga)
-  const impactos = selectedProducts
-    ?.map((product) => {
-      const impactos_diarios = product.qtd_impactos_diarios;
-
-      return impactos_diarios * dias;
-    })
-    .reduce((acc, item) => acc + item, 0);
-
-
-  let usuarios_unicos = 0
-  // Cálculo de usuarios unicos
-  usuarios_unicos =
-    selectedPontos
-      ?.map((ponto) => {
-        const fluxo = fluxos.find((item) => item.id_ponto === ponto);
-
-        let total = 0;
-
-        if (fluxo?.Tipo === "Terminal") {
-          total = fnUsuariosUnicosTerminal(
-            dias,
-            fluxo.parametros_grupo_1_a,
-            fluxo.parametros_grupo_1_b,
-            fluxo.parametros_grupo_1_c
-          );
-        }
-
-        console.log(total)
-
-        return total;
-      })
-      .reduce((acc, total) => acc + total, 0)
-
-
-  if (fluxos.filter(
-    (fluxo) => selectedPontos.includes(fluxo.id_ponto) && fluxo.Tipo === "Terminal"
-  ).length > 1) {
-    usuarios_unicos = usuarios_unicos * 0.73
-  }
-
-  usuarios_unicos += selectedPontos
-    ?.map((ponto) => {
-      const fluxo = fluxos.find((item) => item.id_ponto === ponto);
-
-      let total = 0;
-
-      if (fluxo?.Tipo === "Shopping") {
-        total = fnUsuariosUnicosShopping(dias, fluxo?.parametros_grupo_2_a);
-      }
-
-      console.log(total)
-
-      return total;
-    })
-    .reduce((acc, total) => acc + total, 0);
-
-
-  if (fluxos.filter(
-    (fluxo) => selectedPontos.includes(12)).length > 0 && selectedPontos.length > 1) {
-    usuarios_unicos = usuarios_unicos * 0.95
-  }
-
-  if (fluxos.filter(
-    (fluxo) => selectedPontos.includes(21)).length > 0 && selectedPontos.length > 1) {
-    usuarios_unicos = usuarios_unicos * 0.01
-  }
-
-  console.log(usuarios_unicos)
-  // Lógica dos cálculos
-  const precoTabela = 77040;
-  const impactos_a = 1699056;
-
-  const investimento = (precoTabela * dias * (1 - desconto / 100)).toFixed(2);
-
-  const cpmMedio = ((+investimento / impactos_a) * 1000).toFixed(2);
+  const impactos = fnCalcularImpactos(
+    selectedProducts,
+    dias,
+    valores.saturacao
+  );
+  // Cálculo de Usuários Únicos
+  const usuarios_unicos = fnCalcularUsuariosUnicos(selectedPontos, dias);
+  // Cálculo de Frequéncia Média
+  const frequencia_media = fnCalcularFrequenciaMedia(impactos, usuarios_unicos);
+  // Cálculo de Pop 12+ Mais
+  const populacao_12_mais = fnCalcularPop12Mais(pracas);
+  // Cálculo de Alcance
+  const alcance = fnCalcularAlcance(usuarios_unicos, populacao_12_mais);
+  // Cálculo de TRP
+  const trp = fnCalculcarTRP(frequencia_media, alcance);
+  // Cálculo de Visitas
+  const visitas = fnCalcularVisitas(selectedProducts, dias);
+  // Cálculo de Preço de Tabela
+  const preco_tabela = fnCalcularPrecoTabela(
+    selectedProducts,
+    dias,
+    valores.saturacao
+  );
+  // Cálculo de Investimento. Preço de Tabela - Desconto
+  const investimento = preco_tabela * (1 - desconto / 100);
+  // Cálculo de CPM Médio
+  const cpm_medio = ((investimento / impactos) * 1000).toFixed(2);
 
   const dias_totais = dias + dias_bonificados;
 
@@ -247,6 +209,7 @@ export const SimuladorProvider = ({
         setSelectedPontos,
         selectedPontosBonificados,
         setSelectedPontosBonificados,
+        pracas,
         pontos: pontosQuery.data || [],
         concessoes: concessoesQuery.data || [],
         produtos: produtosQuery.data || [],
@@ -257,7 +220,13 @@ export const SimuladorProvider = ({
           insercoes,
           impactos,
           usuarios_unicos,
-          cpmMedio,
+          frequencia_media,
+          populacao_12_mais,
+          alcance,
+          trp,
+          visitas,
+          preco_tabela,
+          cpm_medio,
           dias_totais,
           faces_totais_pagas,
           faces_totais_bonificadas,

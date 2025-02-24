@@ -28,11 +28,10 @@ const chartData4 = [
 
 export default function ContainerCharts() {
   return (
-    <div className="grid grid-cols-2 gap-2 place-items-center">
+    <div className="flex gap-2 place-items-center border h-full">
       <PieChartCard data={chartData1} />
       <PieChartCard data={chartData2} />
       <PieChartCard data={chartData3} />
-      <PieChartCard data={chartData4} />
     </div>
   );
 }

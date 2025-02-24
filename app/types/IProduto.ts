@@ -17,4 +17,5 @@ export interface IProduto {
   data_funcionamento_inicio: string;
   insert_data_horario: string;
   update_data_horario?: string;
+  qtd_fluxo_diario: number;
 }

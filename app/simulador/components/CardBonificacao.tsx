@@ -16,65 +16,73 @@ export default function CardBonificacao() {
       <h2 className="mt-2 mb-2 text-center text-lg font-extrabold text-rzk_darker">
         Bonificação:
       </h2>
-      <div className="w-32 flex flex-col space-y-2 m-auto text-rzk_regular">
-        <div className="flex flex-col">
-          <div className="flex gap-2 items-center">
-            <CalendarDays className="size-5" />
-            <span className="text-base font-semibold">Período (dias)</span>
+      <div className="w-36 flex flex-col space-y-2 m-auto text-rzk_regular">
+        <div className="flex items-center justify-between w-36">
+          <CalendarDays className="size-6" />
+          <div className="flex flex-col">
+            <span className="text-lg font-ligth w-full text-right">
+              Período (dias)
+            </span>
+            <span className="font-extrabold text-lg text-rzk_green text-right">
+              {valores.dias_bonificados}
+            </span>
           </div>
-          <span className="font-extrabold text-rzk_green text-center">
-            {valores.dias_bonificados}
-          </span>
         </div>
 
-        <div className="flex flex-col">
-          <div className="flex gap-2 items-center">
-            <MapPin className="size-5" />
-            <span className="text-base font-semibold">Pontos</span>
+        <div className="flex items-center justify-between w-36">
+          <MapPin className="size-6" />
+          <div className="flex flex-col">
+            <span className="text-lg font-ligth w-full text-right">Pontos</span>
+            <span className="font-extrabold text-lg text-rzk_green text-right">
+              {valores.pontos_bonificados.length}
+            </span>
           </div>
-          <span className="font-extrabold text-rzk_green text-center">
-            {valores.pontos_bonificados.length}
-          </span>
         </div>
 
-        <div className="flex flex-col">
-          <div className="flex gap-2 items-center">
-            <Smartphone className="size-5" />
-            <span className="text-base font-semibold">Faces</span>
+        <div className="flex items-center justify-between w-36">
+          <Smartphone className="size-6" />
+          <div className="flex flex-col">
+            <span className="text-lg font-ligth w-full text-right">Faces</span>
+            <span className="font-extrabold text-lg text-rzk_green text-right">
+              {resultados.faces_totais_bonificadas}
+            </span>
           </div>
-          <span className="font-extrabold text-rzk_green text-center">
-            {resultados.faces_totais_bonificadas}
-          </span>
         </div>
 
-        <div className="flex flex-col">
-          <div className="flex gap-2 items-center">
-            <CirclePlay className="size-5" />
-            <span className="text-base font-semibold">Inserções</span>
+        <div className="flex items-center justify-between w-36">
+          <CirclePlay className="size-6" />
+          <div className="flex flex-col">
+            <span className="text-lg font-ligth w-full text-right">
+              Inserções
+            </span>
+            <span className="font-extrabold text-lg text-rzk_green text-right">
+              {resultados.investimento.toFixed()}
+            </span>
           </div>
-          <span className="font-extrabold text-rzk_green text-center">
-            {resultados.investimento}
-          </span>
         </div>
 
-        <div className="flex flex-col">
-          <div className="flex gap-2 items-center">
-            <History className="size-5" />
-            <span className="text-base font-semibold">Saturação</span>
+        <div className="flex items-center justify-between w-36">
+          <History className="size-6" />
+          <div className="flex flex-col">
+            <span className="text-lg font-ligth w-full text-right">
+              Saturação
+            </span>
+            <span className="font-extrabold text-lg text-rzk_green text-right">
+              {valores.saturacao_bonificada}
+            </span>
           </div>
-          <span className="font-extrabold text-rzk_green text-center">
-            {valores.saturacao_bonificada}
-          </span>
         </div>
 
-        <div className="flex flex-col">
-          <div className="flex gap-2 items-center">
-            <CirclePercent className="size-5" />
-            <span className="text-base font-semibold">Desconto</span>
+        <div className="flex items-center justify-between w-36">
+          <CirclePercent className="size-6" />
+          <div className="flex flex-col">
+            <span className="text-lg font-ligth w-full text-right">
+              Desconto
+            </span>
+            <span className="font-extrabold text-lg text-rzk_green text-right">
+              100%
+            </span>
           </div>
-          <span className="font-extrabold text-rzk_green text-center">
-            100%
-          </span>
         </div>
       </div>
     </div>

@@ -13,199 +13,252 @@ import {
   SquareUser,
   Target,
   UserRoundCheck,
+  Users,
   UsersRound,
   View,
 } from "lucide-react";
 import { useSimulador } from "../context/SimuladorContext";
 
 export default function CardNumerosCampanhaPaga() {
-  const { resultados, valores, pontos } = useSimulador();
-
-  const pracas = pontos
-    .filter((item) => valores.pontos.includes(item.id_ponto))
-    .map((item) => item.praca);
+  const { resultados, valores, pracas } = useSimulador();
 
   return (
     <div className="w-[850px] border border-rzk_ligth rounded-2xl flex flex-col mt-4 py-4 px-6 gap-4">
       <h2 className="text-xl text-rzk_darker font-extrabold">Campanha:</h2>
       <div className="grid grid-cols-4 gap-5 text-rzk_regular">
         <div className="space-y-4">
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <CalendarDays className="size-5" />
-              <span className="text-lg font-semibold">Período (dias)</span>
+          <div className="flex items-center justify-between w-36">
+            <CalendarDays className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Período (dias)
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {valores.dias}
+              </span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {valores.dias}
+          </div>
+
+          <div className="flex items-center justify-between w-36">
+            <MapPin className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Pontos
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {valores.pontos.length}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between w-36">
+            <Smartphone className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Faces
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {resultados.faces_totais_pagas}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col justify-between w-36">
+            <div className="flex w-full justify-between">
+              <Map className="size-6" />
+              <span className="text-lg font-ligth w-full text-right">
+                Praças
+              </span>
+            </div>
+            <span className="font-extrabold text-lg text-rzk_green text-right">
+              {pracas.join(", ")}
             </span>
           </div>
 
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <MapPin className="size-5" />
-              <span className="text-lg font-semibold">Pontos</span>
+          <div className="flex items-center justify-between w-36">
+            <History className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Saturação
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {valores.saturacao}
+              </span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {valores.pontos.length}
-            </span>
-          </div>
-
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <Smartphone className="size-5" />
-              <span className="text-lg font-semibold">Faces</span>
-            </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.faces_totais_pagas}
-            </span>
-          </div>
-
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <Map className="size-5" />
-              <span className="text-lg font-semibold">Praças</span>
-            </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {[...new Set(pracas)].length === 0
-                ? 0
-                : [...new Set(pracas)].join(", ")}
-            </span>
-          </div>
-
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <History className="size-5" />
-              <span className="text-lg font-semibold">Saturação</span>
-            </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {valores.saturacao}
-            </span>
-          </div>
-        </div>
-
-        <div className="space-y-8">
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <CirclePlay className="size-5" />
-              <span className="text-lg font-semibold">Inserções</span>
-            </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.insercoes?.toLocaleString("pt-br")}
-            </span>
-          </div>
-
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <Target className="size-5" />
-              <span className="text-lg font-semibold">Impactos</span>
-            </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.impactos?.toLocaleString("pt-br")}
-            </span>
-          </div>
-
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <SquareUser className="size-5" />
-              <span className="text-lg font-semibold">Freq. Média</span>
-            </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.investimento}
-            </span>
-          </div>
-
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <ChartLine className="size-5" />
-              <span className="text-lg font-semibold">TRP</span>
-            </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.investimento}
-            </span>
           </div>
         </div>
 
         <div className="space-y-8">
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <View className="size-5" />
-              <span className="text-lg font-semibold">Visitas</span>
+          <div className="flex items-center justify-between w-36">
+            <CirclePlay className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Inserções
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {resultados.insercoes?.toLocaleString("pt-br", {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}
+              </span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.investimento}
-            </span>
           </div>
 
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <UserRoundCheck className="size-5" />
-              <span className="text-lg font-semibold">Usuários únicos</span>
+          <div className="flex items-center justify-between w-36">
+            <Target className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Impactos
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {resultados.impactos?.toLocaleString("pt-br", {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}
+              </span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.usuarios_unicos?.toLocaleString('pt-br')}
-            </span>
           </div>
 
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <SquareUser className="size-5" />
-              <span className="text-lg font-semibold">Pop. 12+ (IBGE)</span>
+          <div className="flex items-center justify-between w-36">
+            <SquareUser className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Freq. Média
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {resultados.frequencia_media?.toLocaleString("pt-br", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.investimento}
-            </span>
           </div>
 
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <UsersRound className="size-5" />
-              <span className="text-lg font-semibold">Alcance</span>
+          <div className="flex items-center justify-between w-36">
+            <ChartLine className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">TRP</span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {resultados.trp?.toLocaleString("pt-br", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {resultados.investimento}
-            </span>
           </div>
         </div>
 
         <div className="space-y-8">
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <CircleDollarSign className="size-5" />
-              <span className="text-lg font-semibold">Preço de Tabela</span>
+          <div className="flex items-center justify-between w-40">
+            <View className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Visitas
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {resultados.visitas?.toLocaleString("pt-br")}
+              </span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              R$ {resultados.investimento}
-            </span>
           </div>
 
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <CirclePercent className="size-5" />
-              <span className="text-lg font-semibold">Desconto</span>
+          <div className="flex items-center justify-between w-40">
+            <UserRoundCheck className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Usuários únicos
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {resultados.usuarios_unicos?.toLocaleString("pt-br", {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}
+              </span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              {valores.desconto}%
-            </span>
           </div>
 
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <DollarSign className="size-5" />
-              <span className="text-lg font-semibold">Investimento</span>
+          <div className="flex items-center justify-between w-40">
+            <Users className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Pop. 12+ (IBGE)
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {resultados.populacao_12_mais?.toLocaleString("pt-br", {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}
+              </span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              R$ {resultados.investimento}
-            </span>
           </div>
 
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
-              <BadgeDollarSign className="size-5" />
-              <span className="text-lg font-semibold">CPM Médio</span>
+          <div className="flex items-center justify-between w-40">
+            <UsersRound className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Alcance
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {resultados.alcance.toFixed(2)}%
+              </span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-center">
-              R$ {resultados.investimento}
-            </span>
+          </div>
+        </div>
+
+        <div className="space-y-8">
+          <div className="flex items-center justify-between w-40">
+            <CircleDollarSign className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Preço de Tabela
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {" "}
+                {resultados.preco_tabela?.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "brl",
+                })}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between w-40">
+            <CirclePercent className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Desconto
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {valores.desconto}%
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between w-40">
+            <DollarSign className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                Investimento
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                {" "}
+                {resultados.investimento?.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "brl",
+                })}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between w-40">
+            <BadgeDollarSign className="size-6" />
+            <div className="flex flex-col">
+              <span className="text-lg font-ligth w-full text-right">
+                CPM Médio
+              </span>
+              <span className="font-extrabold text-lg text-rzk_green text-right">
+                R$ {resultados.cpm_medio}
+              </span>
+            </div>
           </div>
         </div>
       </div>
