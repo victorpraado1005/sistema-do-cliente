@@ -56,7 +56,10 @@ export default function CardBonificacao() {
               Inserções
             </span>
             <span className="font-extrabold text-lg text-rzk_green text-right">
-              {resultados.investimento.toFixed()}
+              {resultados.insercoes_bonificadas?.toLocaleString("pt-br", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              })}
             </span>
           </div>
         </div>

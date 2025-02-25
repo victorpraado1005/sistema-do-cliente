@@ -17,7 +17,7 @@ import {
 import { useSimulador } from "../context/SimuladorContext";
 
 export default function CardNumerosCampanhaPagaEBonificada() {
-  const { resultados } = useSimulador();
+  const { resultados, pracas } = useSimulador();
 
   return (
     <div className="w-[700px] border border-rzk_ligth rounded-2xl flex flex-col py-4 px-6 justify-evenly">
@@ -35,16 +35,16 @@ export default function CardNumerosCampanhaPagaEBonificada() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between w-36">
-            <Map className="size-6" />
-            <div className="flex flex-col">
+          <div className="flex flex-col justify-between w-36">
+            <div className="flex w-full justify-between">
+              <Map className="size-6" />
               <span className="text-lg font-ligth w-full text-right">
                 Praças
               </span>
-              <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.faces_totais}
-              </span>
             </div>
+            <span className="font-extrabold text-rzk_green text-right">
+              {pracas.join(', ')}
+            </span>
           </div>
 
           <div className="flex items-center justify-between w-36">
@@ -54,7 +54,10 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 Inserções
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.investimento.toFixed()}
+                {resultados.insercoes_totais?.toLocaleString("pt-br", {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}
               </span>
             </div>
           </div>
@@ -66,7 +69,10 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 Impactos
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.investimento.toFixed()}
+                {resultados.impactos_totais?.toLocaleString("pt-br", {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}
               </span>
             </div>
           </div>
@@ -92,7 +98,10 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 Usuários únicos
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.investimento.toFixed()}
+                {resultados.usuarios_unicos?.toLocaleString("pt-br", {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}
               </span>
             </div>
           </div>
@@ -152,7 +161,10 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 Preço de Tabela
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.investimento.toFixed()}
+                {resultados.preco_tabela?.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "brl",
+                })}
               </span>
             </div>
           </div>
@@ -164,7 +176,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 Desconto Médio
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.investimento.toFixed()}%
+                {resultados.desconto_medio.toFixed()}%
               </span>
             </div>
           </div>
@@ -176,7 +188,10 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 Investimento
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.investimento.toFixed()}
+                {resultados.investimento?.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "brl",
+                })}
               </span>
             </div>
           </div>
@@ -188,7 +203,10 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 CPM Médio
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                R$ {resultados.investimento.toFixed()}
+                R$ {resultados.cpm_medio.toLocaleString("pt-br", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </span>
             </div>
           </div>

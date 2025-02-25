@@ -29,7 +29,7 @@ const CustomTooltip = ({ active, payload }: any) => {
 
 export default function PieChartCard({ data }: DashboardPieChartProps) {
   return (
-    <Card className="flex flex-col items-center justify-center w-full max-w-sm border-none shadow-none rounded-2xl">
+    <Card className="flex flex-col items-center w-full max-w-sm border-none shadow-none rounded-2xl">
       <div className="w-28 h-28">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -46,7 +46,7 @@ export default function PieChartCard({ data }: DashboardPieChartProps) {
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="grid grid-cols-1 gap-1">
         {data.map((entry, index) => (
           <div key={index} className="flex items-center gap-2 text-xs">
             <span

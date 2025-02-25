@@ -22,6 +22,8 @@ import { useSimulador } from "../context/SimuladorContext";
 export default function CardNumerosCampanhaPaga() {
   const { resultados, valores, pracas } = useSimulador();
 
+  console.log(resultados.cpm_medio)
+
   return (
     <div className="w-[850px] border border-rzk_ligth rounded-2xl flex flex-col mt-4 py-4 px-6 gap-4">
       <h2 className="text-xl text-rzk_darker font-extrabold">Campanha:</h2>
@@ -126,10 +128,10 @@ export default function CardNumerosCampanhaPaga() {
                 Freq. Média
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.frequencia_media?.toLocaleString("pt-br", {
+                {resultados.frequencia_media ? resultados.frequencia_media?.toLocaleString("pt-br", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
-                })}
+                }) : 0}
               </span>
             </div>
           </div>
@@ -139,10 +141,10 @@ export default function CardNumerosCampanhaPaga() {
             <div className="flex flex-col">
               <span className="text-lg font-ligth w-full text-right">TRP</span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.trp?.toLocaleString("pt-br", {
+                {resultados.trp ? resultados.trp?.toLocaleString("pt-br", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
-                })}
+                }) : 0}
               </span>
             </div>
           </div>
@@ -198,7 +200,7 @@ export default function CardNumerosCampanhaPaga() {
                 Alcance
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.alcance.toFixed(2)}%
+                {resultados.alcance ? resultados.alcance.toFixed(2) : 0}%
               </span>
             </div>
           </div>
@@ -256,7 +258,10 @@ export default function CardNumerosCampanhaPaga() {
                 CPM Médio
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                R$ {resultados.cpm_medio}
+                R$ {resultados.cpm_medio ? resultados.cpm_medio.toLocaleString("pt-br", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }) : 0}
               </span>
             </div>
           </div>
