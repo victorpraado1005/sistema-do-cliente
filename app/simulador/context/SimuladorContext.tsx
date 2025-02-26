@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   UseFormRegister,
   UseFormReset,
@@ -12,8 +12,6 @@ import { useQueries } from "@tanstack/react-query";
 import { fetchConcessoes, fetchPontos, fetchProdutos } from "@/lib/api";
 import { IConcedente } from "@/app/types/IConcedente";
 import { IProduto } from "@/app/types/IProduto";
-import { fnCalcularSegundosFuncionamento } from "@/utils/fnCalcularSegundosFuncionamento";
-import { fnCalcularUsuariosUnicos } from "@/utils/fnCalcularUsuariosUnicos";
 import { fnCalculcarInsercoes } from "@/utils/fnCalcularInsercoes";
 import { fnCalcularImpactos } from "@/utils/fnCalculcarImpactos";
 import { fnCalcularFrequenciaMedia } from "@/utils/fnCalcularFrequenciaMedia";
@@ -24,6 +22,12 @@ import { fnCalcularVisitas } from "@/utils/fnCalcularVisitas";
 import { fnCalcularPrecoTabela } from "@/utils/fnCalcularPrecoTabela";
 import { fnCalculcarDescontoMedio } from "@/utils/fnCalcularDescontoMedio";
 import { fnCalcularUsuariosUnicosPagoeBonificada } from "@/utils/fnCalcularUsuariosUnicosPagoeBonificada";
+import { fnCalcularUsuariosUnicosPagos } from "@/utils/fnCalcularUsuariosUnicosPagos";
+
+interface IMarkerObject {
+  latitude: number;
+  longitude: number;
+}
 
 type SimuladorContextType = {
   valores: z.infer<typeof simuladorSchema>;
@@ -35,6 +39,8 @@ type SimuladorContextType = {
   selectedPontosBonificados: number[];
   setSelectedPontosBonificados: React.Dispatch<React.SetStateAction<number[]>>;
   pracas: string[];
+  markers: IMarkerObject[];
+  markers_bonificados: IMarkerObject[];
   resultados: {
     investimento: number;
     cpm_medio: number;
@@ -80,6 +86,7 @@ export const SimuladorProvider = ({
   setValue: SimuladorContextType["setValue"];
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+  // const [isBonificadoPreen, setIsBonificadoPreen] = useState(false);
   const [error, setError] = useState<any>(null);
   const [selectedPontos, setSelectedPontos] = useState<number[]>([]);
   const [selectedPontosBonificados, setSelectedPontosBonificados] = useState<
@@ -116,6 +123,14 @@ export const SimuladorProvider = ({
   const dias_totais = dias + dias_bonificados;
   const isBonificadoPreenchido = dias_bonificados > 0;
   const desconto = Number(valores.desconto) || 0;
+
+  // useEffect(() => {
+  //   if (dias_bonificados > 0) {
+  //     setIsBonificadoPreen(true);
+  //   } else {
+  //     setIsBonificadoPreen(false);
+  //   }
+  // }, [dias_bonificados]);
 
   // Varîavel para armazenar os produtos selecionados (Formulário Pago)
   const selectedProducts = produtosQuery.data?.filter(
@@ -155,8 +170,10 @@ export const SimuladorProvider = ({
     0
   );
 
-  let pracas = []
-  const pontos_totais = [... new Set(selectedPontos.concat(selectedPontosBonificados))]
+  let pracas = [];
+  const pontos_totais = [
+    ...new Set(selectedPontos.concat(selectedPontosBonificados)),
+  ];
   if (isBonificadoPreenchido) {
     // Praças formulário PAGO + BONIFICADO
     pracas = [
@@ -185,6 +202,23 @@ export const SimuladorProvider = ({
     }
   }
 
+  const markers = pontosQuery.data
+    ?.filter((ponto) => selectedPontos.includes(ponto.id_ponto))
+    .map((ponto) => ({
+      latitude: ponto.endereco.latitude,
+      longitude: ponto.endereco.longitude,
+    }));
+
+  let markers_bonificados: IMarkerObject[] = [];
+  if (isBonificadoPreenchido) {
+    markers_bonificados = pontosQuery.data
+      ?.filter((ponto) => selectedPontosBonificados.includes(ponto.id_ponto))
+      .map((ponto) => ({
+        latitude: ponto.endereco.latitude,
+        longitude: ponto.endereco.longitude,
+      }));
+  }
+
   // const concedentes = concessoesQuery.data.map((item) => ({
   //   id: item.id_concessao,
   //   label: item.empresa.nome,
@@ -197,8 +231,8 @@ export const SimuladorProvider = ({
     valores.saturacao
   );
 
-  let insercoes_bonificadas = 0
-  let insercoes_totais = 0
+  let insercoes_bonificadas = 0;
+  let insercoes_totais = 0;
   if (selectedProductsBonificados?.length > 0) {
     insercoes_bonificadas = fnCalculcarInsercoes(
       selectedProductsBonificados,
@@ -206,7 +240,7 @@ export const SimuladorProvider = ({
       valores.saturacao_bonificada
     );
 
-    insercoes_totais = insercoes + insercoes_bonificadas
+    insercoes_totais = insercoes + insercoes_bonificadas;
   }
 
   // Cálculo de impactos totais da campanha (Paga)
@@ -216,24 +250,29 @@ export const SimuladorProvider = ({
     valores.saturacao
   );
 
-  let impactos_bonificados = 0
-  let impactos_totais = 0
+  let impactos_bonificados = 0;
+  let impactos_totais = 0;
   if (isBonificadoPreenchido) {
     impactos_bonificados = fnCalcularImpactos(
       selectedProductsBonificados,
       dias_bonificados,
       valores.saturacao_bonificada
-    )
+    );
 
-    impactos_totais = impactos + impactos_bonificados
+    impactos_totais = impactos + impactos_bonificados;
   }
 
   // Cálculo de Usuários Únicos
-  let usuarios_unicos = 0
+  let usuarios_unicos = 0;
   if (isBonificadoPreenchido) {
-    usuarios_unicos = fnCalcularUsuariosUnicosPagoeBonificada(selectedPontos, selectedPontosBonificados, dias, dias_bonificados);
+    usuarios_unicos = fnCalcularUsuariosUnicosPagoeBonificada(
+      selectedPontos,
+      selectedPontosBonificados,
+      dias,
+      dias_bonificados
+    );
   } else {
-    usuarios_unicos = fnCalcularUsuariosUnicos(selectedPontos, dias);
+    usuarios_unicos = fnCalcularUsuariosUnicosPagos(selectedPontos, dias);
   }
 
   // Cálculo de Frequéncia Média
@@ -252,10 +291,10 @@ export const SimuladorProvider = ({
   const visitas = fnCalcularVisitas(selectedProducts, dias);
 
   // Cálculo de Preço de Tabela
-  let preco_tabela = 0
-  let desconto_medio = 0
-  let investimento = 0
-  let cpm_medio = 0
+  let preco_tabela = 0;
+  let desconto_medio = 0;
+  let investimento = 0;
+  let cpm_medio = 0;
   if (isBonificadoPreenchido) {
     const preco_tabela_pago = fnCalcularPrecoTabela(
       selectedProducts,
@@ -267,11 +306,15 @@ export const SimuladorProvider = ({
       selectedProductsBonificados,
       dias_bonificados,
       valores.saturacao_bonificada
-    )
+    );
 
-    preco_tabela = preco_tabela_pago + preco_tabela_bonificado
+    preco_tabela = preco_tabela_pago + preco_tabela_bonificado;
 
-    desconto_medio = fnCalculcarDescontoMedio(preco_tabela_pago, preco_tabela, desconto)
+    desconto_medio = fnCalculcarDescontoMedio(
+      preco_tabela_pago,
+      preco_tabela,
+      desconto
+    );
 
     // Cálculo de Investimento. Preço de Tabela Pago - Desconto
     investimento = preco_tabela_pago * (1 - desconto / 100);
@@ -308,6 +351,8 @@ export const SimuladorProvider = ({
         concessoes: concessoesQuery.data || [],
         produtos: produtosQuery.data || [],
         isLoading,
+        markers,
+        markers_bonificados,
         error,
         resultados: {
           investimento,

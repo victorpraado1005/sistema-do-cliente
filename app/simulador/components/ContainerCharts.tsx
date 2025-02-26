@@ -28,7 +28,7 @@ const chartData4 = [
 
 export default function ContainerCharts() {
   return (
-    <div className="flex items-start pt-2 pb-2">
+    <div className="flex items-start">
       <PieChartCard data={chartData1} />
       <PieChartCard data={chartData2} />
       <PieChartCard data={chartData3} />

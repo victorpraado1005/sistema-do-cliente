@@ -43,7 +43,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </span>
             </div>
             <span className="font-extrabold text-rzk_green text-right">
-              {pracas.join(', ')}
+              {pracas.join(", ")}
             </span>
           </div>
 
@@ -147,7 +147,10 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 Pop. 12+ (IBGE)
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.investimento.toFixed()}
+                {resultados.populacao_12_mais?.toLocaleString("pt-br", {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}
               </span>
             </div>
           </div>
@@ -203,7 +206,8 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 CPM Médio
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                R$ {resultados.cpm_medio.toLocaleString("pt-br", {
+                R${" "}
+                {resultados.cpm_medio.toLocaleString("pt-br", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
