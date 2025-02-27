@@ -61,13 +61,13 @@ export function fnCalcularUsuariosUnicosPagos(
     usuarios_unicos = usuarios_unicos * 0.94;
   } else if (
     // Possui apenas Catarina + Terminais
-    fluxos.filter((fluxo) => selectedPontos.includes(12)).length > 0 &&
+    fluxos.filter((fluxo) => selectedPontos.includes(21)).length > 0 &&
     selectedPontos.filter((item) => item != 12 && item != 21).length >= 1
   ) {
     usuarios_unicos = usuarios_unicos * 0.95;
   } else if (
     // Possui apenas Raposo + Terminais
-    fluxos.filter((fluxo) => selectedPontos.includes(21)).length > 0 &&
+    fluxos.filter((fluxo) => selectedPontos.includes(12)).length > 0 &&
     selectedPontos.filter((item) => item != 12 && item != 21).length >= 1
   ) {
     usuarios_unicos = usuarios_unicos * 0.99;
