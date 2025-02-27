@@ -22,8 +22,6 @@ import { useSimulador } from "../context/SimuladorContext";
 export default function CardNumerosCampanhaPaga() {
   const { resultados, valores, pracas } = useSimulador();
 
-  console.log(resultados.cpm_medio)
-
   return (
     <div className="w-[850px] border border-rzk_ligth rounded-2xl flex flex-col mt-4 py-4 px-6 gap-4">
       <h2 className="text-xl text-rzk_darker font-extrabold">Campanha:</h2>
