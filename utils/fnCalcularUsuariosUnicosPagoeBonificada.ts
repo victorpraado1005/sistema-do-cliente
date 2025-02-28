@@ -47,52 +47,34 @@ export function fnCalcularUsuariosUnicosPagoeBonificada(
     pontos_pagos_terminais,
     dias
   );
-  console.log(
-    "Usuarios unicos pagos terminais: " + usuarios_unicos_pagos_terminais
-  );
+
   const usuarios_unicos_bonificados_terminais =
     fnCalcularUsuariosUnicosTerminais(
       pontos_bonificados_terminais,
       dias_bonificados
     );
-  console.log(
-    "Usuarios unicos bonificados terminais: " +
-      usuarios_unicos_bonificados_terminais
-  );
+
   const usuarios_unicos_pagos_e_bonificados_terminais =
     fnCalcularUsuariosUnicosTerminais(
       pontos_pago_e_bonificados_terminais,
       dias_totais
     );
-  console.log(
-    "Usuarios unicos pagos e bonificados terminais: " +
-      usuarios_unicos_pagos_e_bonificados_terminais
-  );
 
   const usuarios_unicos_pagos_shopping = fnCalcularUsuariosUnicosShopping(
     pontos_pagos_shopping,
     dias
   );
-  console.log(
-    "Usuarios unicos pagos shopping: " + usuarios_unicos_pagos_shopping
-  );
+
   const usuarios_unicos_bonificados_shopping = fnCalcularUsuariosUnicosShopping(
     pontos_bonificados_shopping,
     dias_bonificados
   );
-  console.log(
-    "Usuarios unicos bonificados shopping: " +
-      usuarios_unicos_bonificados_shopping
-  );
+
   const usuarios_unicos_pagos_e_bonificados_shopping =
     fnCalcularUsuariosUnicosShopping(
       pontos_pago_e_bonificados_shopping,
       dias_totais
     );
-  console.log(
-    "Usuarios unicos pagos e bonificados shopping: " +
-      usuarios_unicos_pagos_e_bonificados_shopping
-  );
 
   let usuarios_unicos_terminais =
     usuarios_unicos_pagos_terminais +

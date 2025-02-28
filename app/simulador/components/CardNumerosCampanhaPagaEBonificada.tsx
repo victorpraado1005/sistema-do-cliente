@@ -84,7 +84,12 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 Freq. Média
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.investimento.toFixed()}
+                {resultados.frequencia_media
+                  ? resultados.frequencia_media?.toLocaleString("pt-br", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                  : 0}
               </span>
             </div>
           </div>
@@ -113,7 +118,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 Alcance
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.investimento.toFixed()}
+                {resultados.alcance ? resultados.alcance.toFixed(2) : 0}%
               </span>
             </div>
           </div>
@@ -125,7 +130,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 Visitas
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.investimento.toFixed()}
+                {resultados.visitas?.toLocaleString("pt-br")}
               </span>
             </div>
           </div>
@@ -135,7 +140,12 @@ export default function CardNumerosCampanhaPagaEBonificada() {
             <div className="flex flex-col">
               <span className="text-lg font-ligth w-full text-right">TRP</span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.investimento.toFixed()}
+                {resultados.trp
+                  ? resultados.trp?.toLocaleString("pt-br", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                  : 0}
               </span>
             </div>
           </div>

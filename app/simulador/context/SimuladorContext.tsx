@@ -23,6 +23,7 @@ import { fnCalcularPrecoTabela } from "@/utils/fnCalcularPrecoTabela";
 import { fnCalculcarDescontoMedio } from "@/utils/fnCalcularDescontoMedio";
 import { fnCalcularUsuariosUnicosPagoeBonificada } from "@/utils/fnCalcularUsuariosUnicosPagoeBonificada";
 import { fnCalcularUsuariosUnicosPagos } from "@/utils/fnCalcularUsuariosUnicosPagos";
+import { fnCalcularVisitasPagasEBonificadas } from "@/utils/fnCalcularVisitasPagasEBonificadas";
 
 interface IMarkerObject {
   latitude: number;
@@ -276,7 +277,15 @@ export const SimuladorProvider = ({
   }
 
   // Cálculo de Frequéncia Média
-  const frequencia_media = fnCalcularFrequenciaMedia(impactos, usuarios_unicos);
+  let frequencia_media = 0;
+  if (isBonificadoPreenchido) {
+    frequencia_media = fnCalcularFrequenciaMedia(
+      impactos_totais,
+      usuarios_unicos
+    );
+  } else {
+    frequencia_media = fnCalcularFrequenciaMedia(impactos, usuarios_unicos);
+  }
 
   // Cálculo de Pop 12+ Mais
   const populacao_12_mais = fnCalcularPop12Mais(pracas);
@@ -288,7 +297,17 @@ export const SimuladorProvider = ({
   const trp = fnCalculcarTRP(frequencia_media, alcance);
 
   // Cálculo de Visitas
-  const visitas = fnCalcularVisitas(selectedProducts, dias);
+  let visitas = 0;
+  if (isBonificadoPreenchido) {
+    visitas = fnCalcularVisitasPagasEBonificadas(
+      selectedProducts,
+      dias,
+      selectedProductsBonificados,
+      dias_bonificados
+    );
+  } else {
+    visitas = fnCalcularVisitas(selectedProducts, dias);
+  }
 
   // Cálculo de Preço de Tabela
   let preco_tabela = 0;
