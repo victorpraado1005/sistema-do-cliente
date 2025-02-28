@@ -17,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useSimulador } from "@/app/simulador/context/SimuladorContext";
 
 interface MultiSelectComboboxProps {
   options: IPonto[];
@@ -31,6 +32,7 @@ export function MultiSelectCombobox({
 }: MultiSelectComboboxProps) {
   const [open, setOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const { isLoading } = useSimulador();
 
   const filteredOptions = React.useMemo(() => {
     return options.filter((option) =>
@@ -56,6 +58,7 @@ export function MultiSelectCombobox({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          disabled={isLoading}
           variant="outline"
           role="combobox"
           aria-expanded={open}

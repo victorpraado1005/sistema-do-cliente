@@ -125,6 +125,10 @@ export const SimuladorProvider = ({
   const isBonificadoPreenchido = dias_bonificados > 0;
   const desconto = Number(valores.desconto) || 0;
 
+  useEffect(() => {
+    setIsLoading(results.some((query) => query.isLoading));
+  }, [results]);
+
   // useEffect(() => {
   //   if (dias_bonificados > 0) {
   //     setIsBonificadoPreen(true);
@@ -366,8 +370,12 @@ export const SimuladorProvider = ({
         selectedPontosBonificados,
         setSelectedPontosBonificados,
         pracas,
-        pontos: pontosQuery.data || [],
-        concessoes: concessoesQuery.data || [],
+        pontos:
+          pontosQuery.data?.sort((a, b) => a.nome.localeCompare(b.nome)) || [],
+        concessoes:
+          concessoesQuery.data?.sort((a, b) =>
+            a.empresa.nome.localeCompare(b.empresa.nome)
+          ) || [],
         produtos: produtosQuery.data || [],
         isLoading,
         markers,
