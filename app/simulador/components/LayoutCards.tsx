@@ -10,7 +10,7 @@ import CardMapsInvestimento from "./CardMapsInvestimento";
 import ContainerCharts from "./ContainerCharts";
 
 export default function LayoutCards() {
-  const { resultados, isBonificadoPreenchido, markers, markers_bonificados } =
+  const { isBonificadoPreenchido, markers, markers_bonificados } =
     useSimulador();
 
   return (

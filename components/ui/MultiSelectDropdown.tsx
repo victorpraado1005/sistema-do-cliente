@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
+import { useSimulador } from "@/app/simulador/context/SimuladorContext";
 
 interface MultiSelectDropdownProps {
   label: string;
@@ -26,6 +27,7 @@ export function MultiSelectDropdown({
   setSelectedItems,
 }: MultiSelectDropdownProps) {
   const [open, setOpen] = React.useState(false);
+  const { isLoading } = useSimulador();
 
   const toggleSelection = (id: string, event: React.MouseEvent) => {
     event.preventDefault();
@@ -51,6 +53,7 @@ export function MultiSelectDropdown({
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild className="w-24">
         <Button
+          disabled={isLoading}
           variant="outline"
           className="flex items-center gap-1 w-24 bg-gray-100"
         >
@@ -59,14 +62,18 @@ export function MultiSelectDropdown({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel className="font-extrabold text-rzk_darker">{label}</DropdownMenuLabel>
+        <DropdownMenuLabel className="font-extrabold text-rzk_darker">
+          {label}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
 
         <DropdownMenuCheckboxItem
           checked={selectedItems.length === options.length}
           onClick={toggleAllSelection}
         >
-          {selectedItems.length === options.length ? "Desmarcar Todos" : "Selecionar Todos"}
+          {selectedItems.length === options.length
+            ? "Desmarcar Todos"
+            : "Selecionar Todos"}
         </DropdownMenuCheckboxItem>
 
         <DropdownMenuSeparator />

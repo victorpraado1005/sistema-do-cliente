@@ -6,9 +6,6 @@ export function fnCalcularVisitasPagasEBonificadas(
   products_bonificados: IProduto[],
   dias_bonificados: number
 ) {
-  console.log(JSON.stringify(products_pagos));
-  console.log(JSON.stringify(products_bonificados));
-
   // Criando um conjunto (Set) com os ids_concessao_ponto dos produtos bonificados
   const ids_concessao_ponto = new Set(
     products_bonificados.map((item) => item.id_concessao_ponto)
@@ -18,7 +15,6 @@ export function fnCalcularVisitasPagasEBonificadas(
   const products_pagos_e_bonificados = products_pagos.filter((item) =>
     ids_concessao_ponto.has(item.id_concessao_ponto)
   );
-  console.log(JSON.stringify(products_pagos_e_bonificados));
   const dias_totais = dias + dias_bonificados;
 
   // Criar um novo Set para armazenar os ids que precisam ser removidos

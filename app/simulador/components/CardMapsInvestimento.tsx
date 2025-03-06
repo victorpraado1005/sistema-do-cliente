@@ -1,5 +1,7 @@
+"use client";
+
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 interface Marker {
   latitude: number;
@@ -17,6 +19,7 @@ export default function CardMapsInvestimento({
   const mapId = "fc7b1bc2a4b484cc";
   const mapRef = useRef<google.maps.Map | null>(null);
   const markerRefs = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
+  const [mapLoaded, setMapLoaded] = React.useState(false);
 
   if (!apiKey || !mapId) {
     return <p>Erro: API Key ou Map ID não configurado.</p>;
@@ -31,42 +34,44 @@ export default function CardMapsInvestimento({
       : [{ lat: -23.55052, lng: -46.633308 }]; // Ponto padrão
 
   useEffect(() => {
-    if (mapRef.current) {
-      markerRefs.current.forEach((marker) => (marker.map = null));
-      markerRefs.current = [];
+    if (!mapLoaded || !mapRef.current) return;
 
-      const bounds = new google.maps.LatLngBounds();
+    // Remove marcadores antigos
+    markerRefs.current.forEach((marker) => (marker.map = null));
+    markerRefs.current = [];
 
-      activeMarkers.forEach(({ lat, lng }) => {
-        const customMarker = document.createElement("div");
-        customMarker.style.position = "absolute";
-        customMarker.style.width = "40px";
-        customMarker.style.height = "40px";
-        customMarker.style.transform = "translate(-50%, -100%)";
-        customMarker.innerHTML = `
-          <img src="/rzk_logo_maps.png" 
-               width="40" height="40" 
-               style="display: block; position: absolute; left: 50%; top: 100%; transform: translate(-50%, -100%);" />
-        `;
+    const bounds = new google.maps.LatLngBounds();
 
-        const marker = new google.maps.marker.AdvancedMarkerElement({
-          map: mapRef.current!,
-          position: { lat, lng },
-          content: customMarker,
-        });
+    activeMarkers.forEach(({ lat, lng }) => {
+      const customMarker = document.createElement("div");
+      customMarker.style.position = "absolute";
+      customMarker.style.width = "40px";
+      customMarker.style.height = "40px";
+      customMarker.style.transform = "translate(-50%, -100%)";
 
-        markerRefs.current.push(marker);
-        bounds.extend(new google.maps.LatLng(lat, lng));
+      customMarker.innerHTML = `
+              <img src="/rzk_logo_maps.png" 
+                   width="40" height="40" 
+                   style="display: block; position: absolute; left: 50%; top: 100%; transform: translate(-50%, -100%);" />
+            `;
+
+      const marker = new google.maps.marker.AdvancedMarkerElement({
+        map: mapRef.current!,
+        position: { lat, lng },
+        content: customMarker,
       });
 
-      if (activeMarkers.length > 1) {
-        mapRef.current.fitBounds(bounds);
-      } else {
-        mapRef.current.setCenter(activeMarkers[0]);
-        mapRef.current.setZoom(12);
-      }
+      markerRefs.current.push(marker);
+      bounds.extend(new google.maps.LatLng(lat, lng));
+    });
+
+    if (activeMarkers.length > 1) {
+      mapRef.current.fitBounds(bounds);
+    } else {
+      mapRef.current.setCenter(activeMarkers[0]);
+      mapRef.current.setZoom(12);
     }
-  }, [markers]);
+  }, [markers, mapLoaded]);
 
   return (
     <div className="w-[270px] h-[250px] rounded-2xl overflow-hidden border border-rzk_ligth shadow-md">
@@ -87,6 +92,7 @@ export default function CardMapsInvestimento({
           }}
           onLoad={(map) => {
             mapRef.current = map;
+            setMapLoaded(true);
           }}
         />
       </LoadScript>
