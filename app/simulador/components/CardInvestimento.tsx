@@ -9,7 +9,7 @@ import {
 import { useSimulador } from "../context/SimuladorContext";
 
 export default function CardInvestimento() {
-  const { resultados, valores, pontos } = useSimulador();
+  const { resultados, valores } = useSimulador();
 
   return (
     <div className="w-[270px] border border-rzk_ligth rounded-2xl">

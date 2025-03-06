@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="pt-br">
       <body className={`${ibm.className} antialiased`}>
         <Providers>
-          <div className="flex flex-col min-h-screen w-[1200px] m-auto">
+          <div className="flex flex-col min-h-screen w-[1280px] m-auto">
             <Header />
             <main className="flex-1">{children}</main>
           </div>

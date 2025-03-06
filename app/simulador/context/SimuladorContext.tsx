@@ -1,6 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+// @ts-ignore
+import domtoimage from "dom-to-image";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   UseFormRegister,
   UseFormReset,
@@ -24,6 +32,7 @@ import { fnCalculcarDescontoMedio } from "@/utils/fnCalcularDescontoMedio";
 import { fnCalcularUsuariosUnicosPagoeBonificada } from "@/utils/fnCalcularUsuariosUnicosPagoeBonificada";
 import { fnCalcularUsuariosUnicosPagos } from "@/utils/fnCalcularUsuariosUnicosPagos";
 import { fnCalcularVisitasPagasEBonificadas } from "@/utils/fnCalcularVisitasPagasEBonificadas";
+import { RefObject } from "react";
 
 interface IMarkerObject {
   latitude: number;
@@ -39,9 +48,14 @@ type SimuladorContextType = {
   setSelectedPontos: React.Dispatch<React.SetStateAction<number[]>>;
   selectedPontosBonificados: number[];
   setSelectedPontosBonificados: React.Dispatch<React.SetStateAction<number[]>>;
+  captureScreenshot: () => Promise<void>;
+  ref: RefObject<HTMLDivElement | null>;
   pracas: string[];
   markers: IMarkerObject[];
   markers_bonificados: IMarkerObject[];
+  staticMapUrl: string | null;
+  showStaticMap: boolean;
+  setShowStaticMap: React.Dispatch<React.SetStateAction<boolean>>;
   resultados: {
     investimento: number;
     cpm_medio: number;
@@ -92,6 +106,9 @@ export const SimuladorProvider = ({
   const [selectedPontosBonificados, setSelectedPontosBonificados] = useState<
     number[]
   >([]);
+  const ref = useRef<HTMLDivElement>(null);
+  const [staticMapUrl, setStaticMapUrl] = useState<string | null>(null);
+  const [showStaticMap, setShowStaticMap] = useState(false);
 
   const results = useQueries({
     queries: [
@@ -352,6 +369,62 @@ export const SimuladorProvider = ({
     cpm_medio = (investimento / impactos) * 1000;
   }
 
+  const generateStaticMapUrl = () => {
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    const center =
+      markers.length > 0
+        ? markers[0]
+        : { latitude: -23.55052, longitude: -46.633308 };
+
+    // Tamanho proporcional ao container do mapa dinâmico (ajuste se necessário)
+    const size = "1920x1080";
+    const format = "png";
+    const zoom = 9;
+
+    // Ícone personalizado para os markers
+    const iconUrl = encodeURIComponent(
+      "https://storage.googleapis.com/rzkdigital-bucket-public/rzk_logo_maps.png"
+    );
+
+    // Parâmetro de markers para incluir os ícones personalizados
+    const markersParam = markers
+      .map(
+        ({ latitude, longitude }) =>
+          `markers=icon:${iconUrl}%7C${latitude},${longitude}`
+      )
+      .join("&");
+
+    return `https://maps.googleapis.com/maps/api/staticmap?center=${center.latitude},${center.longitude}&size=${size}&format=${format}&zoom=${zoom}&maptype=roadmap&${markersParam}&key=${apiKey}`;
+  };
+
+  const captureScreenshot = async () => {
+    if (ref.current) {
+      try {
+        setStaticMapUrl(generateStaticMapUrl());
+        setShowStaticMap(true);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        const dataUrl = await domtoimage.toJpeg(ref.current, {
+          quality: 1,
+          bgcolor: "#fff",
+        });
+
+        setShowStaticMap(false);
+
+        const link = document.createElement("a");
+        link.download = "simulacao.jpeg";
+        link.href = dataUrl;
+        link.click();
+      } catch (error) {
+        console.error("Erro ao capturar screenshot:", error);
+      }
+    } else {
+      console.warn(
+        "Ref não encontrada! Verifique se foi passada corretamente."
+      );
+    }
+  };
+
   return (
     <SimuladorContext.Provider
       value={{
@@ -364,6 +437,11 @@ export const SimuladorProvider = ({
         selectedPontosBonificados,
         setSelectedPontosBonificados,
         pracas,
+        captureScreenshot,
+        ref,
+        staticMapUrl,
+        showStaticMap,
+        setShowStaticMap,
         pontos:
           pontosQuery.data?.sort((a, b) => a.nome.localeCompare(b.nome)) || [],
         concessoes:

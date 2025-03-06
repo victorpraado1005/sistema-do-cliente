@@ -9,7 +9,8 @@ import { useSimulador } from "@/app/simulador/context/SimuladorContext";
 import { useState } from "react";
 
 export default function HeaderSimulador() {
-  const { isBonificadoPreenchido, reset, valores } = useSimulador();
+  const { isBonificadoPreenchido, reset, valores, captureScreenshot } =
+    useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
 
@@ -77,7 +78,10 @@ export default function HeaderSimulador() {
             </Button>
           </div>
           <div>
-            <Button className="w-32 h-8 text-xs bg-rzk_darker">
+            <Button
+              className="w-32 h-8 text-xs bg-rzk_darker"
+              onClick={captureScreenshot}
+            >
               <Download />
               <strong>Download</strong>
             </Button>
