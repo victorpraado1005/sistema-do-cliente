@@ -7,6 +7,14 @@ import FormSimuladorBonificado from "./FormSimuladorBonificado";
 import FormSimuladorPago from "./FormSimuladorPago";
 import { useSimulador } from "@/app/simulador/context/SimuladorContext";
 import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 
 export default function HeaderSimulador() {
   const { isBonificadoPreenchido, reset, valores, captureScreenshot } =
@@ -71,11 +79,22 @@ export default function HeaderSimulador() {
         </div>
 
         <div className="flex flex-col gap-2 items-center justify-center">
-          <div>
-            <Button className="w-32 h-8 text-xs bg-rzk_darker">
-              <Database />
-              <strong>Tabela</strong>
-            </Button>
+          <div className="w-32 h-8 text-xs bg-rzk_darker rounded-md">
+            <Dialog>
+              <DialogTrigger className="w-full text-white flex items-center justify-center font-bold">
+                <Database className="size-4" />
+                Tabela
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Are you absolutely sure?</DialogTitle>
+                  <DialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    your account and remove your data from our servers.
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
           </div>
           <div>
             <Button
