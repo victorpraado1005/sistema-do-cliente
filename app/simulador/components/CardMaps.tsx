@@ -10,7 +10,7 @@ const mapContainerStyle = {
   borderRadius: "16px",
 };
 
-const defaultMarker = { lat: -23.55052, lng: -46.633308 }; // RZK
+const defaultMarker = { lat: -23.5970804, lng: -46.688371 }; // RZK
 
 export default function CardMaps() {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
