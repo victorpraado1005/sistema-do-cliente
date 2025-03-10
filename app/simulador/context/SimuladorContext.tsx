@@ -1,7 +1,6 @@
 "use client";
 
-// @ts-ignore
-import domtoimage from "dom-to-image";
+import moment from "moment";
 import React, {
   createContext,
   useContext,
@@ -33,6 +32,7 @@ import { fnCalcularUsuariosUnicosPagoeBonificada } from "@/utils/fnCalcularUsuar
 import { fnCalcularUsuariosUnicosPagos } from "@/utils/fnCalcularUsuariosUnicosPagos";
 import { fnCalcularVisitasPagasEBonificadas } from "@/utils/fnCalcularVisitasPagasEBonificadas";
 import { RefObject } from "react";
+import { toast } from "sonner";
 
 interface IMarkerObject {
   latitude: number;
@@ -369,60 +369,23 @@ export const SimuladorProvider = ({
     cpm_medio = (investimento / impactos) * 1000;
   }
 
-  const generateStaticMapUrl = () => {
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-    const center =
-      markers.length > 0
-        ? markers[0]
-        : { latitude: -23.55052, longitude: -46.633308 };
-
-    // Tamanho proporcional ao container do mapa dinâmico (ajuste se necessário)
-    const size = "1920x1080";
-    const format = "png";
-    const zoom = 9;
-
-    // Ícone personalizado para os markers
-    const iconUrl = encodeURIComponent(
-      "https://storage.googleapis.com/rzkdigital-bucket-public/rzk_logo_maps.png"
-    );
-
-    // Parâmetro de markers para incluir os ícones personalizados
-    const markersParam = markers
-      .map(
-        ({ latitude, longitude }) =>
-          `markers=icon:${iconUrl}%7C${latitude},${longitude}`
-      )
-      .join("&");
-
-    return `https://maps.googleapis.com/maps/api/staticmap?center=${center.latitude},${center.longitude}&size=${size}&format=${format}&zoom=${zoom}&maptype=roadmap&${markersParam}&key=${apiKey}`;
-  };
-
   const captureScreenshot = async () => {
-    if (ref.current) {
-      try {
-        setStaticMapUrl(generateStaticMapUrl());
-        setShowStaticMap(true);
-        await new Promise((resolve) => setTimeout(resolve, 500));
+    const html2canvas = (await import("html2canvas")).default;
 
-        const dataUrl = await domtoimage.toJpeg(ref.current, {
-          quality: 1,
-          bgcolor: "#fff",
-        });
-
-        setShowStaticMap(false);
-
+    html2canvas(ref.current!, { useCORS: true, scale: 2 })
+      .then((canvas) => {
+        const image = canvas.toDataURL("image/png", 1);
         const link = document.createElement("a");
-        link.download = "simulacao.jpeg";
-        link.href = dataUrl;
+        link.href = image;
+        link.download = `Proposta-${moment().format("DD/MM/YYYY")}`;
         link.click();
-      } catch (error) {
-        console.error("Erro ao capturar screenshot:", error);
-      }
-    } else {
-      console.warn(
-        "Ref não encontrada! Verifique se foi passada corretamente."
-      );
-    }
+      })
+      .catch((error) => {
+        toast.error("Houve um erro ao realizar o Download da Proposta!", {
+          description: "Tente novamente.",
+        });
+        console.error("Erro ao capturar o print:", error);
+      });
   };
 
   return (

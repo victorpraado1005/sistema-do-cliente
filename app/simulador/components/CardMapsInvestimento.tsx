@@ -52,7 +52,7 @@ export default function CardMapsInvestimento({
 
       customMarker.innerHTML = `
               <img src="/rzk_logo_maps.png" 
-                   width="40" height="40" 
+                   width="30" height="30" 
                    style="display: block; position: absolute; left: 50%; top: 100%; transform: translate(-50%, -100%);" />
             `;
 

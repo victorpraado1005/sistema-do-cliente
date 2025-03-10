@@ -26,7 +26,7 @@ export default function LayoutCards() {
       <div>
         {!isBonificadoPreenchido ? (
           <div className="flex gap-2" ref={ref}>
-            <div className="space-y-2 mb-4">
+            <div className="space-y-2 mb-2">
               <CardNumerosCampanhaPaga />
               <div className="border border-rzk_ligth rounded-2xl py-4">
                 <ContainerCharts />
