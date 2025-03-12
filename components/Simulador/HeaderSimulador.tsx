@@ -81,7 +81,7 @@ export default function HeaderSimulador() {
         <div className="flex flex-col gap-2 items-center justify-center">
           <div className="w-32 h-8 text-xs bg-rzk_darker rounded-md">
             <Dialog>
-              <DialogTrigger className="w-full text-white flex items-center justify-center font-bold">
+              <DialogTrigger className="w-full h-full text-white flex items-center justify-center font-bold gap-2">
                 <Database className="size-4" />
                 Tabela
               </DialogTrigger>

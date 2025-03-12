@@ -33,6 +33,7 @@ import { fnCalcularUsuariosUnicosPagos } from "@/utils/fnCalcularUsuariosUnicosP
 import { fnCalcularVisitasPagasEBonificadas } from "@/utils/fnCalcularVisitasPagasEBonificadas";
 import { RefObject } from "react";
 import { toast } from "sonner";
+import { fnDadosTabelaPaga } from "@/utils/fnDadosTabelaPaga";
 
 interface IMarkerObject {
   latitude: number;
@@ -53,9 +54,6 @@ type SimuladorContextType = {
   pracas: string[];
   markers: IMarkerObject[];
   markers_bonificados: IMarkerObject[];
-  staticMapUrl: string | null;
-  showStaticMap: boolean;
-  setShowStaticMap: React.Dispatch<React.SetStateAction<boolean>>;
   resultados: {
     investimento: number;
     cpm_medio: number;
@@ -107,7 +105,7 @@ export const SimuladorProvider = ({
     number[]
   >([]);
   const ref = useRef<HTMLDivElement>(null);
-  const [staticMapUrl, setStaticMapUrl] = useState<string | null>(null);
+
   const [showStaticMap, setShowStaticMap] = useState(false);
 
   const results = useQueries({
@@ -135,6 +133,10 @@ export const SimuladorProvider = ({
     { data: IConcedente[]; isLoading: boolean; error: any },
     { data: IProduto[]; isLoading: boolean; error: any },
   ];
+
+  // console.log(pontosQuery.data)
+  // console.log(produtosQuery.data)
+  // console.log(concessoesQuery.data)
 
   const dias = Number(valores.dias) || 0;
   const dias_bonificados = Number(valores.dias_bonificados) || 0;
@@ -388,6 +390,10 @@ export const SimuladorProvider = ({
       });
   };
 
+  const dados = fnDadosTabelaPaga(selectedProducts, dias, desconto, valores.saturacao)
+
+  console.log(dados)
+
   return (
     <SimuladorContext.Provider
       value={{
@@ -402,9 +408,6 @@ export const SimuladorProvider = ({
         pracas,
         captureScreenshot,
         ref,
-        staticMapUrl,
-        showStaticMap,
-        setShowStaticMap,
         pontos:
           pontosQuery.data?.sort((a, b) => a.nome.localeCompare(b.nome)) || [],
         concessoes:
