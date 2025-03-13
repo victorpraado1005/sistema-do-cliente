@@ -10,15 +10,20 @@ import { useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import MyTable from "@/app/simulador/components/TableCampanhaPaga";
 
 export default function HeaderSimulador() {
-  const { isBonificadoPreenchido, reset, valores, captureScreenshot } =
-    useSimulador();
+  const {
+    isBonificadoPreenchido,
+    reset,
+    valores,
+    captureScreenshot,
+    dados_tabela_paga,
+  } = useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
 
@@ -85,14 +90,11 @@ export default function HeaderSimulador() {
                 <Database className="size-4" />
                 Tabela
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="max-w-7xl w-full">
                 <DialogHeader>
-                  <DialogTitle>Are you absolutely sure?</DialogTitle>
-                  <DialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
-                  </DialogDescription>
+                  <DialogTitle>Tabela Campanha Paga</DialogTitle>
                 </DialogHeader>
+                <MyTable dados={dados_tabela_paga} />
               </DialogContent>
             </Dialog>
           </div>

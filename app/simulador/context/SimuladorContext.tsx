@@ -16,7 +16,12 @@ import {
 import { simuladorSchema } from "../schemas/simuladorSchema";
 import { z } from "zod";
 import { useQueries } from "@tanstack/react-query";
-import { fetchConcessoes, fetchPontos, fetchProdutos } from "@/lib/api";
+import {
+  fetchConcessoes,
+  fetchConcessoesPonto,
+  fetchPontos,
+  fetchProdutos,
+} from "@/lib/api";
 import { IConcedente } from "@/app/types/IConcedente";
 import { IProduto } from "@/app/types/IProduto";
 import { fnCalculcarInsercoes } from "@/utils/fnCalcularInsercoes";
@@ -34,6 +39,8 @@ import { fnCalcularVisitasPagasEBonificadas } from "@/utils/fnCalcularVisitasPag
 import { RefObject } from "react";
 import { toast } from "sonner";
 import { fnDadosTabelaPaga } from "@/utils/fnDadosTabelaPaga";
+import { IConcessaoPonto } from "@/app/types/IConcessaoPonto";
+import { IDadosTabela } from "@/app/types/IDadosTabela";
 
 interface IMarkerObject {
   latitude: number;
@@ -78,7 +85,9 @@ type SimuladorContextType = {
   isBonificadoPreenchido: boolean;
   pontos: any[];
   concessoes: any[];
+  concessoes_ponto: IConcessaoPonto[];
   produtos: any[];
+  dados_tabela_paga: IDadosTabela[];
   isLoading: boolean;
   error: any;
 };
@@ -106,8 +115,6 @@ export const SimuladorProvider = ({
   >([]);
   const ref = useRef<HTMLDivElement>(null);
 
-  const [showStaticMap, setShowStaticMap] = useState(false);
-
   const results = useQueries({
     queries: [
       {
@@ -121,6 +128,11 @@ export const SimuladorProvider = ({
         staleTime: 1000 * 60 * 5,
       },
       {
+        queryKey: ["concessoes_ponto"],
+        queryFn: fetchConcessoesPonto,
+        staleTime: 1000 * 60 * 5,
+      },
+      {
         queryKey: ["produtos"],
         queryFn: fetchProdutos,
         staleTime: 1000 * 60 * 5,
@@ -128,15 +140,13 @@ export const SimuladorProvider = ({
     ],
   });
 
-  const [pontosQuery, concessoesQuery, produtosQuery] = results as [
-    { data: any[]; isLoading: boolean; error: any },
-    { data: IConcedente[]; isLoading: boolean; error: any },
-    { data: IProduto[]; isLoading: boolean; error: any },
-  ];
-
-  // console.log(pontosQuery.data)
-  // console.log(produtosQuery.data)
-  // console.log(concessoesQuery.data)
+  const [pontosQuery, concessoesQuery, concessoesPontoQuery, produtosQuery] =
+    results as [
+      { data: any[]; isLoading: boolean; error: any },
+      { data: IConcedente[]; isLoading: boolean; error: any },
+      { data: IConcessaoPonto[]; isLoading: boolean; error: any },
+      { data: IProduto[]; isLoading: boolean; error: any },
+    ];
 
   const dias = Number(valores.dias) || 0;
   const dias_bonificados = Number(valores.dias_bonificados) || 0;
@@ -148,14 +158,14 @@ export const SimuladorProvider = ({
     setIsLoading(results.some((query) => query.isLoading));
   }, [results]);
 
-  // Varîavel para armazenar os produtos selecionados (Formulário Pago)
+  // Varíavel para armazenar os produtos selecionados (Formulário Pago)
   const selectedProducts = produtosQuery.data?.filter(
     (item) =>
       selectedPontos.includes(item.id_concessao_ponto) &&
       !item.data_venda_termino
   );
 
-  // Varîavel para armazenar as face totais (Formulário Pago)
+  // Varíavel para armazenar as face totais (Formulário Pago)
   const faces_totais_pagas = selectedProducts?.reduce(
     (acc, item) => acc + item.qtd_faces,
     0
@@ -390,9 +400,16 @@ export const SimuladorProvider = ({
       });
   };
 
-  const dados = fnDadosTabelaPaga(selectedProducts, dias, desconto, valores.saturacao)
+  const dados_tabela_paga = fnDadosTabelaPaga(
+    selectedProducts,
+    dias,
+    desconto,
+    valores.saturacao,
+    concessoesPontoQuery.data,
+    pontosQuery.data
+  );
 
-  console.log(dados)
+  console.log(dados_tabela_paga);
 
   return (
     <SimuladorContext.Provider
@@ -414,7 +431,9 @@ export const SimuladorProvider = ({
           concessoesQuery.data?.sort((a, b) =>
             a.empresa.nome.localeCompare(b.empresa.nome)
           ) || [],
+        concessoes_ponto: concessoesPontoQuery.data || [],
         produtos: produtosQuery.data || [],
+        dados_tabela_paga,
         isLoading,
         markers,
         markers_bonificados,

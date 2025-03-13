@@ -9,7 +9,7 @@ export async function apiFetch(endpoint: string, options: RequestInit = {}) {
     ...options.headers,
   };
 
-  const res = await fetch(`${apiUrl}/${endpoint}/`, {
+  const res = await fetch(`${apiUrl}/${endpoint}`, {
     ...options,
     headers,
   });
@@ -27,6 +27,10 @@ export async function fetchPontos() {
 
 export async function fetchConcessoes() {
   return apiFetch("concessao");
+}
+
+export async function fetchConcessoesPonto() {
+  return apiFetch("concessao/concessao_ponto");
 }
 
 export async function fetchProdutos() {

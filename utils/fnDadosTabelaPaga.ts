@@ -3,34 +3,63 @@ import { fnCalcularVisitasPorPonto } from "./CalcularVisitas/fnCalcularVisitasPo
 import { fnCalculcarInsercoesPorPonto } from "./CalculcarInsercoes/fnCalcularInsercoesPorPonto";
 import { fnCalcularImpactosPorPonto } from "./CalcularImpactos/fnCalcularImpactosPorPonto";
 import { fnCalcularPrecoTabelaPorPonto } from "./CalcularPrecoTabela/fnCalcularPrecoTabelaPorPonto";
+import { IConcessaoPonto } from "@/app/types/IConcessaoPonto";
+import { fnCalcularUsuariosUnicosPorPonto } from "./CalcularUsuariosUnicos/fnCalcularUsuariosUnicosPorPonto";
+import { fnCalcularPop12Mais } from "./fnCalcularPop12Mais";
+import { fnCalcularAlcance } from "./fnCalcularAlcance";
+import { fnCalcularFrequenciaMedia } from "./fnCalcularFrequenciaMedia";
+import { fnCalculcarTRP } from "./fnCalcularTRP";
 
-// [
-//   {
-//     id_ponto: 8,
-//     nome: 'Ana rosa',
-//     usuarios_unicos,
-//     alcance,
-//     freq.media,
-//     trp,
-//   }
-// ]
-
-export function fnDadosTabelaPaga(products: IProduto[], dias: number, desconto: number, saturacao: number) {
-  let dados_tabela = []
-
-  return products?.map(produto => {
+export function fnDadosTabelaPaga(
+  products: IProduto[],
+  dias: number,
+  desconto: number,
+  saturacao: number,
+  concessoes_ponto: IConcessaoPonto[],
+  pontos: IPonto[]
+) {
+  return products?.map((produto) => {
+    const id_ponto = concessoes_ponto.filter(
+      (item) => item.id_concessao_ponto === produto.id_concessao_ponto
+    )[0].id_ponto;
+    const ponto = pontos.filter((ponto) => ponto.id_ponto === id_ponto)[0];
+    const nome_ponto = ponto.nome;
+    const praca = [ponto.praca];
     const visitas = fnCalcularVisitasPorPonto(produto, dias);
-    const insercoes = fnCalculcarInsercoesPorPonto(produto, dias, saturacao)
-    const impactos = fnCalcularImpactosPorPonto(produto, dias, saturacao)
-    const preco_tabela = fnCalcularPrecoTabelaPorPonto(produto, dias, saturacao)
+    const insercoes = fnCalculcarInsercoesPorPonto(produto, dias, saturacao);
+    const impactos = fnCalcularImpactosPorPonto(produto, dias, saturacao);
+    const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(id_ponto, dias);
+    const pop_12_mais = fnCalcularPop12Mais(praca);
+    const alcance = fnCalcularAlcance(usuarios_unicos, pop_12_mais);
+    const freq_media = fnCalcularFrequenciaMedia(impactos, usuarios_unicos);
+    const trp = fnCalculcarTRP(freq_media, alcance);
+    const preco_tabela = fnCalcularPrecoTabelaPorPonto(
+      produto,
+      dias,
+      saturacao
+    );
     const investimento = preco_tabela * (1 - desconto / 100);
+    const faces = produto.qtd_faces;
 
     return {
-      visitas,
-      insercoes,
-      impactos,
-      preco_tabela,
-      investimento
-    }
-  })
+      id_ponto,
+      nome_ponto,
+      faces,
+      visitas: visitas.toLocaleString("pt-br"),
+      insercoes: insercoes.toLocaleString("pt-br"),
+      impactos: impactos.toLocaleString("pt-br"),
+      usuarios_unicos: usuarios_unicos.toLocaleString("pt-br"),
+      alcance: `${alcance.toFixed(2)}%`,
+      freq_media: freq_media.toFixed(2),
+      trp: trp.toFixed(2),
+      preco_tabela: preco_tabela.toLocaleString("pt-br", {
+        style: "currency",
+        currency: "brl",
+      }),
+      investimento: investimento.toLocaleString("pt-br", {
+        style: "currency",
+        currency: "brl",
+      }),
+    };
+  });
 }
