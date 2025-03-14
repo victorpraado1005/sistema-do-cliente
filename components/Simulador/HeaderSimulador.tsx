@@ -15,15 +15,14 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import TableContent from "@/app/simulador/components/TableContent";
-
+import {
+  exportAllTablesToExcel,
+  exportTableToExcel,
+} from "@/utils/ExportTable/exportTable";
 
 export default function HeaderSimulador() {
-  const {
-    isBonificadoPreenchido,
-    reset,
-    valores,
-    captureScreenshot
-  } = useSimulador();
+  const { isBonificadoPreenchido, reset, valores, captureScreenshot } =
+    useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
 
@@ -92,7 +91,11 @@ export default function HeaderSimulador() {
               </DialogTrigger>
               <DialogContent className="max-w-7xl w-full">
                 <DialogHeader>
-                  <DialogTitle>Tabela Campanha Paga</DialogTitle>
+                  <div className="flex">
+                    <DialogTitle className="text-2xl text-rzk_darker font-extrabold">
+                      Dados por Ponto
+                    </DialogTitle>
+                  </div>
                 </DialogHeader>
                 <TableContent />
               </DialogContent>

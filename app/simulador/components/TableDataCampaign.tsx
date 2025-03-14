@@ -60,9 +60,7 @@ interface TableDataCampaignProps {
   data: IDadosTabela[];
 }
 
-export default function TableDataCampaign({
-  data,
-}: TableDataCampaignProps) {
+export default function TableDataCampaign({ data }: TableDataCampaignProps) {
   const table = useReactTable({
     data,
     columns,
@@ -70,13 +68,16 @@ export default function TableDataCampaign({
   });
 
   return (
-    <div className="overflow-x-auto max-h-[250px] overflow-y-auto">
+    <div className="overflow-x-auto max-h-[250px] overflow-y-auto mt-4">
       <table className="w-full border-collapse border border-gray-300">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} className="border border-gray-300 p-2">
+                <th
+                  key={header.id}
+                  className="border border-gray-300 p-2 text-rzk_darker font-extrabold"
+                >
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()
@@ -103,4 +104,4 @@ export default function TableDataCampaign({
       </table>
     </div>
   );
-};
+}

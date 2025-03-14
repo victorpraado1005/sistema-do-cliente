@@ -16,7 +16,8 @@ export function fnDadosTabelaPaga(
   desconto: number,
   saturacao: number,
   concessoes_ponto: IConcessaoPonto[],
-  pontos: IPonto[]
+  pontos: IPonto[],
+  isBonificado?: boolean
 ) {
   return products?.map((produto) => {
     const id_ponto = concessoes_ponto.filter(
@@ -25,6 +26,7 @@ export function fnDadosTabelaPaga(
     const ponto = pontos.filter((ponto) => ponto.id_ponto === id_ponto)[0];
     const nome_ponto = ponto.nome;
     const praca = [ponto.praca];
+    const faces = produto.qtd_faces;
     const visitas = fnCalcularVisitasPorPonto(produto, dias);
     const insercoes = fnCalculcarInsercoesPorPonto(produto, dias, saturacao);
     const impactos = fnCalcularImpactosPorPonto(produto, dias, saturacao);
@@ -38,8 +40,11 @@ export function fnDadosTabelaPaga(
       dias,
       saturacao
     );
-    const investimento = preco_tabela * (1 - desconto / 100);
-    const faces = produto.qtd_faces;
+
+    let investimento = 0;
+    if (!isBonificado) {
+      investimento = preco_tabela * (1 - desconto / 100);
+    }
 
     return {
       id_ponto,

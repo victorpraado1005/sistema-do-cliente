@@ -88,6 +88,7 @@ type SimuladorContextType = {
   concessoes_ponto: IConcessaoPonto[];
   produtos: any[];
   dados_tabela_paga: IDadosTabela[];
+  dados_tabela_bonificada: IDadosTabela[];
   isLoading: boolean;
   error: any;
 };
@@ -409,7 +410,18 @@ export const SimuladorProvider = ({
     pontosQuery.data
   );
 
-  console.log(dados_tabela_paga);
+  let dados_tabela_bonificada: IDadosTabela[] = [];
+  if (isBonificadoPreenchido) {
+    dados_tabela_bonificada = fnDadosTabelaPaga(
+      selectedProductsBonificados,
+      dias,
+      desconto,
+      valores.saturacao,
+      concessoesPontoQuery.data,
+      pontosQuery.data,
+      isBonificadoPreenchido
+    );
+  }
 
   return (
     <SimuladorContext.Provider
@@ -434,6 +446,7 @@ export const SimuladorProvider = ({
         concessoes_ponto: concessoesPontoQuery.data || [],
         produtos: produtosQuery.data || [],
         dados_tabela_paga,
+        dados_tabela_bonificada,
         isLoading,
         markers,
         markers_bonificados,
