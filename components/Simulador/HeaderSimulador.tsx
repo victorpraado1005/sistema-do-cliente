@@ -14,15 +14,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import MyTable from "@/app/simulador/components/TableCampanhaPaga";
+import TableContent from "@/app/simulador/components/TableContent";
+
 
 export default function HeaderSimulador() {
   const {
     isBonificadoPreenchido,
     reset,
     valores,
-    captureScreenshot,
-    dados_tabela_paga,
+    captureScreenshot
   } = useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
@@ -94,7 +94,7 @@ export default function HeaderSimulador() {
                 <DialogHeader>
                   <DialogTitle>Tabela Campanha Paga</DialogTitle>
                 </DialogHeader>
-                <MyTable dados={dados_tabela_paga} />
+                <TableContent />
               </DialogContent>
             </Dialog>
           </div>

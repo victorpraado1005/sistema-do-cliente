@@ -56,13 +56,15 @@ const columns: ColumnDef<IDadosTabela>[] = [
   },
 ];
 
-interface TableProps {
-  dados: IDadosTabela[];
+interface TableDataCampaignProps {
+  data: IDadosTabela[];
 }
 
-const MyTable: React.FC<TableProps> = ({ dados }) => {
+export default function TableDataCampaign({
+  data,
+}: TableDataCampaignProps) {
   const table = useReactTable({
-    data: dados,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -102,5 +104,3 @@ const MyTable: React.FC<TableProps> = ({ dados }) => {
     </div>
   );
 };
-
-export default MyTable;
