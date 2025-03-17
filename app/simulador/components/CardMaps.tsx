@@ -15,7 +15,7 @@ const defaultMarker = { lat: -23.5970804, lng: -46.688371 }; // RZK
 export default function CardMaps() {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const mapId = "fc7b1bc2a4b484cc";
-  const { markers, staticMapUrl, showStaticMap } = useSimulador();
+  const { markers } = useSimulador();
   const mapRef = useRef<google.maps.Map | null>(null);
   const markerRefs = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
   const [mapLoaded, setMapLoaded] = React.useState(false);
@@ -74,27 +74,23 @@ export default function CardMaps() {
 
   return (
     <div className="w-full h-auto mb-2 rounded-2xl mt-4 overflow-hidden border border-rzk_ligth shadow-md">
-      {showStaticMap && staticMapUrl ? (
-        <img src={staticMapUrl} alt="Mapa estático" className="w-full h-full" />
-      ) : (
-        <LoadScript googleMapsApiKey={apiKey} libraries={["marker"]}>
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            center={activeMarkers[0] as google.maps.LatLngLiteral}
-            zoom={12}
-            options={{
-              mapId: mapId,
-              fullscreenControl: false,
-              streetViewControl: false,
-              mapTypeControl: false,
-            }}
-            onLoad={(map) => {
-              mapRef.current = map;
-              setMapLoaded(true);
-            }}
-          />
-        </LoadScript>
-      )}
+      <LoadScript googleMapsApiKey={apiKey} libraries={["marker"]}>
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={activeMarkers[0] as google.maps.LatLngLiteral}
+          zoom={12}
+          options={{
+            mapId: mapId,
+            fullscreenControl: false,
+            streetViewControl: false,
+            mapTypeControl: false,
+          }}
+          onLoad={(map) => {
+            mapRef.current = map;
+            setMapLoaded(true);
+          }}
+        />
+      </LoadScript>
     </div>
   );
 }
