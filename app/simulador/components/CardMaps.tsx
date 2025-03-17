@@ -73,7 +73,7 @@ export default function CardMaps() {
   }, [markers, mapLoaded]);
 
   return (
-    <div className="w-full h-auto mb-2 rounded-2xl mt-4 overflow-hidden border border-rzk_ligth shadow-md">
+    <div className="w-full h-auto mb-2 rounded-2xl mt-2 overflow-hidden border border-rzk_ligth shadow-md">
       <LoadScript googleMapsApiKey={apiKey} libraries={["marker"]}>
         <GoogleMap
           mapContainerStyle={mapContainerStyle}

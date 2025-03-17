@@ -20,7 +20,7 @@ export default function LayoutCards() {
     <div>
       <div>
         {!isBonificadoPreenchido ? (
-          <div className="flex gap-2" ref={ref}>
+          <div className="flex gap-2 px-1" ref={ref}>
             <div className="space-y-2 mb-2">
               <CardNumerosCampanhaPaga />
               <div className="border border-rzk_ligth rounded-2xl py-4">
@@ -30,13 +30,13 @@ export default function LayoutCards() {
             <CardMaps />
           </div>
         ) : (
-          <div ref={ref}>
+          <div className="flex flex-col items-center mb-4 py-1" ref={ref}>
             <div className="flex gap-2 mt-0">
               <CardInvestimento />
               <CardBonificacao />
               <CardNumerosCampanhaPagaEBonificada />
             </div>
-            <div className="flex gap-2 mt-2 mb-2">
+            <div className="flex gap-2 mt-2">
               <CardMapsInvestimento markers={markers} />
               <CardMapsInvestimento markers={markers_bonificados} />
               <div className="w-[700px] border border-rzk_ligth rounded-2xl py-6">

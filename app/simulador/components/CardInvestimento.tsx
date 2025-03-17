@@ -16,7 +16,7 @@ export default function CardInvestimento() {
       <h2 className="mt-2 mb-2 text-center text-lg font-extrabold text-rzk_darker">
         Investimento:
       </h2>
-      <div className="w-36 flex flex-col space-y-2 m-auto text-rzk_regular">
+      <div className="w-36 flex flex-col space-y-1 m-auto text-rzk_regular">
         <div className="flex items-center justify-between w-36">
           <CalendarDays className="size-6" />
           <div className="flex flex-col">
