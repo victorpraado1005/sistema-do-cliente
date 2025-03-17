@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import TableContent from "@/app/simulador/components/TableContent";
+import { Spinner } from "../ui/spinner";
 
 export default function HeaderSimulador() {
   const {
@@ -30,6 +31,7 @@ export default function HeaderSimulador() {
     valores,
     downloadZip,
     setSelectedTabelaPreco,
+    isDownloading,
   } = useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
@@ -132,9 +134,16 @@ export default function HeaderSimulador() {
             <Button
               className="w-32 h-8 text-xs bg-rzk_darker"
               onClick={downloadZip}
+              disabled={isDownloading}
             >
-              <Download />
-              <strong>Download</strong>
+              {isDownloading ? (
+                <Spinner />
+              ) : (
+                <>
+                  <Download />
+                  <strong>Download</strong>
+                </>
+              )}
             </Button>
           </div>
           <div>

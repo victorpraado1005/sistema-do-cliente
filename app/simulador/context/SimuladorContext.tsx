@@ -94,6 +94,7 @@ type SimuladorContextType = {
   };
   isBonificadoPreenchido: boolean;
   pontos: any[];
+  isDownloading: boolean;
   concessoes: any[];
   concessoes_ponto: IConcessaoPonto[];
   produtos: any[];
@@ -121,6 +122,7 @@ export const SimuladorProvider = ({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<any>(null);
   const [selectedPontos, setSelectedPontos] = useState<number[]>([]);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [selectedTabelaPreco, setSelectedTabelaPreco] =
     useState<string>("2025");
   const [selectedPontosBonificados, setSelectedPontosBonificados] = useState<
@@ -420,33 +422,35 @@ export const SimuladorProvider = ({
   }
 
   const downloadZip = async () => {
+    setIsDownloading(true);
     const zip = new JSZip();
 
-    const imageDataUrl = await fnCaptureScreenshot(ref.current!);
+    try {
+      const imageDataUrl = await fnCaptureScreenshot(ref.current!);
 
-    if (!imageDataUrl) {
-      toast.error("Erro ao capturar a imagem para o ZIP.");
-      return;
+      const base64Image = imageDataUrl.split(",")[1];
+
+      let tabela = undefined;
+      if (isBonificadoPreenchido) {
+        tabela = exportAllTablesToExcel(
+          dados_tabela_paga,
+          dados_tabela_bonificada
+        );
+      } else {
+        tabela = exportTableToExcel(dados_tabela_paga);
+      }
+
+      zip.file("print_simulador.png", base64Image, { base64: true });
+      zip.file("tabela.xlsx", tabela);
+
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+
+      saveAs(zipBlob, `Proposta-${moment().format("DD/MM/YYYY")}.zip`);
+    } catch (error) {
+      console.error("Erro no download:", error);
+    } finally {
+      setIsDownloading(false);
     }
-
-    const base64Image = imageDataUrl.split(",")[1];
-
-    let tabela = undefined;
-    if (isBonificadoPreenchido) {
-      tabela = exportAllTablesToExcel(
-        dados_tabela_paga,
-        dados_tabela_bonificada
-      );
-    } else {
-      tabela = exportTableToExcel(dados_tabela_paga);
-    }
-
-    zip.file("print_simulador.png", base64Image, { base64: true });
-    zip.file("tabela.xlsx", tabela);
-
-    const zipBlob = await zip.generateAsync({ type: "blob" });
-
-    saveAs(zipBlob, `Proposta-${moment().format("DD/MM/YYYY")}.zip`);
   };
 
   return (
@@ -476,6 +480,7 @@ export const SimuladorProvider = ({
         dados_tabela_paga,
         dados_tabela_bonificada,
         isLoading,
+        isDownloading,
         markers,
         markers_bonificados,
         error,
