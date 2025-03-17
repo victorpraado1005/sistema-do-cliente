@@ -14,11 +14,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import TableContent from "@/app/simulador/components/TableContent";
 
 export default function HeaderSimulador() {
-  const { isBonificadoPreenchido, reset, valores, downloadZip } =
-    useSimulador();
+  const {
+    isBonificadoPreenchido,
+    reset,
+    valores,
+    downloadZip,
+    setSelectedTabelaPreco,
+  } = useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
 
@@ -31,14 +43,33 @@ export default function HeaderSimulador() {
     setActiveTab("pago");
   };
 
+  const selecionarTabelaPreco = (data: string) => {
+    setSelectedTabelaPreco(data);
+  };
+
   return (
     <div>
       <div className="flex justify-between">
         <div className="space-y-2">
           <h1 className="text-2xl text-rzk_darker font-extrabold">Simulador</h1>
-          <p className="text-sm font-thin text-rzk_ligth">
+          <p className="text-sm font-light text-rzk_ligth">
             Confira abaixo os dados da sua simulação.
           </p>
+          <div className="flex gap-4 items-center pt-4">
+            <h1 className="text-rzk_darker">Tabela de Preço: </h1>
+            <Select
+              defaultValue={"2025"}
+              onValueChange={(value: string) => selecionarTabelaPreco(value)}
+            >
+              <SelectTrigger className="w-[100px] bg-gray-100">
+                <SelectValue placeholder="Selecionar Tabela de Preço" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2024">2024</SelectItem>
+                <SelectItem value="2025">2025</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <div className="w-[650px]">

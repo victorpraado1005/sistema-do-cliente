@@ -64,6 +64,8 @@ type SimuladorContextType = {
   setSelectedPontos: React.Dispatch<React.SetStateAction<number[]>>;
   selectedPontosBonificados: number[];
   setSelectedPontosBonificados: React.Dispatch<React.SetStateAction<number[]>>;
+  selectedTabelaPreco: string;
+  setSelectedTabelaPreco: React.Dispatch<React.SetStateAction<string>>;
   downloadZip: () => Promise<void>;
   ref: RefObject<HTMLDivElement | null>;
   pracas: string[];
@@ -119,6 +121,8 @@ export const SimuladorProvider = ({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<any>(null);
   const [selectedPontos, setSelectedPontos] = useState<number[]>([]);
+  const [selectedTabelaPreco, setSelectedTabelaPreco] =
+    useState<string>("2025");
   const [selectedPontosBonificados, setSelectedPontosBonificados] = useState<
     number[]
   >([]);
@@ -352,13 +356,15 @@ export const SimuladorProvider = ({
     const preco_tabela_pago = fnCalcularPrecoTabela(
       selectedProducts,
       dias,
-      valores.saturacao
+      valores.saturacao,
+      selectedTabelaPreco
     );
 
     const preco_tabela_bonificado = fnCalcularPrecoTabela(
       selectedProductsBonificados,
       dias_bonificados,
-      valores.saturacao_bonificada
+      valores.saturacao_bonificada,
+      selectedTabelaPreco
     );
 
     preco_tabela = preco_tabela_pago + preco_tabela_bonificado;
@@ -380,7 +386,8 @@ export const SimuladorProvider = ({
     preco_tabela = fnCalcularPrecoTabela(
       selectedProducts,
       dias,
-      valores.saturacao
+      valores.saturacao,
+      selectedTabelaPreco
     );
 
     // Cálculo de Investimento. Preço de Tabela - Desconto
@@ -453,6 +460,8 @@ export const SimuladorProvider = ({
         setSelectedPontos,
         selectedPontosBonificados,
         setSelectedPontosBonificados,
+        selectedTabelaPreco,
+        setSelectedTabelaPreco,
         pracas,
         downloadZip,
         ref,
