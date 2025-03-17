@@ -1,5 +1,4 @@
 import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
 import { IDadosTabela } from "@/app/types/IDadosTabela";
 
 export const exportTableToExcel = (data: IDadosTabela[]) => {
@@ -14,7 +13,7 @@ export const exportTableToExcel = (data: IDadosTabela[]) => {
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
   });
 
-  saveAs(dataBlob, "dados.xlsx");
+  return dataBlob;
 };
 
 export const exportAllTablesToExcel = (
@@ -33,7 +32,6 @@ export const exportAllTablesToExcel = (
   });
 
   const rowsTable1 = dadosTabelaPaga.length + 1;
-
   const rowForPeriodoBonificado = rowsTable1 + 2;
 
   XLSX.utils.sheet_add_aoa(worksheetCombined, [["Período Bonificado"]], {
@@ -58,5 +56,6 @@ export const exportAllTablesToExcel = (
   const dataBlob = new Blob([excelBuffer], {
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
   });
-  saveAs(dataBlob, "dados.xlsx");
+
+  return dataBlob;
 };

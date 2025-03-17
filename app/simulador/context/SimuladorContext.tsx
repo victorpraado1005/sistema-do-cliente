@@ -1,6 +1,5 @@
 "use client";
 
-import moment from "moment";
 import React, {
   createContext,
   useContext,
@@ -13,15 +12,21 @@ import {
   UseFormReset,
   UseFormSetValue,
 } from "react-hook-form";
-import { simuladorSchema } from "../schemas/simuladorSchema";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 import { z } from "zod";
 import { useQueries } from "@tanstack/react-query";
+import { simuladorSchema } from "../schemas/simuladorSchema";
 import {
   fetchConcessoes,
   fetchConcessoesPonto,
   fetchPontos,
   fetchProdutos,
 } from "@/lib/api";
+import { RefObject } from "react";
+import { toast } from "sonner";
+import moment from "moment";
+
 import { IConcedente } from "@/app/types/IConcedente";
 import { IProduto } from "@/app/types/IProduto";
 import { fnCalculcarInsercoes } from "@/utils/fnCalcularInsercoes";
@@ -36,11 +41,14 @@ import { fnCalculcarDescontoMedio } from "@/utils/fnCalcularDescontoMedio";
 import { fnCalcularUsuariosUnicosPagoeBonificada } from "@/utils/fnCalcularUsuariosUnicosPagoeBonificada";
 import { fnCalcularUsuariosUnicosPagos } from "@/utils/fnCalcularUsuariosUnicosPagos";
 import { fnCalcularVisitasPagasEBonificadas } from "@/utils/fnCalcularVisitasPagasEBonificadas";
-import { RefObject } from "react";
-import { toast } from "sonner";
 import { fnDadosTabelaPaga } from "@/utils/fnDadosTabelaPaga";
 import { IConcessaoPonto } from "@/app/types/IConcessaoPonto";
 import { IDadosTabela } from "@/app/types/IDadosTabela";
+import {
+  exportAllTablesToExcel,
+  exportTableToExcel,
+} from "@/utils/ExportTable/exportTable";
+import fnCaptureScreenshot from "@/utils/captureScreenshot/fnCaptureScreenshot";
 
 interface IMarkerObject {
   latitude: number;
@@ -56,7 +64,7 @@ type SimuladorContextType = {
   setSelectedPontos: React.Dispatch<React.SetStateAction<number[]>>;
   selectedPontosBonificados: number[];
   setSelectedPontosBonificados: React.Dispatch<React.SetStateAction<number[]>>;
-  captureScreenshot: () => Promise<void>;
+  downloadZip: () => Promise<void>;
   ref: RefObject<HTMLDivElement | null>;
   pracas: string[];
   markers: IMarkerObject[];
@@ -382,25 +390,6 @@ export const SimuladorProvider = ({
     cpm_medio = (investimento / impactos) * 1000;
   }
 
-  const captureScreenshot = async () => {
-    const html2canvas = (await import("html2canvas")).default;
-
-    html2canvas(ref.current!, { useCORS: true, scale: 2 })
-      .then((canvas) => {
-        const image = canvas.toDataURL("image/png", 1);
-        const link = document.createElement("a");
-        link.href = image;
-        link.download = `Proposta-${moment().format("DD/MM/YYYY")}`;
-        link.click();
-      })
-      .catch((error) => {
-        toast.error("Houve um erro ao realizar o Download da Proposta!", {
-          description: "Tente novamente.",
-        });
-        console.error("Erro ao capturar o print:", error);
-      });
-  };
-
   const dados_tabela_paga = fnDadosTabelaPaga(
     selectedProducts,
     dias,
@@ -423,6 +412,36 @@ export const SimuladorProvider = ({
     );
   }
 
+  const downloadZip = async () => {
+    const zip = new JSZip();
+
+    const imageDataUrl = await fnCaptureScreenshot(ref.current!);
+
+    if (!imageDataUrl) {
+      toast.error("Erro ao capturar a imagem para o ZIP.");
+      return;
+    }
+
+    const base64Image = imageDataUrl.split(",")[1];
+
+    let tabela = undefined;
+    if (isBonificadoPreenchido) {
+      tabela = exportAllTablesToExcel(
+        dados_tabela_paga,
+        dados_tabela_bonificada
+      );
+    } else {
+      tabela = exportTableToExcel(dados_tabela_paga);
+    }
+
+    zip.file("print_simulador.png", base64Image, { base64: true });
+    zip.file("tabela.xlsx", tabela);
+
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+
+    saveAs(zipBlob, `Proposta-${moment().format("DD/MM/YYYY")}.zip`);
+  };
+
   return (
     <SimuladorContext.Provider
       value={{
@@ -435,7 +454,7 @@ export const SimuladorProvider = ({
         selectedPontosBonificados,
         setSelectedPontosBonificados,
         pracas,
-        captureScreenshot,
+        downloadZip,
         ref,
         pontos:
           pontosQuery.data?.sort((a, b) => a.nome.localeCompare(b.nome)) || [],

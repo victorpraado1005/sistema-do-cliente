@@ -15,13 +15,9 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import TableContent from "@/app/simulador/components/TableContent";
-import {
-  exportAllTablesToExcel,
-  exportTableToExcel,
-} from "@/utils/ExportTable/exportTable";
 
 export default function HeaderSimulador() {
-  const { isBonificadoPreenchido, reset, valores, captureScreenshot } =
+  const { isBonificadoPreenchido, reset, valores, downloadZip } =
     useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
@@ -104,7 +100,7 @@ export default function HeaderSimulador() {
           <div>
             <Button
               className="w-32 h-8 text-xs bg-rzk_darker"
-              onClick={captureScreenshot}
+              onClick={downloadZip}
             >
               <Download />
               <strong>Download</strong>
