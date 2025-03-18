@@ -12,16 +12,7 @@ export default async function handler(
 
   console.log(token);
 
-  const allowedOrigins = [
-    "https://rzkdigital.retool.com",
-    "https://retool-edge.com",
-    "https://app.retool.com", // Algumas versões do Retool usam esse domínio
-  ];
-
-  // Se a origem estiver na lista, libera CORS para esse domínio
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
