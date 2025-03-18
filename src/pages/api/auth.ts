@@ -48,9 +48,9 @@ export default async function handler(
     return res.status(200).end();
   }
 
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Método não permitido" });
-  }
+  // if (req.method !== "POST") {
+  //   return res.status(405).json({ error: "Método não permitido" });
+  // }
 
   // const authHeader = req.headers.authorization;
 
@@ -86,10 +86,12 @@ export default async function handler(
     );
 
     // Retorna a URL para redirecionamento
-    return res.status(200).json({
-      success: true,
-      redirectUrl: "https://sistema-do-cliente.vercel.app/simulador",
-    });
+    // return res.status(200).json({
+    //   success: true,
+    //   redirectUrl: "https://sistema-do-cliente.vercel.app/simulador",
+    // });
+    res.writeHead(307, { Location: "/simulador" });
+    res.end();
   } catch (err) {
     console.error("Erro de autenticação:", err);
     return res.status(401).json({ error: "Token inválido ou expirado" });
