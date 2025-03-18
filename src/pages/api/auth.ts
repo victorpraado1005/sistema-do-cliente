@@ -8,19 +8,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // Captura o domínio de origem da requisição
-  const origin = req.headers.origin || "";
-  const forwarded = req.headers["x-forwarded-for"];
-  const ip =
-    typeof forwarded === "string"
-      ? forwarded.split(",")[0].trim()
-      : req.socket.remoteAddress;
+  const { token } = req.query;
 
-  const socket = req.socket;
-
-  console.log(socket);
-
-  console.log(ip);
+  console.log(token);
 
   const allowedOrigins = [
     "https://rzkdigital.retool.com",
