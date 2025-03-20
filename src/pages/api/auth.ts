@@ -25,43 +25,35 @@ export default async function handler(
     return res.status(200).end();
   }
 
-  // const token = req.query.token;
+  const token = req.query.token;
 
-  // if (!token || typeof token !== "string") {
-  //   return res.status(401).json({ error: "Token inválido" });
-  // }
+  if (!token || typeof token !== "string") {
+    return res.status(401).json({ error: "Token inválido" });
+  }
 
-  // console.log(token);
+  console.log(token);
 
-  console.log(req.headers.authorization);
-
-  // if (req.method !== "POST") {
-  //   return res.status(405).json({ error: "Método não permitido" });
-  // }
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Método não permitido" });
+  }
 
   try {
-    // const decoded = jwt.verify(token, SECRET) as JwtPayload;
-    // const { userEmail, userId } = decoded;
+    const decoded = jwt.verify(token, SECRET) as JwtPayload;
+    const { userEmail, userId } = decoded;
 
-    // if (!userEmail) {
-    //   return res.status(401).json({ error: "Token inválido" });
-    // }
+    if (!userEmail) {
+      return res.status(401).json({ error: "Token inválido" });
+    }
 
-    // // Busca usuário no PostgreSQL
-    // const user = await getUserByEmailAndRetoolId(userEmail, userId);
-    // if (!user) {
-    //   return res.status(401).json({ error: "Usuário não encontrado" });
-    // }
+    // Busca usuário no PostgreSQL
+    const user = await getUserByEmailAndRetoolId(userEmail, userId);
+    if (!user) {
+      return res.status(401).json({ error: "Usuário não encontrado" });
+    }
 
     // Gera um novo JWT de sessão com expiração mais longa
-    // const newToken = jwt.sign(
-    //   { userId: user.retool_id, userEmail: user.email },
-    //   SECRET,
-    //   { expiresIn: "7d" } // Expira em 7 dias
-    // );
-
     const newToken = jwt.sign(
-      { userId: 123, userEmail: 123 },
+      { userId: user.retool_id, userEmail: user.email },
       SECRET,
       { expiresIn: "7d" } // Expira em 7 dias
     );
@@ -71,11 +63,8 @@ export default async function handler(
       `authToken=${newToken}; Domain=sistema-do-cliente.vercel.app; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=604800`
     );
 
-    const redirectUrl = "https://www.sistema-do-cliente.vercel.app/simulador";
-
-    return res.status(200).send({ url: redirectUrl });
-    // res.writeHead(307, { Location: "/simulador" });
-    // res.end();
+    res.writeHead(307, { Location: "/simulador" });
+    res.end();
   } catch (err) {
     console.error("Erro de autenticação:", err);
     return res.status(401).json({ error: "Token inválido ou expirado" });
