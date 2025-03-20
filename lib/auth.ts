@@ -15,7 +15,7 @@ export async function auth(): Promise<null> {
   }
 
   try {
-    const { sub } = verify(accessToken, SECRET) as JwtPayload;
+    const { userId, userEmail } = verify(accessToken, SECRET) as JwtPayload;
 
     return null;
   } catch {

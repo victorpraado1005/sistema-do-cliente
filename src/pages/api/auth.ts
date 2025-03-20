@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { getUserByEmailAndRetoolId } from "@/lib/db";
+import { clerkClient } from "@clerk/nextjs/server";
 
 const SECRET = process.env.JWT_SECRET as string;
 
@@ -45,23 +45,25 @@ export default async function handler(
       return res.status(401).json({ error: "Token inválido" });
     }
 
-    // Busca usuário no PostgreSQL
-    const user = await getUserByEmailAndRetoolId(userEmail, userId);
-    if (!user) {
-      return res.status(401).json({ error: "Usuário não encontrado" });
+    const users = await clerkClient.users.getUserList({
+      emailAddress: [userEmail],
+    });
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    // Gera um novo JWT de sessão com expiração mais longa
-    const newToken = jwt.sign(
-      { userId: user.retool_id, userEmail: user.email },
-      SECRET,
-      { expiresIn: "7d" } // Expira em 7 dias
-    );
+    const user = users[0];
 
-    res.setHeader(
-      "Set-Cookie",
-      `authToken=${newToken}; Domain=sistema-do-cliente.vercel.app; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=604800`
-    );
+    // 🔐 Verificar se o retool_id bate com o valor salvo
+    if (user.privateMetadata?.retool_id !== userId) {
+      return res.status(401).json({ error: "Invalid retool_id" });
+    }
+
+    // ✅ Criar uma sessão diretamente sem senha
+    const session = await clerkClient.sessions.createSession({
+      userId: user.id,
+    });
 
     res.writeHead(307, { Location: "/simulador" });
     res.end();

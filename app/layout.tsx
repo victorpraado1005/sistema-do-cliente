@@ -3,6 +3,7 @@ import { K2D, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Toaster } from "sonner";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const k2d = K2D({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -23,12 +24,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-br">
       <body className={`${ibm.className} antialiased`}>
-        <Providers>
-          <Toaster richColors />
-          <div className="flex flex-col min-h-screen w-[1280px] m-auto">
-            <main className="flex-1">{children}</main>
-          </div>
-        </Providers>
+        <ClerkProvider>
+          <Providers>
+            <Toaster richColors />
+            <div className="flex flex-col min-h-screen w-[1280px] m-auto">
+              <main className="flex-1">{children}</main>
+            </div>
+          </Providers>
+        </ClerkProvider>
       </body>
     </html>
   );
