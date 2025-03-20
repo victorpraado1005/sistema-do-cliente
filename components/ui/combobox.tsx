@@ -17,7 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useSimulador } from "@/app/simulador/context/SimuladorContext";
+import { useSimulador } from "@/app/(sistema)/simulador/context/SimuladorContext";
 
 interface MultiSelectComboboxProps {
   options: IPonto[];

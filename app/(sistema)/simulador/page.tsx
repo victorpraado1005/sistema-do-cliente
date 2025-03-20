@@ -6,7 +6,6 @@ import HeaderSimulador from "@/components/Simulador/HeaderSimulador";
 import { SimuladorProvider } from "./context/SimuladorContext";
 import { simuladorSchema } from "./schemas/simuladorSchema";
 import LayoutCards from "./components/LayoutCards";
-import { pontos } from "@/utils/pontos";
 
 export default function Simulador() {
   const { register, watch, reset, setValue } = useForm({

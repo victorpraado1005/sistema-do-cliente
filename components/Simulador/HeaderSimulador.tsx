@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import FormSimuladorBonificado from "./FormSimuladorBonificado";
 import FormSimuladorPago from "./FormSimuladorPago";
-import { useSimulador } from "@/app/simulador/context/SimuladorContext";
+
 import { useState } from "react";
 import {
   Dialog,
@@ -21,8 +21,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import TableContent from "@/app/simulador/components/TableContent";
+
 import { Spinner } from "../ui/spinner";
+import { useSimulador } from "@/app/(sistema)/simulador/context/SimuladorContext";
+import TableContent from "@/app/(sistema)/simulador/components/TableContent";
 
 export default function HeaderSimulador() {
   const {

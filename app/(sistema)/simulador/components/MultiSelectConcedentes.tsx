@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import { useSimulador } from "@/app/simulador/context/SimuladorContext";
+import { useSimulador } from "../context/SimuladorContext";
 
 type Checked = DropdownMenuCheckboxItemProps["checked"];
 
@@ -78,14 +78,18 @@ export function MultiSelectConcedentes() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel className="font-extrabold text-rzk_darker">Concedentes</DropdownMenuLabel>
+        <DropdownMenuLabel className="font-extrabold text-rzk_darker">
+          Concedentes
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
 
         <DropdownMenuCheckboxItem
           checked={selectedItems.length === concedentes.length}
           onClick={toggleAllSelection}
         >
-          {selectedItems.length === concedentes.length ? "Desmarcar Todos" : "Selecionar Todos"}
+          {selectedItems.length === concedentes.length
+            ? "Desmarcar Todos"
+            : "Selecionar Todos"}
         </DropdownMenuCheckboxItem>
 
         <DropdownMenuSeparator />

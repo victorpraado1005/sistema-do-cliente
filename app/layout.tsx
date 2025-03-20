@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import { K2D, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header/Header";
 import { Providers } from "./providers";
 import { Toaster } from "sonner";
 
@@ -25,10 +24,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="pt-br">
       <body className={`${ibm.className} antialiased`}>
         <Providers>
+          <Toaster richColors />
           <div className="flex flex-col min-h-screen w-[1280px] m-auto">
-            <Header />
             <main className="flex-1">{children}</main>
-            <Toaster richColors />
           </div>
         </Providers>
       </body>

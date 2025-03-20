@@ -1,5 +1,3 @@
-import { useSimulador } from "@/app/simulador/context/SimuladorContext";
-
 import {
   Building,
   CalendarDays,
@@ -12,6 +10,7 @@ import { Input } from "../ui/input";
 import { MultiSelectDropdown } from "../ui/MultiSelectDropdown";
 import { useEffect, useMemo, useState } from "react";
 import { MultiSelectCombobox } from "../ui/combobox";
+import { useSimulador } from "@/app/(sistema)/simulador/context/SimuladorContext";
 
 export default function FormSimuladorBonificado() {
   const {

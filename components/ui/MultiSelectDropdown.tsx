@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import { useSimulador } from "@/app/simulador/context/SimuladorContext";
+import { useSimulador } from "@/app/(sistema)/simulador/context/SimuladorContext";
 
 interface MultiSelectDropdownProps {
   label: string;
