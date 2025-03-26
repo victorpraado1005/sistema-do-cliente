@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { fetchUser } from "@/lib/api";
 
 const SECRET = process.env.JWT_SECRET as string;
 
@@ -44,7 +45,11 @@ export default async function handler(
       return res.status(401).json({ error: "Token inválido" });
     }
 
-    const response = await fetch('https://rzkdigital-api-postgresql-dev-296118000750.southamerica-east1.run.app/thinlayer/colaborador');
+    const response = await fetchUser({
+      email: "victor.prado@rzkdigital.com.br ",
+    });
+
+    console.log(response);
 
     res.writeHead(307, { Location: "/simulador" });
     res.end();

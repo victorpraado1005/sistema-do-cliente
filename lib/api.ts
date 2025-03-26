@@ -36,3 +36,8 @@ export async function fetchConcessoesPonto() {
 export async function fetchProdutos() {
   return apiFetch("produto");
 }
+
+export async function fetchUser(params: Record<string, any>) {
+  const queryString = new URLSearchParams(params).toString();
+  return apiFetch(`colaborador?${queryString}`);
+}
