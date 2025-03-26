@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { clerkClient } from "@clerk/nextjs/server";
 
 const SECRET = process.env.JWT_SECRET as string;
 
@@ -45,25 +44,7 @@ export default async function handler(
       return res.status(401).json({ error: "Token inválido" });
     }
 
-    const users = await clerkClient.users.getUserList({
-      emailAddress: [userEmail],
-    });
-
-    if (users.length === 0) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    const user = users[0];
-
-    // 🔐 Verificar se o retool_id bate com o valor salvo
-    if (user.privateMetadata?.retool_id !== userId) {
-      return res.status(401).json({ error: "Invalid retool_id" });
-    }
-
-    // ✅ Criar uma sessão diretamente sem senha
-    const session = await clerkClient.sessions.createSession({
-      userId: user.id,
-    });
+    const response = await fetch('https://rzkdigital-api-postgresql-dev-296118000750.southamerica-east1.run.app/thinlayer/colaborador');
 
     res.writeHead(307, { Location: "/simulador" });
     res.end();
