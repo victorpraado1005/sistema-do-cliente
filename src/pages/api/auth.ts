@@ -83,7 +83,7 @@ export default async function handler(
     );
 
     res.writeHead(307, { Location: "/simulador" });
-    res.end();
+    return res.end();
   } catch (err) {
     console.error("Erro de autenticação:", err);
     return res.status(401).json({ error: "Token inválido ou expirado" });
