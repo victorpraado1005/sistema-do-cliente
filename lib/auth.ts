@@ -6,19 +6,19 @@ export async function getAccessToken() {
   return cookieStore.get("authToken")?.value;
 }
 
-export async function auth(): Promise<null> {
+export async function auth(): Promise<string | boolean> {
   const accessToken = await getAccessToken();
   const SECRET = process.env.JWT_SECRET as string;
 
   if (!accessToken) {
-    return null;
+    return false;
   }
 
   try {
-    const { id } = verify(accessToken, SECRET) as JwtPayload;
-
-    return id;
+    const { userId } = verify(accessToken, SECRET) as JwtPayload;
+    console.log("sub " + userId);
+    return true;
   } catch {
-    return null;
+    return false;
   }
 }

@@ -76,6 +76,8 @@ export default async function handler(
       expiresIn: "7d",
     });
 
+    console.log(newToken);
+
     // Define o token em um httpOnly Cookie seguro
     res.setHeader(
       "Set-Cookie",
