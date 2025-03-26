@@ -20,7 +20,6 @@ export default function CardMapsInvestimento({
   const mapRef = useRef<google.maps.Map | null>(null);
   const markerRefs = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
   const [mapLoaded, setMapLoaded] = React.useState(false);
-  console.log("renderizou no print");
 
   if (!apiKey || !mapId) {
     return <p>Erro: API Key ou Map ID não configurado.</p>;

@@ -2,6 +2,26 @@ import { NextApiRequest, NextApiResponse } from "next";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { fetchUser } from "@/lib/api";
 
+interface IUser {
+  apelido: string;
+  insert_autor: string;
+  id_colaborador: number;
+  data_nascimento: string;
+  escolaridade: string;
+  genero: string;
+  formacao: string;
+  telefone: string;
+  insert_data_horario: string;
+  email: string;
+  update_autor: string;
+  observacao: string;
+  update_data_horario: string;
+  id_externo_retool: number;
+  nome: string;
+  sobrenome: string;
+  id_externo_clerk: number;
+}
+
 const SECRET = process.env.JWT_SECRET as string;
 
 export default async function handler(
@@ -21,7 +41,6 @@ export default async function handler(
       "Access-Control-Allow-Headers",
       "Content-Type, Authorization"
     );
-    console.log("🟢 Preflight OPTIONS tratado com sucesso");
     return res.status(200).end();
   }
 
@@ -30,8 +49,6 @@ export default async function handler(
   if (!token || typeof token !== "string") {
     return res.status(401).json({ error: "Token inválido" });
   }
-
-  console.log(token);
 
   // if (req.method !== "POST") {
   //   return res.status(405).json({ error: "Método não permitido" });
@@ -45,11 +62,25 @@ export default async function handler(
       return res.status(401).json({ error: "Token inválido" });
     }
 
-    const response = await fetchUser({
-      email: "victor.prado@rzkdigital.com.br ",
+    const user: IUser[] = await fetchUser({
+      email: userEmail,
     });
 
-    console.log(response);
+    if (user[0].id_externo_retool != userId) {
+      res.writeHead(307, { Location: "/sign-in" });
+      return res.end();
+    }
+
+    // Gera um novo JWT de sessão com expiração mais longa
+    const newToken = jwt.sign({ userId: user[0].id_colaborador }, SECRET, {
+      expiresIn: "7d",
+    });
+
+    // Define o token em um httpOnly Cookie seguro
+    res.setHeader(
+      "Set-Cookie",
+      `authToken=${newToken}; Domain=sistema-do-cliente.vercel.app; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=604800`
+    );
 
     res.writeHead(307, { Location: "/simulador" });
     res.end();
