@@ -7,11 +7,11 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  const accessToken = await getAccessToken();
+  // const accessToken = await getAccessToken();
 
-  if (accessToken) {
-    redirect("/dashboard");
-  }
+  // if (accessToken) {
+  //   redirect("/dashboard");
+  // }
 
   return <div>{children}</div>;
 }
