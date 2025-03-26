@@ -16,8 +16,7 @@ export async function auth(): Promise<string | boolean> {
 
   try {
     const { userId } = verify(accessToken, SECRET) as JwtPayload;
-    console.log("sub " + userId);
-    return true;
+    return userId;
   } catch {
     return false;
   }

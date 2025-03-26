@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { fetchUser } from "@/lib/api";
+import { toast } from "sonner";
 
 interface IUser {
   apelido: string;
@@ -67,18 +68,15 @@ export default async function handler(
     });
 
     if (user[0].id_externo_retool != userId) {
+      toast.error("Não foi possível realizar o login!");
       res.writeHead(307, { Location: "/sign-in" });
       return res.end();
     }
 
-    // Gera um novo JWT de sessão com expiração mais longa
     const newToken = jwt.sign({ userId: user[0].id_colaborador }, SECRET, {
       expiresIn: "7d",
     });
 
-    console.log(newToken);
-
-    // Define o token em um httpOnly Cookie seguro
     res.setHeader(
       "Set-Cookie",
       `authToken=${newToken}; Domain=sistema-do-cliente.vercel.app; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=604800`
