@@ -33,9 +33,9 @@ export default async function handler(
 
   console.log(token);
 
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Método não permitido" });
-  }
+  // if (req.method !== "POST") {
+  //   return res.status(405).json({ error: "Método não permitido" });
+  // }
 
   try {
     const decoded = jwt.verify(token, SECRET) as JwtPayload;
