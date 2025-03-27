@@ -25,6 +25,7 @@ import {
 import { Spinner } from "../ui/spinner";
 import { useSimulador } from "@/app/(sistema)/simulador/context/SimuladorContext";
 import TableContent from "@/app/(sistema)/simulador/components/TableContent";
+import DialogCriarProposta from "@/app/(sistema)/simulador/components/DialogCriarProposta";
 
 export default function HeaderSimulador() {
   const {
@@ -116,7 +117,7 @@ export default function HeaderSimulador() {
         <div className="flex flex-col gap-2 items-center justify-center">
           <div className="w-32 h-8 text-xs bg-rzk_darker rounded-md">
             <Dialog>
-              <DialogTrigger className="w-full h-full text-white flex items-center justify-center font-bold gap-2">
+              <DialogTrigger className="w-full h-full text-white flex items-center justify-center font-bold gap-2 outline-none">
                 <Database className="size-4" />
                 Tabela
               </DialogTrigger>
@@ -149,10 +150,7 @@ export default function HeaderSimulador() {
             </Button>
           </div>
           <div>
-            <Button className="w-32 h-8 text-xs bg-rzk_green hover:bg-rzk_green/80">
-              <CirclePlus />
-              <strong>Criar Proposta</strong>
-            </Button>
+            <DialogCriarProposta />
           </div>
         </div>
       </div>
