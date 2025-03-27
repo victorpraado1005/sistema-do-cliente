@@ -8,7 +8,6 @@ import {
   ReactNode,
 } from "react";
 
-import { fetchUserData } from "@/lib/api";
 import { IUser } from "@/app/types/IUser";
 
 interface IUserContext {
@@ -24,14 +23,12 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const token = await fetch("api/auth/validate", {
+        const res = await fetch("/api/auth/validate", {
           credentials: "include",
         });
-        console.log("token: " + token);
-        const res = await fetchUserData({ uuid_colaborador: token });
         if (res.ok) {
-          const data = (await res.json()) as IUser;
-          setUser(data);
+          const data = (await res.json()) as IUser[];
+          setUser(data[0]);
         } else {
           console.error("Erro ao buscar dados do usuário");
         }

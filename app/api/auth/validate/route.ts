@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { JwtPayload, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { fetchUserData } from "@/lib/api";
 
 async function getAccessToken() {
   const cookieStore = await cookies();
@@ -20,7 +21,8 @@ export async function GET() {
 
   try {
     const { sub } = verify(accessToken, SECRET) as JwtPayload;
-    return NextResponse.json({ sub });
+    const res = await fetchUserData({ uuid_colaborador: sub });
+    return NextResponse.json(res);
   } catch (error) {
     return NextResponse.json(
       { error: "Token inválido ou expirado" },

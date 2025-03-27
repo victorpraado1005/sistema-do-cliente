@@ -26,7 +26,7 @@ export default function UserInfoHeader() {
         <p className="text-xs font-thin">{user?.email}</p>
       </div>
       <div className="border border-rzk_dark rounded-full w-8 h-8 text-center pt-0.5">
-        <p>JS</p>
+        <p>{`${user?.nome.charAt(0).toUpperCase()}${user?.sobrenome.charAt(0).toUpperCase()}`}</p>
       </div>
       {/* Componente DropdownMenu */}
       <DropdownMenuComponent
