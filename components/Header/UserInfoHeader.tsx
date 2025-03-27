@@ -3,10 +3,11 @@
 import { useUser } from "@/app/(sistema)/context/UserContext";
 import DropdownMenuComponent from "./DropDownMenuHeader";
 import SheetComponent from "./SheetEditUser";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { Spinner } from "../ui/spinner";
 
 export default function UserInfoHeader() {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -22,11 +23,25 @@ export default function UserInfoHeader() {
   return (
     <div className="flex space-x-2 items-center">
       <div className="flex flex-col items-end text-sm">
-        <strong>{`${user?.nome} ${user?.sobrenome}`}</strong>
-        <p className="text-xs font-thin">{user?.email}</p>
+        {isLoading ? (
+          <Suspense />
+        ) : (
+          <strong>{`${user?.nome} ${user?.sobrenome}`}</strong>
+        )}
+        {isLoading ? (
+          <Suspense />
+        ) : (
+          <p className="text-xs font-thin">{user?.email}</p>
+        )}
       </div>
       <div className="border border-rzk_dark rounded-full w-8 h-8 text-center pt-0.5">
-        <p>{`${user?.nome.charAt(0).toUpperCase()}${user?.sobrenome.charAt(0).toUpperCase()}`}</p>
+        {isLoading ? (
+          <div className="flex items-center justify-center h-full">
+            <Spinner />
+          </div>
+        ) : (
+          <p>{`${user?.nome.charAt(0).toUpperCase()}${user?.sobrenome.charAt(0).toUpperCase()}`}</p>
+        )}
       </div>
       {/* Componente DropdownMenu */}
       <DropdownMenuComponent
