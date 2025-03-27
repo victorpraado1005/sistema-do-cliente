@@ -2,26 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { fetchUser } from "@/lib/api";
 import { toast } from "sonner";
-
-interface IUser {
-  apelido: string;
-  insert_autor: string;
-  id_colaborador: number;
-  data_nascimento: string;
-  escolaridade: string;
-  genero: string;
-  formacao: string;
-  telefone: string;
-  insert_data_horario: string;
-  email: string;
-  update_autor: string;
-  observacao: string;
-  update_data_horario: string;
-  id_externo_retool: number;
-  nome: string;
-  sobrenome: string;
-  id_externo_clerk: number;
-}
+import { IUser } from "@/app/types/IUser";
 
 const SECRET = process.env.JWT_SECRET as string;
 
@@ -51,9 +32,9 @@ export default async function handler(
     return res.status(401).json({ error: "Token inválido" });
   }
 
-  // if (req.method !== "POST") {
-  //   return res.status(405).json({ error: "Método não permitido" });
-  // }
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Método não permitido" });
+  }
 
   try {
     const decoded = jwt.verify(token, SECRET) as JwtPayload;
@@ -68,12 +49,12 @@ export default async function handler(
     });
 
     if (user[0].id_externo_retool != userId) {
-      toast.error("Não foi possível realizar o login!");
       res.writeHead(307, { Location: "/sign-in" });
-      return res.end();
+      res.end();
+      return toast.error("Não foi possível realizar o login!");
     }
 
-    const newToken = jwt.sign({ userId: user[0].id_colaborador }, SECRET, {
+    const newToken = jwt.sign({ sub: user[0].uuid_colaborador }, SECRET, {
       expiresIn: "7d",
     });
 

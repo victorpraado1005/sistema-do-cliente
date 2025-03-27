@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header/Header";
+import { UserProvider } from "./context/UserContext";
 
 export default async function RootLayout({
   children,
@@ -16,8 +17,10 @@ export default async function RootLayout({
 
   return (
     <div className="flex flex-col min-h-screen w-[1280px] m-auto">
-      <Header />
-      <main className="flex-1">{children}</main>
+      <UserProvider>
+        <Header />
+        <main className="flex-1">{children}</main>
+      </UserProvider>
     </div>
   );
 }

@@ -41,3 +41,8 @@ export async function fetchUser(params: Record<string, any>) {
   const queryString = new URLSearchParams(params).toString();
   return apiFetch(`colaborador?${queryString}`);
 }
+
+export async function fetchUserData(params: Record<string, any>) {
+  const queryString = new URLSearchParams(params).toString();
+  return apiFetch(`colaborador?${queryString}`);
+}

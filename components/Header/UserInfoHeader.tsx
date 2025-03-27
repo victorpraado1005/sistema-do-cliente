@@ -1,10 +1,12 @@
 "use client";
 
+import { useUser } from "@/app/(sistema)/context/UserContext";
 import DropdownMenuComponent from "./DropDownMenuHeader";
 import SheetComponent from "./SheetEditUser";
 import { useState } from "react";
 
 export default function UserInfoHeader() {
+  const { user } = useUser();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -20,8 +22,8 @@ export default function UserInfoHeader() {
   return (
     <div className="flex space-x-2 items-center">
       <div className="flex flex-col items-end text-sm">
-        <strong>Juliana Silva</strong>
-        <p className="text-xs font-thin">juliana@itau-comercial.com.br</p>
+        <strong>{`${user?.nome} ${user?.sobrenome}`}</strong>
+        <p className="text-xs font-thin">{user?.email}</p>
       </div>
       <div className="border border-rzk_dark rounded-full w-8 h-8 text-center pt-0.5">
         <p>JS</p>

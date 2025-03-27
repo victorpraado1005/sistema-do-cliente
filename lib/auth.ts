@@ -6,7 +6,7 @@ export async function getAccessToken() {
   return cookieStore.get("authToken")?.value;
 }
 
-export async function auth(): Promise<string | boolean> {
+export async function auth(): Promise<string | boolean | undefined> {
   const accessToken = await getAccessToken();
   const SECRET = process.env.JWT_SECRET as string;
 
@@ -15,8 +15,8 @@ export async function auth(): Promise<string | boolean> {
   }
 
   try {
-    const { userId } = verify(accessToken, SECRET) as JwtPayload;
-    return userId;
+    const { sub } = verify(accessToken, SECRET) as JwtPayload;
+    return sub;
   } catch {
     return false;
   }
