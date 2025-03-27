@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { fetchUser } from "@/lib/api";
+
 import { toast } from "sonner";
 import { IUser } from "@/app/types/IUser";
+import { fetchUser } from "@/app/lib/api";
 
 const SECRET = process.env.JWT_SECRET as string;
 

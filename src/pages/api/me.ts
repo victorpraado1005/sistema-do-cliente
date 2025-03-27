@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { fetchUserData } from "@/lib/api";
+
 import cookie from "cookie";
 import { IUser } from "@/app/types/IUser";
+import { fetchUserData } from "@/app/lib/api";
 
 export default async function handler(
   req: NextApiRequest,

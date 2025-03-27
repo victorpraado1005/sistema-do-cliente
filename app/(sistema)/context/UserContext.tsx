@@ -1,7 +1,8 @@
 "use client";
+import { fetchUserData } from "@/app/lib/api";
+import { getAccessToken } from "@/app/lib/auth";
 import { IUser } from "@/app/types/IUser";
-import { fetchUserData } from "@/lib/api";
-import { getAccessToken } from "@/lib/auth";
+
 import {
   createContext,
   useState,
