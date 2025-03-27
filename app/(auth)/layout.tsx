@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { getAccessToken } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 export default async function RootLayout({
@@ -7,7 +7,7 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  const accessToken = await getAccessToken();
+  const accessToken = await auth();
 
   if (accessToken) {
     redirect("/dashboard");
