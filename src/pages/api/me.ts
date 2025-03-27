@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import cookie from "cookie";
 import { IUser } from "@/app/types/IUser";
-import { fetchUserData } from "@/app/lib/api";
+import { fetchUserData } from "@/lib/api";
 
 export default async function handler(
   req: NextApiRequest,

@@ -1,6 +1,6 @@
 import { IProduto } from "@/app/types/IProduto";
 import { fnCalcularSegundosFuncionamento } from "./fnCalcularSegundosFuncionamento";
-import { tabelaPreco } from "@/lib/tabelaPreco";
+import { tabelaPreco } from "@/app/lib/tabelaPreco";
 
 export function fnCalcularPrecoTabela(
   products: IProduto[],

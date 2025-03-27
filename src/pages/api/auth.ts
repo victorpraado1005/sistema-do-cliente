@@ -3,7 +3,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 import { toast } from "sonner";
 import { IUser } from "@/app/types/IUser";
-import { fetchUser } from "@/app/lib/api";
+import { fetchUser } from "@/lib/api";
 
 const SECRET = process.env.JWT_SECRET as string;
 

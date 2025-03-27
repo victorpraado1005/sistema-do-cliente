@@ -1,6 +1,5 @@
 "use client";
-import { fetchUserData } from "@/app/lib/api";
-import { getAccessToken } from "@/app/lib/auth";
+import { fetchUserData } from "@/lib/api";
 import { IUser } from "@/app/types/IUser";
 
 import {
@@ -24,7 +23,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const token = await getAccessToken();
+        const token = await fetch("api/auth/validate", {
+          credentials: "include",
+        });
         const res = await fetchUserData({ uuid_colaborador: token });
         if (res.ok) {
           const data = (await res.json()) as IUser;

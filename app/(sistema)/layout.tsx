@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header/Header";
 import { UserProvider } from "./context/UserContext";
-import { auth } from "../lib/auth";
+import { auth } from "@/lib/auth";
 
 export default async function RootLayout({
   children,
