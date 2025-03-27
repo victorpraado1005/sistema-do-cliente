@@ -1,3 +1,5 @@
+"use client";
+
 import { JwtPayload, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 
