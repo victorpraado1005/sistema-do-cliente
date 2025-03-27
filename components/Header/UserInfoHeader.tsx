@@ -31,7 +31,7 @@ export default function UserInfoHeader() {
         {isLoading ? (
           <Suspense />
         ) : (
-          <p className="text-xs font-thin">{user?.email}</p>
+          <p className="text-xs font-normal">{user?.email}</p>
         )}
       </div>
       <div className="border border-rzk_dark rounded-full w-8 h-8 text-center pt-0.5">
