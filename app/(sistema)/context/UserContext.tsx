@@ -1,6 +1,4 @@
 "use client";
-import { fetchUserData } from "@/lib/api";
-import { IUser } from "@/app/types/IUser";
 
 import {
   createContext,
@@ -9,6 +7,9 @@ import {
   useEffect,
   ReactNode,
 } from "react";
+
+import { fetchUserData } from "@/lib/api";
+import { IUser } from "@/app/types/IUser";
 
 interface IUserContext {
   user: IUser | null;
@@ -26,6 +27,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         const token = await fetch("api/auth/validate", {
           credentials: "include",
         });
+        console.log("token: " + token);
         const res = await fetchUserData({ uuid_colaborador: token });
         if (res.ok) {
           const data = (await res.json()) as IUser;
