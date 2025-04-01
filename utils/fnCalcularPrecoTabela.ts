@@ -8,7 +8,7 @@ export function fnCalcularPrecoTabela(
   saturacao: number,
   anoTabelaPreco: string
 ) {
-  return products?.reduce((acc, item) => {
+  const preco_tabela = products?.reduce((acc, item) => {
     const segundos_funcionamento = fnCalcularSegundosFuncionamento(
       item.horario_funcionamento_inicio,
       item.horario_funcionamento_termino
@@ -31,4 +31,6 @@ export function fnCalcularPrecoTabela(
         item.qtd_segundos_insercao
     );
   }, 0);
+
+  return preco_tabela;
 }

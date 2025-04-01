@@ -32,7 +32,7 @@ export default function Simulador() {
       setValue={setValue}
     >
       <HeaderSimulador />
-      <div className="">
+      <div>
         <LayoutCards />
       </div>
     </SimuladorProvider>

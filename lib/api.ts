@@ -1,3 +1,6 @@
+import { IProposta } from "@/app/types/IProposta";
+import { ISimulacao } from "@/app/types/ISimulacao";
+
 export async function apiFetch(endpoint: string, options: RequestInit = {}) {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -45,4 +48,18 @@ export async function fetchUser(params: Record<string, any>) {
 export async function fetchUserData(params: Record<string, any>) {
   const queryString = new URLSearchParams(params).toString();
   return apiFetch(`colaborador?${queryString}`);
+}
+
+export async function postProposta(proposta: IProposta) {
+  return apiFetch("proposta", {
+    method: "POST",
+    body: JSON.stringify(proposta),
+  });
+}
+
+export async function postSimulacao(simulacao: ISimulacao) {
+  return apiFetch("simulacao", {
+    method: "POST",
+    body: JSON.stringify(simulacao),
+  });
 }

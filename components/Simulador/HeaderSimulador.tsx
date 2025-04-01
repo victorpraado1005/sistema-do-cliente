@@ -1,6 +1,6 @@
 "use client";
 
-import { CirclePlus, Database, Download } from "lucide-react";
+import { Database, Download, MenuIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import FormSimuladorBonificado from "./FormSimuladorBonificado";
@@ -26,6 +26,8 @@ import { Spinner } from "../ui/spinner";
 import { useSimulador } from "@/app/(sistema)/simulador/context/SimuladorContext";
 import TableContent from "@/app/(sistema)/simulador/components/TableContent";
 import DialogCriarProposta from "@/app/(sistema)/simulador/components/DialogCriarProposta";
+import DialogSalvarProposta from "@/app/(sistema)/simulador/components/DialogSalvarProposta";
+import DropDownMenuSimulacoes from "@/app/(sistema)/simulador/components/DropDownMenuSimulacoes";
 
 export default function HeaderSimulador() {
   const {
@@ -56,7 +58,12 @@ export default function HeaderSimulador() {
     <div>
       <div className="flex justify-between">
         <div className="space-y-2">
-          <h1 className="text-2xl text-rzk_darker font-extrabold">Simulador</h1>
+          <div className="flex items-center gap-2">
+            <DropDownMenuSimulacoes />
+            <h1 className="text-2xl text-rzk_darker font-extrabold">
+              Simulador
+            </h1>
+          </div>
           <p className="text-sm font-light text-rzk_ligth">
             Confira abaixo os dados da sua simulação.
           </p>
@@ -114,8 +121,8 @@ export default function HeaderSimulador() {
           </Tabs>
         </div>
 
-        <div className="flex flex-col gap-2 items-center justify-center">
-          <div className="w-32 h-8 text-xs bg-rzk_darker rounded-md">
+        <div className="h-[80px] grid grid-cols-2 gap-2 my-auto">
+          <div className="w-32 h-8 text-xs bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all rounded-md">
             <Dialog>
               <DialogTrigger className="w-full h-full text-white flex items-center justify-center font-bold gap-2 outline-none">
                 <Database className="size-4" />
@@ -134,8 +141,11 @@ export default function HeaderSimulador() {
             </Dialog>
           </div>
           <div>
+            <DialogSalvarProposta />
+          </div>
+          <div>
             <Button
-              className="w-32 h-8 text-xs bg-rzk_darker"
+              className="w-32 h-8 text-xs bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all"
               onClick={downloadZip}
               disabled={isDownloading}
             >
