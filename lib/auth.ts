@@ -9,7 +9,6 @@ export async function getAccessToken() {
 export async function auth(): Promise<string | boolean | undefined> {
   const accessToken = await getAccessToken();
   const SECRET = process.env.JWT_SECRET as string;
-
   if (!accessToken) {
     return false;
   }

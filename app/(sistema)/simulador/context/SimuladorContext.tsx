@@ -24,7 +24,6 @@ import {
   fetchProdutos,
 } from "@/lib/api";
 import { RefObject } from "react";
-import { toast } from "sonner";
 import moment from "moment";
 
 import { IConcedente } from "@/app/types/IConcedente";
@@ -66,6 +65,8 @@ type SimuladorContextType = {
   setSelectedPontosBonificados: React.Dispatch<React.SetStateAction<number[]>>;
   selectedTabelaPreco: string;
   setSelectedTabelaPreco: React.Dispatch<React.SetStateAction<string>>;
+  selectedProducts: IProduto[];
+  selectedProductsBonificados: IProduto[];
   downloadZip: () => Promise<void>;
   ref: RefObject<HTMLDivElement | null>;
   pracas: string[];
@@ -466,6 +467,8 @@ export const SimuladorProvider = ({
         setSelectedPontosBonificados,
         selectedTabelaPreco,
         setSelectedTabelaPreco,
+        selectedProducts,
+        selectedProductsBonificados,
         pracas,
         downloadZip,
         ref,
