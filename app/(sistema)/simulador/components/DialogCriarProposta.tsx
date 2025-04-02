@@ -62,7 +62,10 @@ export default function DialogCriarProposta() {
     selectedTabelaPreco,
     selectedProducts,
     selectedProductsBonificados,
+    setSelectedPontos,
+    setSelectedPontosBonificados,
     isBonificadoPreenchido,
+    reset
   } = useSimulador();
   const { data: user } = useUserData();
   const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
@@ -149,6 +152,9 @@ export default function DialogCriarProposta() {
           "https://rzkdigital.retool.com/apps/adddb598-2821-11ef-9a86-4bf40b7b321c/Propostas"
         );
         setOpen(false);
+        reset();
+        setSelectedPontos([]);
+        setSelectedPontosBonificados([]);
       }
     } catch {
       toast.error("Houve um erro ao criar a proposta!", {

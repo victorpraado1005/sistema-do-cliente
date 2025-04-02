@@ -19,7 +19,7 @@ export default function FormSimuladorPago() {
     pontos,
     setValue,
     selectedPontos,
-    setSelectedPontos,
+    setSelectedPontos
   } = useSimulador();
   const [selectedConcedentes, setSelectedConcedentes] = useState<string[]>([]);
   const [selectedPracas, setSelectedPracas] = useState<string[]>([]);
