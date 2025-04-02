@@ -8,6 +8,9 @@ export interface ISimulacao {
     saturacao: number;
     qtd_segundos_insercao: number;
     is_bonificacao: boolean;
-    produtos: number[];
+    produtos: {
+      id_produto: number,
+      id_veiculacao: number
+    }[];
   }[];
 }

@@ -11,61 +11,6 @@ import {
 import { MenuIcon } from "lucide-react";
 import { useSimulador } from "../context/SimuladorContext";
 
-const simulacoes: ISimulacao[] = [
-  {
-    id_colaborador: 6,
-    nome: "Sadia_Galeria_2025_Dezembro_De_2025",
-    desconto: 20,
-    ano_preco_tabela: 2024,
-    veiculacoes: [
-      {
-        qtd_segundos_veiculacao: 86400,
-        saturacao: 1,
-        qtd_segundos_insercao: 10,
-        is_bonificacao: false,
-        produtos: [1, 2, 4],
-      },
-      {
-        qtd_segundos_veiculacao: 432000,
-        saturacao: 0.5,
-        qtd_segundos_insercao: 10,
-        is_bonificacao: true,
-        produtos: [1, 2, 30],
-      },
-    ],
-  },
-  {
-    id_colaborador: 6,
-    nome: "BK_Streetwise_2025",
-    desconto: 70,
-    ano_preco_tabela: 2025,
-    veiculacoes: [
-      {
-        qtd_segundos_veiculacao: 86400 * 2,
-        saturacao: 1,
-        qtd_segundos_insercao: 10,
-        is_bonificacao: false,
-        produtos: [1, 22, 30],
-      },
-    ],
-  },
-  {
-    id_colaborador: 6,
-    nome: "Nubank_Galeria_2025",
-    desconto: 30,
-    ano_preco_tabela: 2025,
-    veiculacoes: [
-      {
-        qtd_segundos_veiculacao: 86400,
-        saturacao: 1,
-        qtd_segundos_insercao: 10,
-        is_bonificacao: false,
-        produtos: [1, 2, 4],
-      },
-    ],
-  },
-];
-
 export default function DropDownMenuSimulacoes() {
   const {
     setValue,
@@ -74,6 +19,7 @@ export default function DropDownMenuSimulacoes() {
     setSelectedTabelaPreco,
     concessoes_ponto,
     produtos,
+    simulacao
   } = useSimulador();
 
   function handleAbrirSimulacao(simulacao: ISimulacao) {
@@ -81,9 +27,11 @@ export default function DropDownMenuSimulacoes() {
       (veiculacao) => !veiculacao.is_bonificacao
     )[0];
 
+    const produto_veiculacao_paga = veiculacao_paga.produtos.map(produto => produto.id_produto)
+
     const produtos_pagos = produtos
       .filter((produto) =>
-        veiculacao_paga.produtos.includes(produto.id_produto)
+        produto_veiculacao_paga.includes(produto.id_produto)
       )
       .map((produto) => produto.id_concessao_ponto);
 
@@ -103,9 +51,11 @@ export default function DropDownMenuSimulacoes() {
     )[0];
 
     if (veiculacao_bonificada) {
+      const produto_veiculacao_bonificada = veiculacao_bonificada.produtos.map(produto => produto.id_produto)
+
       const produtos_bonificados = produtos
         .filter((produto) =>
-          veiculacao_bonificada.produtos.includes(produto.id_produto)
+          produto_veiculacao_bonificada.includes(produto.id_produto)
         )
         .map((produto) => produto.id_concessao_ponto);
 
@@ -139,17 +89,17 @@ export default function DropDownMenuSimulacoes() {
           Minhas Simulações
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {simulacoes.map((simulacao, index) => (
+        {simulacao.map((s, index) => (
           <DropdownMenuItem key={index}>
             <div className="w-full p-2 flex items-center justify-between gap-4">
               <span>
-                {simulacao.nome.length > 30
-                  ? simulacao.nome.substring(0, 30) + "..."
-                  : simulacao.nome}
+                {s.nome.length > 30
+                  ? s.nome.substring(0, 30) + "..."
+                  : s.nome}
               </span>
               <Button
                 className="h-7 bg-rzk_green hover:bg-rzk_green/80 hover:transition-all"
-                onClick={() => handleAbrirSimulacao(simulacao)}
+                onClick={() => handleAbrirSimulacao(s)}
               >
                 Abrir
               </Button>

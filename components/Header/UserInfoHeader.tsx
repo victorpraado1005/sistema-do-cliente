@@ -5,6 +5,7 @@ import DropdownMenuComponent from "./DropDownMenuHeader";
 import SheetComponent from "./SheetEditUser";
 import { Suspense, useState } from "react";
 import { Spinner } from "../ui/spinner";
+import Image from "next/image";
 
 export default function UserInfoHeader() {
   const { user, isLoading } = useUser();
@@ -34,14 +35,27 @@ export default function UserInfoHeader() {
           <p className="text-xs font-normal">{user?.email}</p>
         )}
       </div>
-      <div className="border border-rzk_dark rounded-full w-8 h-8 text-center pt-0.5">
+      <div className="rounded-full w-11 h-11 text-center pt-0.5">
         {isLoading ? (
           <div className="flex items-center justify-center h-full">
             <Spinner />
           </div>
+        ) : user?.arquivos.filter(arquivo => arquivo.categoria === 'Foto reduzida')[0]?.url ? (
+          <Image
+            alt="Foto colaborador"
+            className="rounded-full"
+            src={
+              user?.arquivos.filter(arquivo => arquivo.categoria === 'Foto reduzida')[0].url
+            }
+            width={240}
+            height={240}
+            priority
+            quality={100}
+          />
         ) : (
           <p>{`${user?.nome.charAt(0).toUpperCase()}${user?.sobrenome.charAt(0).toUpperCase()}`}</p>
         )}
+
       </div>
       {/* Componente DropdownMenu */}
       <DropdownMenuComponent

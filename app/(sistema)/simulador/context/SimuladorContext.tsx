@@ -22,6 +22,7 @@ import {
   fetchConcessoesPonto,
   fetchPontos,
   fetchProdutos,
+  fetchSimulacao,
 } from "@/lib/api";
 import { RefObject } from "react";
 import moment from "moment";
@@ -48,6 +49,8 @@ import {
   exportTableToExcel,
 } from "@/utils/ExportTable/exportTable";
 import fnCaptureScreenshot from "@/utils/captureScreenshot/fnCaptureScreenshot";
+import { ISimulacao } from "@/app/types/ISimulacao";
+import { useUser } from "../../context/UserContext";
 
 interface IMarkerObject {
   latitude: number;
@@ -101,6 +104,7 @@ type SimuladorContextType = {
   produtos: any[];
   dados_tabela_paga: IDadosTabela[];
   dados_tabela_bonificada: IDadosTabela[];
+  simulacao: ISimulacao[];
   isLoading: boolean;
   error: any;
 };
@@ -130,6 +134,7 @@ export const SimuladorProvider = ({
     number[]
   >([]);
   const ref = useRef<HTMLDivElement>(null);
+  const { user } = useUser();
 
   const results = useQueries({
     queries: [
@@ -153,15 +158,24 @@ export const SimuladorProvider = ({
         queryFn: fetchProdutos,
         staleTime: 1000 * 60 * 5,
       },
+      {
+        queryKey: ["simulacao", user?.id_colaborador],
+        queryFn: ({ queryKey }) => {
+          const [, id_colaborador] = queryKey;
+          return fetchSimulacao({ id_colaborador: id_colaborador });
+        },
+        staleTime: 1000 * 60 * 5,
+      },
     ],
   });
 
-  const [pontosQuery, concessoesQuery, concessoesPontoQuery, produtosQuery] =
+  const [pontosQuery, concessoesQuery, concessoesPontoQuery, produtosQuery, simulacoesQuery] =
     results as [
       { data: any[]; isLoading: boolean; error: any },
       { data: IConcedente[]; isLoading: boolean; error: any },
       { data: IConcessaoPonto[]; isLoading: boolean; error: any },
       { data: IProduto[]; isLoading: boolean; error: any },
+      { data: ISimulacao[]; isLoading: boolean; error: any },
     ];
 
   const dias = Number(valores.dias) || 0;
@@ -480,6 +494,7 @@ export const SimuladorProvider = ({
           ) || [],
         concessoes_ponto: concessoesPontoQuery.data || [],
         produtos: produtosQuery.data || [],
+        simulacao: simulacoesQuery.data || [],
         dados_tabela_paga,
         dados_tabela_bonificada,
         isLoading,

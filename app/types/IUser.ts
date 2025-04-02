@@ -17,4 +17,8 @@ export interface IUser {
   escolaridade: string;
   genero: string;
   formacao: string;
+  arquivos: {
+    url: string,
+    categoria: string,
+  }[]
 }

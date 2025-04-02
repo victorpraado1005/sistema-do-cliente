@@ -40,7 +40,6 @@ export async function GET(request: Request) {
     const user = await fetchUser({ email: userEmail });
 
     if (user[0].id_externo_retool !== userId) {
-      // Redireciona para /sign-in
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
 

@@ -1,3 +1,4 @@
+import { useUser } from "@/app/(sistema)/context/UserContext";
 import { IProposta } from "@/app/types/IProposta";
 import { ISimulacao } from "@/app/types/ISimulacao";
 
@@ -38,6 +39,11 @@ export async function fetchConcessoesPonto() {
 
 export async function fetchProdutos() {
   return apiFetch("produto");
+}
+
+export async function fetchSimulacao(params: Record<string, any>) {
+  const queryString = new URLSearchParams(params).toString();
+  return apiFetch(`simulacao?${queryString}`);
 }
 
 export async function fetchUser(params: Record<string, any>) {

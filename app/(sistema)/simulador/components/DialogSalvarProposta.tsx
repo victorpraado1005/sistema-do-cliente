@@ -26,7 +26,10 @@ export default function DialogSalvarProposta() {
     selectedTabelaPreco,
     selectedProducts,
     selectedProductsBonificados,
+    setSelectedPontos,
+    setSelectedPontosBonificados,
     isBonificadoPreenchido,
+    reset
   } = useSimulador();
   const { data: user } = useUserData();
   const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
@@ -38,6 +41,7 @@ export default function DialogSalvarProposta() {
   const { nome } = watch();
 
   const [formData, setFormData] = React.useState<FormValues | null>(null);
+  const [open, setOpen] = React.useState<boolean>(false);
   const [isNomePreenchido, setIsNomePreenchido] =
     React.useState<boolean>(false);
 
@@ -84,6 +88,10 @@ export default function DialogSalvarProposta() {
       if (res) {
         toast.success("Simulação criada com sucesso!");
       }
+      setOpen(false);
+      reset();
+      setSelectedPontos([]);
+      setSelectedPontosBonificados([]);
     } catch {
       toast.error("Houve um erro ao criar a Simulação!", {
         description: "Tente novamente mais tarde.",
@@ -93,7 +101,7 @@ export default function DialogSalvarProposta() {
 
   return (
     <div className="w-32 h-8 text-xs text-rzk_dark">
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="w-full h-full text-white bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all rounded-md flex items-center justify-center font-bold gap-2 outline-none">
           <Save className="size-4" />
           <strong>Salvar</strong>
