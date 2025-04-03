@@ -1,37 +1,17 @@
+import { useSimulador } from "../context/SimuladorContext";
 import PieChartCard from "./PieChartCard";
 
-const chartData1 = [
-  { name: "Masculino", value: 39.11 },
-  { name: "Feminino", value: 28.02 },
-];
-
-const chartData2 = [
-  { name: "11 - 17", value: 15.94 },
-  { name: "18 - 30", value: 28.02 },
-  { name: "30 - 40", value: 28.02 },
-  { name: "40+", value: 28.02 },
-];
-
-const chartData3 = [
-  { name: "11 - 17", value: 15.94 },
-  { name: "18 - 30", value: 28.02 },
-  { name: "30 - 40", value: 28.02 },
-  { name: "40+", value: 28.02 },
-];
-
-const chartData4 = [
-  { name: "11 - 17", value: 15.94 },
-  { name: "18 - 30", value: 28.02 },
-  { name: "30 - 40", value: 28.02 },
-  { name: "40+", value: 28.02 },
-];
-
 export default function ContainerCharts() {
+  const {
+    dados_grafico_idade,
+    dados_grafico_genero,
+    dados_grafico_classe_social,
+  } = useSimulador();
   return (
-    <div className="flex items-start">
-      <PieChartCard data={chartData1} />
-      <PieChartCard data={chartData2} />
-      <PieChartCard data={chartData3} />
+    <div className="flex items-start  justify-start">
+      <PieChartCard title="Gênero" data={dados_grafico_genero} />
+      <PieChartCard title="Faixa Etária" data={dados_grafico_idade} />
+      <PieChartCard title="Classe Social" data={dados_grafico_classe_social} />
     </div>
   );
 }

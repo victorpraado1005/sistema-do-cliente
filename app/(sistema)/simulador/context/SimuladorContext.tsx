@@ -51,6 +51,10 @@ import {
 import fnCaptureScreenshot from "@/utils/captureScreenshot/fnCaptureScreenshot";
 import { ISimulacao } from "@/app/types/ISimulacao";
 import { useUser } from "../../context/UserContext";
+import fnCalcularGraficoIdade from "@/utils/fnCalcularGraficoIdade";
+import { ChartData } from "../components/PieChartCard";
+import fnCalcularGraficoGenero from "@/utils/fnCalcularGraficoGenero";
+import fnCalcularGraficoClasseSocial from "@/utils/fnCalcularGraficoClasseSocial";
 
 interface IMarkerObject {
   latitude: number;
@@ -74,6 +78,9 @@ type SimuladorContextType = {
   setIsSimulacaoOpen: React.Dispatch<React.SetStateAction<boolean>>;
   nomeSimulacao: string;
   setNameSimulacao: React.Dispatch<React.SetStateAction<string>>;
+  dados_grafico_idade: ChartData[];
+  dados_grafico_genero: ChartData[];
+  dados_grafico_classe_social: ChartData[];
   downloadZip: () => Promise<void>;
   ref: RefObject<HTMLDivElement | null>;
   pracas: string[];
@@ -447,6 +454,13 @@ export const SimuladorProvider = ({
     );
   }
 
+  const dados_grafico_idade = fnCalcularGraficoIdade(selectedPontos);
+
+  const dados_grafico_genero = fnCalcularGraficoGenero(selectedPontos);
+
+  const dados_grafico_classe_social =
+    fnCalcularGraficoClasseSocial(selectedPontos);
+
   const downloadZip = async () => {
     setIsDownloading(true);
     const zip = new JSZip();
@@ -500,6 +514,9 @@ export const SimuladorProvider = ({
         setNameSimulacao,
         pracas,
         downloadZip,
+        dados_grafico_idade,
+        dados_grafico_genero,
+        dados_grafico_classe_social,
         ref,
         pontos:
           pontosQuery.data?.sort((a, b) => a.nome.localeCompare(b.nome)) || [],
