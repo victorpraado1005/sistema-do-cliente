@@ -62,7 +62,6 @@ const meses = [
 export default function DialogCriarProposta({
   nomeProposta,
 }: DialogCriarPropostaProps) {
-  console.log(nomeProposta);
   const {
     valores,
     selectedTabelaPreco,

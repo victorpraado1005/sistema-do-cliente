@@ -1,6 +1,6 @@
 "use client";
 
-import { Database, Download, MenuIcon } from "lucide-react";
+import { CircleX, Database, Download, Eraser } from "lucide-react";
 import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import FormSimuladorBonificado from "./FormSimuladorBonificado";
@@ -28,6 +28,7 @@ import TableContent from "@/app/(sistema)/simulador/components/TableContent";
 import DialogCriarProposta from "@/app/(sistema)/simulador/components/DialogCriarProposta";
 import DialogSalvarProposta from "@/app/(sistema)/simulador/components/DialogSalvarProposta";
 import DropDownMenuSimulacoes from "@/app/(sistema)/simulador/components/DropDownMenuSimulacoes";
+import TooltipMain from "@/app/(sistema)/simulador/components/Tooltip";
 
 export default function HeaderSimulador() {
   const {
@@ -39,6 +40,10 @@ export default function HeaderSimulador() {
     isDownloading,
     isSimulacaoOpen,
     nomeSimulacao,
+    setNameSimulacao,
+    setIsSimulacaoOpen,
+    setSelectedPontos,
+    setSelectedPontosBonificados,
   } = useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
@@ -52,6 +57,20 @@ export default function HeaderSimulador() {
     setActiveTab("pago");
   };
 
+  const handleCloseSimulacao = () => {
+    reset();
+    setIsSimulacaoOpen(false);
+    setSelectedPontos([]);
+    setSelectedPontosBonificados([]);
+    setNameSimulacao("");
+  };
+
+  const handleResetSimulacao = () => {
+    reset();
+    setSelectedPontos([]);
+    setSelectedPontosBonificados([]);
+  };
+
   const selecionarTabelaPreco = (data: string) => {
     setSelectedTabelaPreco(data);
   };
@@ -60,21 +79,31 @@ export default function HeaderSimulador() {
     <div>
       <div className="flex justify-between">
         <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <DropDownMenuSimulacoes />
-            {isSimulacaoOpen || nomeSimulacao ? (
-              <h1 className="text-xl text-rzk_darker font-extrabold">
-                {nomeSimulacao.length > 20
-                  ? nomeSimulacao.substring(0, 20) + "..."
-                  : nomeSimulacao}
-              </h1>
-            ) : (
-              <h1 className="text-2xl text-rzk_darker font-extrabold">
-                Simulador
-              </h1>
+          <div className="flex items-center gap-2 justify-between">
+            <div className="flex gap-2">
+              <DropDownMenuSimulacoes />
+              {isSimulacaoOpen || nomeSimulacao ? (
+                <h1 className="text-xl text-rzk_darker font-extrabold">
+                  {nomeSimulacao.length > 20
+                    ? nomeSimulacao.substring(0, 20) + "..."
+                    : nomeSimulacao}
+                </h1>
+              ) : (
+                <h1 className="text-2xl text-rzk_darker font-extrabold">
+                  Simulador
+                </h1>
+              )}
+            </div>
+            {isSimulacaoOpen && (
+              <TooltipMain text="Fechar Simulação">
+                <CircleX
+                  className="text-red-600"
+                  onClick={handleCloseSimulacao}
+                />
+              </TooltipMain>
             )}
           </div>
-          <p className="text-sm font-light text-rzk_ligth">
+          <p className="text-sm font-light text-rzk_regular">
             Confira abaixo os dados da sua simulação.
           </p>
           <div className="flex gap-4 items-center pt-4">
@@ -120,6 +149,14 @@ export default function HeaderSimulador() {
                     Limpar Bonificação
                   </Button>
                 </>
+              )}
+              {!isSimulacaoOpen && valores.dias > 0 && activeTab === "pago" && (
+                <TooltipMain text="Resetar Simulação">
+                  <Eraser
+                    className="text-rzk_darker"
+                    onClick={handleResetSimulacao}
+                  />
+                </TooltipMain>
               )}
             </div>
             <TabsContent value="pago">
