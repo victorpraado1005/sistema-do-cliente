@@ -21,7 +21,6 @@ import { useUserData } from "@/hooks/useUserData";
 import { IProposta } from "@/app/types/IProposta";
 import { postProposta } from "@/lib/api";
 import { toast } from "sonner";
-import fnResetFormSimulacao from "../utils/fnResetFormSimulacao";
 
 interface FormValues {
   nome: string;
@@ -65,7 +64,7 @@ export default function DialogCriarProposta() {
     setSelectedPontos,
     setSelectedPontosBonificados,
     isBonificadoPreenchido,
-    reset
+    reset,
   } = useSimulador();
   const { data: user } = useUserData();
   const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
