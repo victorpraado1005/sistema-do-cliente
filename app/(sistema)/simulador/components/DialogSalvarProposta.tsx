@@ -13,7 +13,8 @@ import { useSimulador } from "../context/SimuladorContext";
 import { useUserData } from "@/hooks/useUserData";
 import { toast } from "sonner";
 import { IVeiculacao } from "./DialogCriarProposta";
-import { postSimulacao } from "@/lib/api";
+import { fetchSimulacao, postSimulacao } from "@/lib/api";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface FormValues {
   nome: string;
@@ -34,6 +35,7 @@ export interface IPostSimulacao {
 }
 
 export default function DialogSalvarProposta() {
+  const queryClient = useQueryClient();
   const {
     valores,
     selectedTabelaPreco,
@@ -42,6 +44,7 @@ export default function DialogSalvarProposta() {
     setSelectedPontos,
     setSelectedPontosBonificados,
     isBonificadoPreenchido,
+    setNameSimulacao,
     reset,
   } = useSimulador();
   const { data: user } = useUserData();
@@ -102,9 +105,17 @@ export default function DialogSalvarProposta() {
         toast.success("Simulação criada com sucesso!");
       }
       setOpen(false);
-      reset();
-      setSelectedPontos([]);
-      setSelectedPontosBonificados([]);
+      setNameSimulacao(data.nome);
+      //reset();
+      //setSelectedPontos([]);
+      //setSelectedPontosBonificados([]);
+      await queryClient.fetchQuery({
+        queryKey: ["simulacao", user?.id_colaborador],
+        queryFn: ({ queryKey }) => {
+          const [, id_colaborador] = queryKey;
+          return fetchSimulacao({ id_colaborador });
+        },
+      });
     } catch {
       toast.error("Houve um erro ao criar a Simulação!", {
         description: "Tente novamente mais tarde.",

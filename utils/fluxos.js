@@ -394,5 +394,14 @@ export const fluxos = [
     "parametros_grupo_1_c": 0.0928386062,
     "parametros_grupo_2_a": null,
     "id_ponto": 28
-  }
+  },
+  {
+    "Ponto": "Vila Nova Cachoeirinha",
+    "Tipo": "Terminal",
+    "parametros_grupo_1_a": 134016.4653,
+    "parametros_grupo_1_b": 0.038635493,
+    "parametros_grupo_1_c": 0.092036032,
+    "parametros_grupo_2_a": null,
+    "id_ponto": 20
+  },
 ]

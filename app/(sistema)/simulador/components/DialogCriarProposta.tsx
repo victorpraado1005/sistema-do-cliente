@@ -327,7 +327,7 @@ export default function DialogCriarProposta({
             <Button
               type="submit"
               className="w-[180px] m-auto bg-rzk_green hover:bg-rzk_green/85 mt-2"
-              disabled={!isNomePreenchido}
+              disabled={!isNomePreenchido && !nomeProposta}
             >
               Criar Proposta
             </Button>

@@ -62,7 +62,7 @@ export default function HeaderSimulador() {
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <DropDownMenuSimulacoes />
-            {isSimulacaoOpen ? (
+            {isSimulacaoOpen || nomeSimulacao ? (
               <h1 className="text-xl text-rzk_darker font-extrabold">
                 {nomeSimulacao.length > 20
                   ? nomeSimulacao.substring(0, 20) + "..."

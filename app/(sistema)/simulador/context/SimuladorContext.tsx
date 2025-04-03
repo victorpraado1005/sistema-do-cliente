@@ -15,7 +15,7 @@ import {
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { z } from "zod";
-import { useQueries } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { simuladorSchema } from "../schemas/simuladorSchema";
 import {
   fetchConcessoes,
