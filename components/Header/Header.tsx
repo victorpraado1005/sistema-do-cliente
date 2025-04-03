@@ -25,35 +25,38 @@ export default function Header() {
           <div className="border-l border-rzk_darker h-full"></div>
           <nav>
             <ul className="flex space-x-4 text-sm">
-              <li>
+              {/* <li>
                 <Link
                   href="/dashboard"
-                  className={`${isActive("/dashboard")
-                    ? "font-extrabold"
-                    : "font-extralight"
-                    }`}
+                  className={`${
+                    isActive("/dashboard")
+                      ? "font-extrabold"
+                      : "font-extralight"
+                  }`}
                 >
                   Dashboard
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link
                   href="/campanhas"
-                  className={`${isActive("/campanhas")
-                    ? "font-extrabold"
-                    : "font-extralight"
-                    }`}
+                  className={`${
+                    isActive("/campanhas")
+                      ? "font-extrabold"
+                      : "font-extralight"
+                  }`}
                 >
                   Campanhas
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href="/simulador"
-                  className={`${isActive("/simulador")
-                    ? "font-extrabold"
-                    : "font-extralight"
-                    }`}
+                  className={`${
+                    isActive("/simulador")
+                      ? "font-extrabold"
+                      : "font-extralight"
+                  }`}
                 >
                   Simulador
                 </Link>

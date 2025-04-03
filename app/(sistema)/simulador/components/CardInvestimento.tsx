@@ -9,7 +9,7 @@ import {
 import { useSimulador } from "../context/SimuladorContext";
 
 export default function CardInvestimento() {
-  const { resultados, valores } = useSimulador();
+  const { resultados, valores, selectedPontos } = useSimulador();
 
   return (
     <div className="w-[270px] border border-rzk_ligth rounded-2xl">
@@ -34,7 +34,7 @@ export default function CardInvestimento() {
           <div className="flex flex-col">
             <span className="text-lg font-ligth w-full text-right">Pontos</span>
             <span className="font-extrabold text-lg text-rzk_green text-right">
-              {valores.pontos.length}
+              {selectedPontos.length}
             </span>
           </div>
         </div>

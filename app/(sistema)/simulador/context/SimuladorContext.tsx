@@ -70,6 +70,10 @@ type SimuladorContextType = {
   setSelectedTabelaPreco: React.Dispatch<React.SetStateAction<string>>;
   selectedProducts: IProduto[];
   selectedProductsBonificados: IProduto[];
+  isSimulacaoOpen: boolean;
+  setIsSimulacaoOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  nomeSimulacao: string;
+  setNameSimulacao: React.Dispatch<React.SetStateAction<string>>;
   downloadZip: () => Promise<void>;
   ref: RefObject<HTMLDivElement | null>;
   pracas: string[];
@@ -128,6 +132,8 @@ export const SimuladorProvider = ({
   const [error, setError] = useState<any>(null);
   const [selectedPontos, setSelectedPontos] = useState<number[]>([]);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isSimulacaoOpen, setIsSimulacaoOpen] = useState<boolean>(false);
+  const [nomeSimulacao, setNameSimulacao] = useState<string>("");
   const [selectedTabelaPreco, setSelectedTabelaPreco] =
     useState<string>("2025");
   const [selectedPontosBonificados, setSelectedPontosBonificados] = useState<
@@ -169,14 +175,19 @@ export const SimuladorProvider = ({
     ],
   });
 
-  const [pontosQuery, concessoesQuery, concessoesPontoQuery, produtosQuery, simulacoesQuery] =
-    results as [
-      { data: any[]; isLoading: boolean; error: any },
-      { data: IConcedente[]; isLoading: boolean; error: any },
-      { data: IConcessaoPonto[]; isLoading: boolean; error: any },
-      { data: IProduto[]; isLoading: boolean; error: any },
-      { data: ISimulacao[]; isLoading: boolean; error: any },
-    ];
+  const [
+    pontosQuery,
+    concessoesQuery,
+    concessoesPontoQuery,
+    produtosQuery,
+    simulacoesQuery,
+  ] = results as [
+    { data: any[]; isLoading: boolean; error: any },
+    { data: IConcedente[]; isLoading: boolean; error: any },
+    { data: IConcessaoPonto[]; isLoading: boolean; error: any },
+    { data: IProduto[]; isLoading: boolean; error: any },
+    { data: ISimulacao[]; isLoading: boolean; error: any },
+  ];
 
   const dias = Number(valores.dias) || 0;
   const dias_bonificados = Number(valores.dias_bonificados) || 0;
@@ -483,6 +494,10 @@ export const SimuladorProvider = ({
         setSelectedTabelaPreco,
         selectedProducts,
         selectedProductsBonificados,
+        isSimulacaoOpen,
+        setIsSimulacaoOpen,
+        nomeSimulacao,
+        setNameSimulacao,
         pracas,
         downloadZip,
         ref,

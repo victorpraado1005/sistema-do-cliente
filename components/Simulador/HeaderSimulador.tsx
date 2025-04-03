@@ -37,6 +37,8 @@ export default function HeaderSimulador() {
     downloadZip,
     setSelectedTabelaPreco,
     isDownloading,
+    isSimulacaoOpen,
+    nomeSimulacao,
   } = useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
@@ -60,9 +62,17 @@ export default function HeaderSimulador() {
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <DropDownMenuSimulacoes />
-            <h1 className="text-2xl text-rzk_darker font-extrabold">
-              Simulador
-            </h1>
+            {isSimulacaoOpen ? (
+              <h1 className="text-xl text-rzk_darker font-extrabold">
+                {nomeSimulacao.length > 20
+                  ? nomeSimulacao.substring(0, 20) + "..."
+                  : nomeSimulacao}
+              </h1>
+            ) : (
+              <h1 className="text-2xl text-rzk_darker font-extrabold">
+                Simulador
+              </h1>
+            )}
           </div>
           <p className="text-sm font-light text-rzk_ligth">
             Confira abaixo os dados da sua simulação.
