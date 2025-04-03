@@ -13,11 +13,24 @@ import { useSimulador } from "../context/SimuladorContext";
 import { useUserData } from "@/hooks/useUserData";
 import { toast } from "sonner";
 import { IVeiculacao } from "./DialogCriarProposta";
-import { ISimulacao } from "@/app/types/ISimulacao";
 import { postSimulacao } from "@/lib/api";
 
 interface FormValues {
   nome: string;
+}
+
+export interface IPostSimulacao {
+  id_colaborador: number;
+  nome: string;
+  desconto: number;
+  ano_preco_tabela: number;
+  veiculacoes: {
+    qtd_segundos_veiculacao: number;
+    saturacao: number;
+    qtd_segundos_insercao: number;
+    is_bonificacao: boolean;
+    produtos: number[];
+  }[];
 }
 
 export default function DialogSalvarProposta() {
@@ -29,7 +42,7 @@ export default function DialogSalvarProposta() {
     setSelectedPontos,
     setSelectedPontosBonificados,
     isBonificadoPreenchido,
-    reset
+    reset,
   } = useSimulador();
   const { data: user } = useUserData();
   const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
@@ -75,7 +88,7 @@ export default function DialogSalvarProposta() {
       veiculacoes = veiculacoes.concat(veiculacao_bonificada);
     }
 
-    const simulacao: ISimulacao = {
+    const simulacao: IPostSimulacao = {
       nome: data.nome,
       id_colaborador: user?.id_colaborador!,
       ano_preco_tabela: Number(selectedTabelaPreco),

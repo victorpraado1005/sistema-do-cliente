@@ -1,4 +1,5 @@
 import { useUser } from "@/app/(sistema)/context/UserContext";
+import { IPostSimulacao } from "@/app/(sistema)/simulador/components/DialogSalvarProposta";
 import { IProposta } from "@/app/types/IProposta";
 import { ISimulacao } from "@/app/types/ISimulacao";
 
@@ -63,7 +64,7 @@ export async function postProposta(proposta: IProposta) {
   });
 }
 
-export async function postSimulacao(simulacao: ISimulacao) {
+export async function postSimulacao(simulacao: IPostSimulacao) {
   return apiFetch("simulacao", {
     method: "POST",
     body: JSON.stringify(simulacao),
