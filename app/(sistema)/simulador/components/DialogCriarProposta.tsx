@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Dialog,
@@ -31,6 +31,10 @@ interface FormValues {
   ano_competencia: number;
 }
 
+interface DialogCriarPropostaProps {
+  nomeProposta: string | undefined;
+}
+
 export interface IVeiculacao {
   qtd_segundos_veiculacao: number;
   saturacao: number;
@@ -55,7 +59,10 @@ const meses = [
   { value: 12, label: "Dezembro" },
 ];
 
-export default function DialogCriarProposta() {
+export default function DialogCriarProposta({
+  nomeProposta,
+}: DialogCriarPropostaProps) {
+  console.log(nomeProposta);
   const {
     valores,
     selectedTabelaPreco,
@@ -69,7 +76,7 @@ export default function DialogCriarProposta() {
   const { data: user } = useUserData();
   const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
     defaultValues: {
-      nome: "",
+      nome: nomeProposta,
       modelo: "Por inserção",
       status: "Frio",
       categoria: "Padrão",
@@ -78,13 +85,18 @@ export default function DialogCriarProposta() {
     },
   });
 
+  useEffect(() => {
+    if (nomeProposta) {
+      setValue("nome", nomeProposta);
+    }
+  }, [nomeProposta, setValue]);
+
   const { categoria, modelo, status, mes_competencia, ano_competencia } =
     watch();
 
-  const [formData, setFormData] = React.useState<FormValues | null>(null);
-  const [open, setOpen] = React.useState<boolean>(false);
-  const [isNomePreenchido, setIsNomePreenchido] =
-    React.useState<boolean>(false);
+  const [formData, setFormData] = useState<FormValues | null>(null);
+  const [open, setOpen] = useState<boolean>(false);
+  const [isNomePreenchido, setIsNomePreenchido] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setFormData(data);

@@ -40,12 +40,16 @@ export default function UserInfoHeader() {
           <div className="flex items-center justify-center h-full">
             <Spinner />
           </div>
-        ) : user?.arquivos.filter(arquivo => arquivo.categoria === 'Foto reduzida')[0]?.url ? (
+        ) : user?.arquivos.filter(
+            (arquivo) => arquivo.categoria === "Foto reduzida"
+          )[0]?.url ? (
           <Image
             alt="Foto colaborador"
             className="rounded-full"
             src={
-              user?.arquivos.filter(arquivo => arquivo.categoria === 'Foto reduzida')[0].url
+              user?.arquivos.filter(
+                (arquivo) => arquivo.categoria === "Foto reduzida"
+              )[0].url
             }
             width={240}
             height={240}
@@ -55,16 +59,13 @@ export default function UserInfoHeader() {
         ) : (
           <p>{`${user?.nome.charAt(0).toUpperCase()}${user?.sobrenome.charAt(0).toUpperCase()}`}</p>
         )}
-
       </div>
-      {/* Componente DropdownMenu */}
       <DropdownMenuComponent
         isOpen={isDropdownOpen}
         onOpenChange={setIsDropdownOpen}
         onOpenSheet={handleSheetOpen}
       />
 
-      {/* Componente Sheet */}
       <SheetComponent isOpen={isSheetOpen} onClose={handleSheetClose} />
     </div>
   );

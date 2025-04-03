@@ -24,18 +24,18 @@ const DropdownMenuComponent: React.FC<DropdownMenuComponentProps> = ({
       <DropdownMenuTrigger asChild>
         <ChevronDown />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="mt-2 text-rzk_darker">
+      <DropdownMenuContent className="mt-4 text-rzk_darker">
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={onOpenSheet}>
             <User />
             <span>Minha Conta</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+        {/* <DropdownMenuSeparator />
         <DropdownMenuItem>
           <LogOut />
           <span>Sair</span>
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

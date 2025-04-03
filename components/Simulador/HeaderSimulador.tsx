@@ -170,7 +170,7 @@ export default function HeaderSimulador() {
             </Button>
           </div>
           <div>
-            <DialogCriarProposta />
+            <DialogCriarProposta nomeProposta={nomeSimulacao} />
           </div>
         </div>
       </div>

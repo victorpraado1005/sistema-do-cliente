@@ -7,6 +7,7 @@ import {
 } from "../ui/sheet";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useUser } from "@/app/(sistema)/context/UserContext";
 
 interface SheetComponentProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface SheetComponentProps {
 }
 
 const SheetComponent: React.FC<SheetComponentProps> = ({ isOpen, onClose }) => {
+  const { user } = useUser();
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent>
@@ -26,18 +28,17 @@ const SheetComponent: React.FC<SheetComponentProps> = ({ isOpen, onClose }) => {
         <div className="mt-4 flex flex-col gap-4">
           <div className="space-y-2">
             <p>Nome:</p>
-            <Input className="w-72" placeholder="Juliana Silva" />
+            <Input className="w-72" value={user?.nome} disabled />
           </div>
           <div className="space-y-2">
             <p>E-mail:</p>
-            <Input
-              className="w-72"
-              placeholder="juliana@itau-comercial.com.br"
-            />
+            <Input className="w-72" value={user?.email} disabled />
           </div>
         </div>
         <div className="mt-8">
-          <Button className="bg-rzk_darker w-72 font-extrabold">Salvar</Button>
+          <Button className="bg-rzk_darker w-72 font-extrabold" disabled>
+            Editar
+          </Button>
         </div>
       </SheetContent>
     </Sheet>
