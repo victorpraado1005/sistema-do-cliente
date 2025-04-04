@@ -46,7 +46,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                   Praças
                 </span>
               </div>
-              <span className="font-extrabold text-rzk_green text-right">
+              <span className="font-extrabold text-rzk_green text-right text-xs mt-1">
                 {pracas.join(", ")}
               </span>
             </div>

@@ -70,7 +70,7 @@ export default function CardNumerosCampanhaPaga() {
                 Praças
               </span>
             </div>
-            <span className="font-extrabold text-lg text-rzk_green text-right">
+            <span className="font-extrabold text-xs text-rzk_green text-right">
               {pracas.join(", ")}
             </span>
           </div>
