@@ -8,7 +8,7 @@ export default function ContainerCharts() {
     dados_grafico_classe_social,
   } = useSimulador();
   return (
-    <div className="flex items-start  justify-start">
+    <div className="flex items-center justify-center">
       <PieChartCard title="Gênero" data={dados_grafico_genero} />
       <PieChartCard title="Faixa Etária" data={dados_grafico_idade} />
       <PieChartCard title="Classe Social" data={dados_grafico_classe_social} />

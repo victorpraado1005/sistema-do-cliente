@@ -39,7 +39,7 @@ export default function LayoutCards() {
             <div className="flex gap-2 mt-2">
               <CardMapsInvestimento markers={markers} />
               <CardMapsInvestimento markers={markers_bonificados} />
-              <div className="w-[700px] border border-rzk_ligth rounded-2xl py-2">
+              <div className="w-[700px] border border-rzk_ligth rounded-2xl flex items-center justify-center">
                 <ContainerCharts />
               </div>
             </div>
