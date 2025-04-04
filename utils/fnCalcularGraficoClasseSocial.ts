@@ -1,7 +1,7 @@
 import { fluxos } from "./fluxos";
 
 export default function fnCalcularGraficoClasseSocial(pontos: number[]) {
-  const dados = fluxos.filter((fluxo) => pontos.includes(fluxo.id_ponto));
+  const dados = fluxos.filter((fluxo) => pontos?.includes(fluxo.id_ponto));
   const classe_a =
     (dados.reduce((acc, fluxo) => acc + fluxo.classe_a, 0) / dados.length) *
     100;

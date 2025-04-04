@@ -458,7 +458,7 @@ export const SimuladorProvider = ({
   let dados_grafico_genero = [];
   let dados_grafico_classe_social = [];
   if (!pontos_totais.length) {
-    const pontos_totais = pontosQuery.data.map((ponto) => ponto.id_ponto);
+    const pontos_totais = pontosQuery.data?.map((ponto) => ponto.id_ponto);
     dados_grafico_idade = fnCalcularGraficoIdade(pontos_totais);
     dados_grafico_genero = fnCalcularGraficoGenero(pontos_totais);
     dados_grafico_classe_social = fnCalcularGraficoClasseSocial(pontos_totais);

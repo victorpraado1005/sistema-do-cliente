@@ -86,7 +86,6 @@ export default function DropDownMenuSimulacoes() {
         veiculacao_bonificada.qtd_segundos_veiculacao / 86400
       );
       setValue("saturacao_bonificada", veiculacao_bonificada.saturacao);
-      console.log(selectedPontosBonificados);
     } else {
       setValue("dias_bonificados", 0);
       setSelectedPontosBonificados([]);

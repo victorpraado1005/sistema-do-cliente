@@ -2,8 +2,7 @@ import { useSimulador } from "@/app/(sistema)/simulador/context/SimuladorContext
 import { fluxos } from "./fluxos";
 
 export default function fnCalcularGraficoIdade(pontos: number[]) {
-  console.log(pontos);
-  const dados = fluxos.filter((fluxo) => pontos.includes(fluxo.id_ponto));
+  const dados = fluxos.filter((fluxo) => pontos?.includes(fluxo.id_ponto));
   const _11a17 =
     (dados.reduce((acc, fluxo) => acc + fluxo["11_a_17"], 0) / dados.length) *
     100;
