@@ -15,13 +15,25 @@ export default function TableContent() {
   const { dados_tabela_paga, dados_tabela_bonificada, isBonificadoPreenchido } =
     useSimulador();
   const [activeTab, setActiveTab] = useState("pago");
+
   const handleExport = () => {
+    let data = new Blob();
     if (isBonificadoPreenchido) {
-      exportAllTablesToExcel(dados_tabela_paga, dados_tabela_bonificada);
+      data = exportAllTablesToExcel(dados_tabela_paga, dados_tabela_bonificada);
     } else {
-      exportTableToExcel(dados_tabela_paga);
+      data = exportTableToExcel(dados_tabela_paga);
     }
+
+    const url = window.URL.createObjectURL(data);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "tabela.xlsx";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   };
+
   return (
     <div>
       <Tabs value={activeTab} onValueChange={setActiveTab}>

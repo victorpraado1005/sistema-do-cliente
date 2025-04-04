@@ -10,7 +10,7 @@ import { fnCalcularAlcance } from "./fnCalcularAlcance";
 import { fnCalcularFrequenciaMedia } from "./fnCalcularFrequenciaMedia";
 import { fnCalculcarTRP } from "./fnCalcularTRP";
 
-export function fnDadosTabelaPaga(
+export function fnDadosTabela(
   products: IProduto[],
   dias: number,
   desconto: number,
@@ -49,6 +49,7 @@ export function fnDadosTabelaPaga(
     return {
       id_ponto,
       nome_ponto,
+      dias,
       faces,
       visitas: visitas.toLocaleString("pt-br"),
       insercoes: insercoes.toLocaleString("pt-br"),

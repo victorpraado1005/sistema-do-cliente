@@ -19,7 +19,7 @@ export default function FormSimuladorPago() {
     pontos,
     setValue,
     selectedPontos,
-    setSelectedPontos
+    setSelectedPontos,
   } = useSimulador();
   const [selectedConcedentes, setSelectedConcedentes] = useState<string[]>([]);
   const [selectedPracas, setSelectedPracas] = useState<string[]>([]);
@@ -39,6 +39,7 @@ export default function FormSimuladorPago() {
         index === self.findIndex((obj) => obj.id === item.id)
     );
 
+  console.log(pontos);
   const filteredPontos = useMemo(() => {
     return pontos.filter(
       (ponto) =>

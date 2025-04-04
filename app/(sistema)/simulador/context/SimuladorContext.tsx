@@ -41,7 +41,7 @@ import { fnCalculcarDescontoMedio } from "@/utils/fnCalcularDescontoMedio";
 import { fnCalcularUsuariosUnicosPagoeBonificada } from "@/utils/fnCalcularUsuariosUnicosPagoeBonificada";
 import { fnCalcularUsuariosUnicosPagos } from "@/utils/fnCalcularUsuariosUnicosPagos";
 import { fnCalcularVisitasPagasEBonificadas } from "@/utils/fnCalcularVisitasPagasEBonificadas";
-import { fnDadosTabelaPaga } from "@/utils/fnDadosTabelaPaga";
+import { fnDadosTabela } from "@/utils/fnDadosTabela";
 import { IConcessaoPonto } from "@/app/types/IConcessaoPonto";
 import { IDadosTabela } from "@/app/types/IDadosTabela";
 import {
@@ -432,7 +432,7 @@ export const SimuladorProvider = ({
     cpm_medio = (investimento / impactos) * 1000;
   }
 
-  const dados_tabela_paga = fnDadosTabelaPaga(
+  const dados_tabela_paga = fnDadosTabela(
     selectedProducts,
     dias,
     desconto,
@@ -443,11 +443,11 @@ export const SimuladorProvider = ({
 
   let dados_tabela_bonificada: IDadosTabela[] = [];
   if (isBonificadoPreenchido) {
-    dados_tabela_bonificada = fnDadosTabelaPaga(
+    dados_tabela_bonificada = fnDadosTabela(
       selectedProductsBonificados,
-      dias,
+      dias_bonificados,
       desconto,
-      valores.saturacao,
+      valores.saturacao_bonificada,
       concessoesPontoQuery.data,
       pontosQuery.data,
       isBonificadoPreenchido

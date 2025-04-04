@@ -15,6 +15,10 @@ const columns: ColumnDef<IDadosTabela>[] = [
     header: "Ponto",
   },
   {
+    accessorKey: "dias",
+    header: "Dias",
+  },
+  {
     accessorKey: "faces",
     header: "Faces",
   },
