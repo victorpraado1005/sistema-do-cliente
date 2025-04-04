@@ -454,12 +454,12 @@ export const SimuladorProvider = ({
     );
   }
 
-  const dados_grafico_idade = fnCalcularGraficoIdade(selectedPontos);
+  const dados_grafico_idade = fnCalcularGraficoIdade(pontos_totais);
 
-  const dados_grafico_genero = fnCalcularGraficoGenero(selectedPontos);
+  const dados_grafico_genero = fnCalcularGraficoGenero(pontos_totais);
 
   const dados_grafico_classe_social =
-    fnCalcularGraficoClasseSocial(selectedPontos);
+    fnCalcularGraficoClasseSocial(pontos_totais);
 
   const downloadZip = async () => {
     setIsDownloading(true);
