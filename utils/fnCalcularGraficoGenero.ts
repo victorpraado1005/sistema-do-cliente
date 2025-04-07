@@ -12,7 +12,7 @@ export default function fnCalcularGraficoGenero(
   let masculino = 0;
   let feminino = 0;
 
-  if (isBonificadoPreenchido) {
+  if (isBonificadoPreenchido && pontos.length && pontos_bonificados?.length) {
     const pontos_pago_e_bonificados = pontos.filter((ponto) =>
       pontos_bonificados!.includes(ponto)
     );

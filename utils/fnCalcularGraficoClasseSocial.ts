@@ -15,7 +15,7 @@ export default function fnCalcularGraficoClasseSocial(
   let classe_d = 0;
   let classe_e = 0;
 
-  if (isBonificadoPreenchido) {
+  if (isBonificadoPreenchido && pontos.length && pontos_bonificados?.length) {
     const pontos_pago_e_bonificados = pontos.filter((ponto) =>
       pontos_bonificados!.includes(ponto)
     );

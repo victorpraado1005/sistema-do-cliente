@@ -500,6 +500,7 @@ export const SimuladorProvider = ({
       dias_totais
     );
   } else {
+    console.log("entrou aqui");
     const pontos_totais = pontosQuery.data?.map((ponto) => ponto.id_ponto);
     dados_grafico_idade = fnCalcularGraficoIdade(
       pontos_totais,

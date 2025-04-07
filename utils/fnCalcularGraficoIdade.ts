@@ -15,7 +15,7 @@ export default function fnCalcularGraficoIdade(
   let _41a60 = 0;
   let _60_mais = 0;
 
-  if (isBonificadoPreenchido) {
+  if (isBonificadoPreenchido && pontos.length && pontos_bonificados?.length) {
     const pontos_pago_e_bonificados = pontos.filter((ponto) =>
       pontos_bonificados!.includes(ponto)
     );
