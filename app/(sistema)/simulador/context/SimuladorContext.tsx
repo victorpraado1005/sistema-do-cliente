@@ -59,6 +59,7 @@ import fnCalcularGraficoClasseSocial from "@/utils/fnCalcularGraficoClasseSocial
 import { IVeiculacao } from "../components/DialogCriarProposta";
 import { IPostSimulacao } from "@/app/types/IPostSimulacao";
 import { toast } from "sonner";
+import { delay } from "@/lib/delay";
 
 interface IMarkerObject {
   latitude: number;
@@ -530,6 +531,8 @@ export const SimuladorProvider = ({
     const zip = new JSZip();
 
     try {
+      await delay(300);
+
       const imageDataUrl = await fnCaptureScreenshot(ref.current!);
 
       const base64Image = imageDataUrl.split(",")[1];
@@ -603,9 +606,6 @@ export const SimuladorProvider = ({
       if (res) {
         toast.success("Simulação criada com sucesso!");
       }
-      //reset();
-      //setSelectedPontos([]);
-      //setSelectedPontosBonificados([]);
       setIsSimulacaoOpen(true);
       await queryClient.fetchQuery({
         queryKey: ["simulacao", user?.id_colaborador],
