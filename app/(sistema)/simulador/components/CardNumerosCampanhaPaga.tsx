@@ -20,11 +20,16 @@ import {
 import { useSimulador } from "../context/SimuladorContext";
 
 export default function CardNumerosCampanhaPaga() {
-  const { resultados, valores, pracas } = useSimulador();
+  const { resultados, valores, pracas, nomeSimulacao } = useSimulador();
 
   return (
     <div className="w-[850px] border border-rzk_ligth rounded-2xl flex flex-col mt-2 py-4 px-6 gap-4">
-      <h2 className="text-xl text-rzk_darker font-extrabold">Campanha:</h2>
+      <div className="flex items-center gap-2">
+        <h2 className="text-lg text-rzk_darker font-bold">Campanha:</h2>
+        <span className="text-lg text-rzk_regular font-bold">
+          {nomeSimulacao}
+        </span>
+      </div>
       <div className="grid grid-cols-4 gap-5 text-rzk_regular">
         <div className="space-y-4">
           <div className="flex items-center justify-between w-36">

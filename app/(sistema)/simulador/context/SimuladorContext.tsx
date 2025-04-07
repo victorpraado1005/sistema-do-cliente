@@ -15,7 +15,7 @@ import {
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { z } from "zod";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { simuladorSchema } from "../schemas/simuladorSchema";
 import {
   fetchConcessoes,
@@ -23,6 +23,7 @@ import {
   fetchPontos,
   fetchProdutos,
   fetchSimulacao,
+  postSimulacao,
 } from "@/lib/api";
 import { RefObject } from "react";
 import moment from "moment";
@@ -55,6 +56,9 @@ import fnCalcularGraficoIdade from "@/utils/fnCalcularGraficoIdade";
 import { ChartData } from "../components/PieChartCard";
 import fnCalcularGraficoGenero from "@/utils/fnCalcularGraficoGenero";
 import fnCalcularGraficoClasseSocial from "@/utils/fnCalcularGraficoClasseSocial";
+import { IVeiculacao } from "../components/DialogCriarProposta";
+import { IPostSimulacao } from "@/app/types/IPostSimulacao";
+import { toast } from "sonner";
 
 interface IMarkerObject {
   latitude: number;
@@ -82,6 +86,7 @@ type SimuladorContextType = {
   dados_grafico_genero: ChartData[];
   dados_grafico_classe_social: ChartData[];
   downloadZip: () => Promise<void>;
+  handleSalvarSimulacao: () => Promise<void>;
   ref: RefObject<HTMLDivElement | null>;
   pracas: string[];
   markers: IMarkerObject[];
@@ -135,6 +140,8 @@ export const SimuladorProvider = ({
   reset: SimuladorContextType["reset"];
   setValue: SimuladorContextType["setValue"];
 }) => {
+  const queryClient = useQueryClient();
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<any>(null);
   const [selectedPontos, setSelectedPontos] = useState<number[]>([]);
@@ -550,6 +557,70 @@ export const SimuladorProvider = ({
     }
   };
 
+  const handleSalvarSimulacao = async (): Promise<void> => {
+    if (nomeSimulacao === "") {
+      toast.warning("Preencher campo de 'Nome da Proposta'!");
+      return;
+    }
+    let veiculacoes: IVeiculacao[] = [];
+
+    if (valores.dias && selectedProducts.length) {
+      const veiculacao_paga = {
+        qtd_segundos_veiculacao: valores.dias * 86400,
+        saturacao: valores.saturacao,
+        qtd_segundos_insercao: 10,
+        is_bonificacao: false,
+        produtos: selectedProducts.map((produto) => produto.id_produto),
+      };
+
+      veiculacoes = veiculacoes.concat(veiculacao_paga);
+    }
+
+    if (isBonificadoPreenchido && selectedProductsBonificados.length) {
+      const veiculacao_bonificada = {
+        qtd_segundos_veiculacao: valores.dias_bonificados * 86400,
+        saturacao: valores.saturacao_bonificada,
+        qtd_segundos_insercao: 10,
+        is_bonificacao: true,
+        produtos: selectedProductsBonificados.map(
+          (produto) => produto.id_produto
+        ),
+      };
+
+      veiculacoes = veiculacoes.concat(veiculacao_bonificada);
+    }
+
+    const simulacao: IPostSimulacao = {
+      nome: nomeSimulacao,
+      id_colaborador: user?.id_colaborador!,
+      ano_preco_tabela: Number(selectedTabelaPreco),
+      desconto: valores.desconto,
+      veiculacoes,
+    };
+
+    try {
+      const res = await postSimulacao(simulacao);
+      if (res) {
+        toast.success("Simulação criada com sucesso!");
+      }
+      //reset();
+      //setSelectedPontos([]);
+      //setSelectedPontosBonificados([]);
+      setIsSimulacaoOpen(true);
+      await queryClient.fetchQuery({
+        queryKey: ["simulacao", user?.id_colaborador],
+        queryFn: ({ queryKey }) => {
+          const [, id_colaborador] = queryKey;
+          return fetchSimulacao({ id_colaborador });
+        },
+      });
+    } catch {
+      toast.error("Houve um erro ao criar a Simulação!", {
+        description: "Tente novamente mais tarde.",
+      });
+    }
+  };
+
   return (
     <SimuladorContext.Provider
       value={{
@@ -571,6 +642,7 @@ export const SimuladorProvider = ({
         setNameSimulacao,
         pracas,
         downloadZip,
+        handleSalvarSimulacao,
         dados_grafico_idade,
         dados_grafico_genero,
         dados_grafico_classe_social,

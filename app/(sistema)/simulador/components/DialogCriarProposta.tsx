@@ -71,9 +71,16 @@ export default function DialogCriarProposta({
     setSelectedPontosBonificados,
     isBonificadoPreenchido,
     reset,
+    nomeSimulacao,
   } = useSimulador();
   const { data: user } = useUserData();
-  const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset: resetFormCriarProposta,
+  } = useForm<FormValues>({
     defaultValues: {
       nome: nomeProposta,
       modelo: "Por inserção",
@@ -173,9 +180,19 @@ export default function DialogCriarProposta({
     }
   };
 
+  const handleStatusDialogCriarProposta = () => {
+    if (open) {
+      resetFormCriarProposta();
+      setOpen(false);
+    } else {
+      setValue("nome", nomeSimulacao);
+      setOpen(true);
+    }
+  };
+
   return (
     <div className="w-32 h-8 text-xs text-rzk_dark">
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={handleStatusDialogCriarProposta}>
         <DialogTrigger className="w-full h-full text-white bg-rzk_green hover:bg-rzk_green/90 hover:transition-all rounded-md flex items-center justify-center font-bold gap-2 outline-none">
           <CirclePlus className="size-4" />
           <strong>Criar Proposta</strong>

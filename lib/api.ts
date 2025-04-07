@@ -1,5 +1,6 @@
 import { useUser } from "@/app/(sistema)/context/UserContext";
-import { IPostSimulacao } from "@/app/(sistema)/simulador/components/DialogSalvarProposta";
+import { IPostSimulacao } from "@/app/types/IPostSimulacao";
+
 import { IProposta } from "@/app/types/IProposta";
 import { ISimulacao } from "@/app/types/ISimulacao";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleX, Database, Download, Eraser } from "lucide-react";
+import { CircleX, Database, Download, Eraser, Save } from "lucide-react";
 import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import FormSimuladorBonificado from "./FormSimuladorBonificado";
@@ -26,9 +26,9 @@ import { Spinner } from "../ui/spinner";
 import { useSimulador } from "@/app/(sistema)/simulador/context/SimuladorContext";
 import TableContent from "@/app/(sistema)/simulador/components/TableContent";
 import DialogCriarProposta from "@/app/(sistema)/simulador/components/DialogCriarProposta";
-import DialogSalvarProposta from "@/app/(sistema)/simulador/components/DialogSalvarProposta";
 import DropDownMenuSimulacoes from "@/app/(sistema)/simulador/components/DropDownMenuSimulacoes";
 import TooltipMain from "@/app/(sistema)/simulador/components/Tooltip";
+import { Input } from "../ui/input";
 
 export default function HeaderSimulador() {
   const {
@@ -44,6 +44,7 @@ export default function HeaderSimulador() {
     setIsSimulacaoOpen,
     setSelectedPontos,
     setSelectedPontosBonificados,
+    handleSalvarSimulacao,
   } = useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
@@ -67,6 +68,7 @@ export default function HeaderSimulador() {
 
   const handleResetSimulacao = () => {
     reset();
+    setNameSimulacao("");
     setSelectedPontos([]);
     setSelectedPontosBonificados([]);
   };
@@ -75,24 +77,20 @@ export default function HeaderSimulador() {
     setSelectedTabelaPreco(data);
   };
 
+  const handleNomeSimulacao = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNameSimulacao(event.target.value);
+  };
+
   return (
     <div>
       <div className="flex justify-between">
-        <div className="space-y-2">
+        <div className="space-y-3">
           <div className="flex items-center gap-2 justify-between">
             <div className="flex gap-2">
               <DropDownMenuSimulacoes />
-              {isSimulacaoOpen || nomeSimulacao ? (
-                <h1 className="text-xl text-rzk_darker font-extrabold">
-                  {nomeSimulacao.length > 20
-                    ? nomeSimulacao.substring(0, 20) + "..."
-                    : nomeSimulacao}
-                </h1>
-              ) : (
-                <h1 className="text-2xl text-rzk_darker font-extrabold">
-                  Simulador
-                </h1>
-              )}
+              <h1 className="text-2xl text-rzk_darker font-extrabold">
+                Simulador
+              </h1>
             </div>
             {isSimulacaoOpen && (
               <TooltipMain text="Fechar Simulação">
@@ -103,11 +101,19 @@ export default function HeaderSimulador() {
               </TooltipMain>
             )}
           </div>
-          <p className="text-sm font-light text-rzk_regular">
-            Confira abaixo os dados da sua simulação.
-          </p>
-          <div className="flex gap-4 items-center pt-4">
-            <h1 className="text-rzk_darker">Tabela de Preço: </h1>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-rzk_darker font-bold">Proposta:</span>
+            <Input
+              placeholder="Nome da Proposta..."
+              className="h-9"
+              value={nomeSimulacao}
+              onChange={handleNomeSimulacao}
+            />
+          </div>
+          <div className="flex gap-2 items-center">
+            <h1 className="text-rzk_darker text-sm font-bold">
+              Tabela de Preço:{" "}
+            </h1>
             <Select
               defaultValue={"2025"}
               onValueChange={(value: string) => selecionarTabelaPreco(value)}
@@ -188,7 +194,13 @@ export default function HeaderSimulador() {
             </Dialog>
           </div>
           <div>
-            <DialogSalvarProposta />
+            <Button
+              onClick={handleSalvarSimulacao}
+              className="w-32 h-8 text-xs text-white bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all rounded-md flex items-center justify-center font-bold gap-2 outline-none"
+            >
+              <Save className="size-4" />
+              <strong>Salvar</strong>
+            </Button>
           </div>
           <div>
             <Button
