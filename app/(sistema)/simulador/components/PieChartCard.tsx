@@ -92,16 +92,16 @@ export default function PieChartCard({ title, data }: DashboardPieChartProps) {
           <span className="text-xs text-rzk_darker font-medium">{title}</span>
         </div>
         <div
-          className={`grid ${data.length < 3 ? "grid-cols-2" : "grid-cols-5"} gap-x-2 gap-y-1 place-items-center`}
+          className={`grid ${data.length < 3 ? "grid-cols-2" : "grid-cols-5"} ${!isBonificadoPreenchido ? "gap-x-2" : "gap-x-1"} gap-y-1 place-items-center`}
         >
           {data.map((entry, index) => (
             <div key={index} className="flex items-center gap-1 text-xs">
               <span
-                className="w-2 h-2 rounded-full"
+                className={`${!isBonificadoPreenchido ? "w-2 h-2" : "w-1 h-2.5"} rounded-full`}
                 style={{ backgroundColor: COLORS[index % COLORS.length] }}
               ></span>
               <span
-                className={`text-gray-900 font-medium ${!isBonificadoPreenchido ? "text-[10px]" : "text-[8px]"}`}
+                className={`text-gray-900 font-medium ${!isBonificadoPreenchido ? "text-[10px]" : "text-[10px]"}`}
               >
                 {entry.name}
               </span>
