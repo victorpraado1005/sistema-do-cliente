@@ -36,6 +36,7 @@ import DialogCriarProposta from "@/app/(sistema)/simulador/components/DialogCria
 import DropDownMenuSimulacoes from "@/app/(sistema)/simulador/components/DropDownMenuSimulacoes";
 import TooltipMain from "@/app/(sistema)/simulador/components/Tooltip";
 import { Input } from "../ui/input";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 export default function HeaderSimulador() {
   const {
@@ -53,6 +54,7 @@ export default function HeaderSimulador() {
     setSelectedPontosBonificados,
     handleSalvarSimulacao,
     pontos,
+    produtos,
     selectedPontos,
     selectedProducts,
   } = useSimulador();
@@ -198,15 +200,42 @@ export default function HeaderSimulador() {
                       <DialogTitle className="text-2xl text-rzk_darker font-extrabold">
                         Editar Produtos
                       </DialogTitle>
-                      {pontos
-                        .filter((ponto) =>
-                          selectedPontos.includes(ponto.id_ponto)
-                        )
-                        .map((ponto) => (
-                          <div key={ponto.id_ponto}>{ponto.nome}</div>
-                        ))}
                     </div>
                   </DialogHeader>
+                  <div className="flex flex-col gap-2">
+                    {pontos
+                      .filter((ponto) =>
+                        selectedPontos.includes(ponto.id_ponto)
+                      )
+                      .map((ponto) => (
+                        <div key={ponto.id_ponto}>
+                          <div className="border border-rzk_extra_ligth p-2 rounded-md text-rzk_darker font-medium">
+                            {ponto.nome}
+                          </div>
+                          {/* <div>
+                            <RadioGroup>
+                              {produtos
+                                .filter((produto) =>
+                                  ponto.id_ponto.includes(
+                                    produto.id_concessao_ponto
+                                  )
+                                )
+                                .map((produto) => (
+                                  <>
+                                    <RadioGroupItem
+                                      value={produto.id_produto}
+                                      id={produto.id_produto}
+                                    />
+                                    <label htmlFor={produto.id_produto}>
+                                      {produto.id_produto}
+                                    </label>
+                                  </>
+                                ))}
+                            </RadioGroup>
+                          </div> */}
+                        </div>
+                      ))}
+                  </div>
                 </DialogContent>
               </Dialog>
             </div>
