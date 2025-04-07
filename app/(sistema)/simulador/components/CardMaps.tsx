@@ -14,7 +14,7 @@ const defaultMarker = { lat: -23.5970804, lng: -46.688371 }; // RZK
 
 export default function CardMaps() {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  const mapId = "fc7b1bc2a4b484cc";
+  const mapId = "d8138f3d25da1348";
   const { markers } = useSimulador();
   const mapRef = useRef<google.maps.Map | null>(null);
   const markerRefs = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);

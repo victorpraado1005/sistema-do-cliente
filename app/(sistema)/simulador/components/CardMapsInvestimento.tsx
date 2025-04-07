@@ -16,7 +16,7 @@ export default function CardMapsInvestimento({
   markers,
 }: CardMapsInvestimentoProps) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  const mapId = "fc7b1bc2a4b484cc";
+  const mapId = "d8138f3d25da1348";
   const mapRef = useRef<google.maps.Map | null>(null);
   const markerRefs = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
   const [mapLoaded, setMapLoaded] = React.useState(false);
