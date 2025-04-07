@@ -1,14 +1,137 @@
+import { fnCalcularUsuariosUnicosPorPonto } from "./CalcularUsuariosUnicos/fnCalcularUsuariosUnicosPorPonto";
 import { fluxos } from "./fluxos";
 
-export default function fnCalcularGraficoGenero(pontos: number[]) {
-  const dados = fluxos.filter((fluxo) => pontos?.includes(fluxo.id_ponto));
-  const masculino =
-    (dados.reduce((acc, fluxo) => acc + fluxo.masc, 0) / dados.length) * 100;
-  const feminino =
-    (dados.reduce((acc, fluxo) => acc + fluxo.fem, 0) / dados.length) * 100;
+export default function fnCalcularGraficoGenero(
+  pontos: number[],
+  dias: number,
+  isBonificadoPreenchido: boolean,
+  pontos_bonificados?: number[],
+  dias_bonificados?: number,
+  dias_totais?: number
+) {
+  let masculino = 0;
+  let feminino = 0;
 
-  return [
+  if (isBonificadoPreenchido) {
+    const pontos_pago_e_bonificados = pontos.filter((ponto) =>
+      pontos_bonificados!.includes(ponto)
+    );
+
+    const pontos_pagos = pontos.filter(
+      (ponto) => !pontos_pago_e_bonificados.includes(ponto)
+    );
+
+    const pontos_boni = pontos_bonificados!.filter(
+      (ponto) => !pontos_pago_e_bonificados.includes(ponto)
+    );
+
+    const masc_pago = pontos_pagos
+      .map((ponto) => {
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return (
+          usuarios_unicos *
+          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].masc
+        );
+      })
+      .reduce((acc, ponto) => acc + ponto, 0);
+
+    const masc_bonificado = pontos_boni
+      .map((ponto) => {
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(
+          ponto,
+          dias_bonificados!
+        );
+        return (
+          usuarios_unicos *
+          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].masc
+        );
+      })
+      .reduce((acc, ponto) => acc + ponto, 0);
+
+    const masc_pago_e_bonificado = pontos_pago_e_bonificados
+      .map((ponto) => {
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(
+          ponto,
+          dias_totais!
+        );
+        return (
+          usuarios_unicos *
+          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].masc
+        );
+      })
+      .reduce((acc, ponto) => acc + ponto, 0);
+
+    const fem_pago = pontos_pagos
+      .map((ponto) => {
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return (
+          usuarios_unicos *
+          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].fem
+        );
+      })
+      .reduce((acc, ponto) => acc + ponto, 0);
+
+    const fem_bonificado = pontos_boni
+      .map((ponto) => {
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(
+          ponto,
+          dias_bonificados!
+        );
+        return (
+          usuarios_unicos *
+          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].fem
+        );
+      })
+      .reduce((acc, ponto) => acc + ponto, 0);
+
+    const fem_pago_e_bonificado = pontos_pago_e_bonificados
+      .map((ponto) => {
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(
+          ponto,
+          dias_totais!
+        );
+        return (
+          usuarios_unicos *
+          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].fem
+        );
+      })
+      .reduce((acc, ponto) => acc + ponto, 0);
+
+    masculino = masc_pago + masc_bonificado + masc_pago_e_bonificado;
+    feminino = fem_pago + fem_bonificado + fem_pago_e_bonificado;
+  } else {
+    masculino = pontos
+      ?.map((ponto) => {
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return (
+          usuarios_unicos *
+          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].masc
+        );
+      })
+      .reduce((acc, ponto) => acc + ponto, 0);
+
+    feminino = pontos
+      ?.map((ponto) => {
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return (
+          usuarios_unicos *
+          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].fem
+        );
+      })
+      .reduce((acc, ponto) => acc + ponto, 0);
+  }
+
+  const dados = [
     { name: "Masculino", value: masculino },
     { name: "Feminino", value: feminino },
   ];
+
+  const soma_total = dados.reduce((acc, { value }) => acc + value, 0);
+
+  const percentuais = dados.map(({ name, value }) => ({
+    name,
+    value: Number(((value / soma_total) * 100).toFixed(2)),
+  }));
+
+  return percentuais;
 }

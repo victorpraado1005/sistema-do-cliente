@@ -39,7 +39,6 @@ export default function FormSimuladorPago() {
         index === self.findIndex((obj) => obj.id === item.id)
     );
 
-  console.log(pontos);
   const filteredPontos = useMemo(() => {
     return pontos.filter(
       (ponto) =>

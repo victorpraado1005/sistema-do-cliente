@@ -248,6 +248,7 @@ export const SimuladorProvider = ({
   const pontos_totais = [
     ...new Set(selectedPontos.concat(selectedPontosBonificados)),
   ];
+
   if (isBonificadoPreenchido) {
     // Praças formulário PAGO + BONIFICADO
     pracas = [
@@ -457,15 +458,64 @@ export const SimuladorProvider = ({
   let dados_grafico_idade = [];
   let dados_grafico_genero = [];
   let dados_grafico_classe_social = [];
-  if (!pontos_totais.length) {
-    const pontos_totais = pontosQuery.data?.map((ponto) => ponto.id_ponto);
-    dados_grafico_idade = fnCalcularGraficoIdade(pontos_totais);
-    dados_grafico_genero = fnCalcularGraficoGenero(pontos_totais);
-    dados_grafico_classe_social = fnCalcularGraficoClasseSocial(pontos_totais);
+  if (pontos_totais.length && !isBonificadoPreenchido) {
+    dados_grafico_idade = fnCalcularGraficoIdade(
+      pontos_totais,
+      dias,
+      isBonificadoPreenchido
+    );
+    dados_grafico_genero = fnCalcularGraficoGenero(
+      pontos_totais,
+      dias,
+      isBonificadoPreenchido
+    );
+    dados_grafico_classe_social = fnCalcularGraficoClasseSocial(
+      pontos_totais,
+      dias,
+      isBonificadoPreenchido
+    );
+  } else if (pontos_totais.length && isBonificadoPreenchido) {
+    dados_grafico_idade = fnCalcularGraficoIdade(
+      pontos_totais,
+      dias,
+      isBonificadoPreenchido,
+      selectedPontosBonificados,
+      dias_bonificados,
+      dias_totais
+    );
+    dados_grafico_genero = fnCalcularGraficoGenero(
+      pontos_totais,
+      dias,
+      isBonificadoPreenchido,
+      selectedPontosBonificados,
+      dias_bonificados,
+      dias_totais
+    );
+    dados_grafico_classe_social = fnCalcularGraficoClasseSocial(
+      pontos_totais,
+      dias,
+      isBonificadoPreenchido,
+      selectedPontosBonificados,
+      dias_bonificados,
+      dias_totais
+    );
   } else {
-    dados_grafico_idade = fnCalcularGraficoIdade(pontos_totais);
-    dados_grafico_genero = fnCalcularGraficoGenero(pontos_totais);
-    dados_grafico_classe_social = fnCalcularGraficoClasseSocial(pontos_totais);
+    const pontos_totais = pontosQuery.data?.map((ponto) => ponto.id_ponto);
+    dados_grafico_idade = fnCalcularGraficoIdade(
+      pontos_totais,
+      dias,
+      isBonificadoPreenchido
+    );
+    dados_grafico_genero = fnCalcularGraficoGenero(
+      pontos_totais,
+      dias,
+      isBonificadoPreenchido
+    );
+    dados_grafico_classe_social = fnCalcularGraficoClasseSocial(
+      pontos_totais,
+      dias,
+      isBonificadoPreenchido
+    );
   }
 
   const downloadZip = async () => {
