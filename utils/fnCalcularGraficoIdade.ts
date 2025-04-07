@@ -266,11 +266,11 @@ export default function fnCalcularGraficoIdade(
   }
 
   const dados = [
-    { name: "11 - 17", value: _11a17 },
-    { name: "18 - 30", value: _18a30 },
-    { name: "31 - 40", value: _31a40 },
-    { name: "41 - 60", value: _41a60 },
-    { name: "60 +", value: _60_mais },
+    { name: "11-17", value: _11a17 },
+    { name: "18-30", value: _18a30 },
+    { name: "31-40", value: _31a40 },
+    { name: "41-60", value: _41a60 },
+    { name: "60+", value: _60_mais },
   ];
 
   const soma_total = dados.reduce((acc, { value }) => acc + value, 0);

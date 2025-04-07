@@ -1,6 +1,13 @@
 "use client";
 
-import { CircleX, Database, Download, Eraser, Save } from "lucide-react";
+import {
+  CircleX,
+  Database,
+  Download,
+  Eraser,
+  MonitorCog,
+  Save,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import FormSimuladorBonificado from "./FormSimuladorBonificado";
@@ -45,6 +52,9 @@ export default function HeaderSimulador() {
     setSelectedPontos,
     setSelectedPontosBonificados,
     handleSalvarSimulacao,
+    pontos,
+    selectedPontos,
+    selectedProducts,
   } = useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
@@ -174,7 +184,34 @@ export default function HeaderSimulador() {
           </Tabs>
         </div>
 
-        <div className="h-[80px] grid grid-cols-2 gap-2 my-auto">
+        <div className="grid grid-cols-2 grid-rows-3 gap-2 my-auto">
+          <div className="col-span-2 flex justify-center">
+            <div className="w-40 h-8 text-xs bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all rounded-md">
+              <Dialog>
+                <DialogTrigger className="w-full h-full text-white flex items-center justify-center font-bold gap-2 outline-none">
+                  <MonitorCog className="size-4" />
+                  Editar Produtos
+                </DialogTrigger>
+                <DialogContent className="w-full">
+                  <DialogHeader>
+                    <div className="flex flex-col">
+                      <DialogTitle className="text-2xl text-rzk_darker font-extrabold">
+                        Editar Produtos
+                      </DialogTitle>
+                      {pontos
+                        .filter((ponto) =>
+                          selectedPontos.includes(ponto.id_ponto)
+                        )
+                        .map((ponto) => (
+                          <div key={ponto.id_ponto}>{ponto.nome}</div>
+                        ))}
+                    </div>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+
           <div className="w-32 h-8 text-xs bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all rounded-md">
             <Dialog>
               <DialogTrigger className="w-full h-full text-white flex items-center justify-center font-bold gap-2 outline-none">
@@ -193,15 +230,7 @@ export default function HeaderSimulador() {
               </DialogContent>
             </Dialog>
           </div>
-          <div>
-            <Button
-              onClick={handleSalvarSimulacao}
-              className="w-32 h-8 text-xs text-white bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all rounded-md flex items-center justify-center font-bold gap-2 outline-none"
-            >
-              <Save className="size-4" />
-              <strong>Salvar</strong>
-            </Button>
-          </div>
+
           <div>
             <Button
               className="w-32 h-8 text-xs bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all"
@@ -218,6 +247,17 @@ export default function HeaderSimulador() {
               )}
             </Button>
           </div>
+
+          <div>
+            <Button
+              onClick={handleSalvarSimulacao}
+              className="w-32 h-8 text-xs text-white bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all rounded-md flex items-center justify-center font-bold gap-2 outline-none"
+            >
+              <Save className="size-4" />
+              <strong>Salvar</strong>
+            </Button>
+          </div>
+
           <div>
             <DialogCriarProposta nomeProposta={nomeSimulacao} />
           </div>

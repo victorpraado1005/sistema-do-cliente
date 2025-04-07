@@ -63,6 +63,31 @@ export default function PieChartCard({ title, data }: DashboardPieChartProps) {
     <Card
       className={`"flex flex-col items-center ${!isBonificadoPreenchido ? "px-2" : "px-0"} w-full border-none shadow-none rounded-2xl`}
     >
+      <div className="flex flex-col items-center w-full">
+        <div className="mb-2">
+          <span className="text-base text-rzk_darker font-medium">{title}</span>
+        </div>
+        <div
+          className={`grid ${data.length < 3 ? "grid-cols-2" : "grid-cols-5"} ${!isBonificadoPreenchido ? "gap-x-2" : "gap-x-1"} gap-y-1 place-items-center`}
+        >
+          {data.map((entry, index) => (
+            <div
+              key={index}
+              className={`flex items-center gap-1 text-xs ${!isBonificadoPreenchido ? "mb-4" : "mb-2"}`}
+            >
+              <span
+                className={`${!isBonificadoPreenchido ? "w-2 h-2" : "w-1 h-2.5"} rounded-full`}
+                style={{ backgroundColor: COLORS[index % COLORS.length] }}
+              ></span>
+              <span
+                className={`text-gray-900 font-medium ${!isBonificadoPreenchido ? "text-[12px]" : "text-[12px]"}`}
+              >
+                {entry.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
       <div className="w-56 h-40 m-auto">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -86,28 +111,6 @@ export default function PieChartCard({ title, data }: DashboardPieChartProps) {
             <Tooltip content={<CustomTooltip />} />
           </PieChart>
         </ResponsiveContainer>
-      </div>
-      <div className="flex flex-col items-center w-full">
-        <div className="mb-2">
-          <span className="text-xs text-rzk_darker font-medium">{title}</span>
-        </div>
-        <div
-          className={`grid ${data.length < 3 ? "grid-cols-2" : "grid-cols-5"} ${!isBonificadoPreenchido ? "gap-x-2" : "gap-x-1"} gap-y-1 place-items-center`}
-        >
-          {data.map((entry, index) => (
-            <div key={index} className="flex items-center gap-1 text-xs">
-              <span
-                className={`${!isBonificadoPreenchido ? "w-2 h-2" : "w-1 h-2.5"} rounded-full`}
-                style={{ backgroundColor: COLORS[index % COLORS.length] }}
-              ></span>
-              <span
-                className={`text-gray-900 font-medium ${!isBonificadoPreenchido ? "text-[10px]" : "text-[10px]"}`}
-              >
-                {entry.name}
-              </span>
-            </div>
-          ))}
-        </div>
       </div>
     </Card>
   );
