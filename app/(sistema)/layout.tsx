@@ -13,7 +13,7 @@ export default async function RootLayout({
   const user = await auth();
 
   if (!user) {
-    redirect("/sign-in");
+    redirect("https://www.rzkdigital.com.br");
   }
 
   return (
