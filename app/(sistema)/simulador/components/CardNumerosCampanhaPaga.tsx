@@ -131,12 +131,7 @@ export default function CardNumerosCampanhaPaga() {
                 Freq. Média
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.frequencia_media
-                  ? resultados.frequencia_media?.toLocaleString("pt-br", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                  : 0}
+                {resultados.frequencia_media.toFixed(0)}
               </span>
             </div>
           </div>
@@ -146,12 +141,7 @@ export default function CardNumerosCampanhaPaga() {
             <div className="flex flex-col">
               <span className="text-lg font-ligth w-full text-right">TRP</span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.trp
-                  ? resultados.trp?.toLocaleString("pt-br", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                  : 0}
+                {resultados.trp}
               </span>
             </div>
           </div>

@@ -56,8 +56,8 @@ export function fnDadosTabela(
       impactos: impactos.toLocaleString("pt-br"),
       usuarios_unicos: usuarios_unicos.toLocaleString("pt-br"),
       alcance: `${alcance.toFixed(2)}%`,
-      freq_media: freq_media.toFixed(2),
-      trp: trp.toFixed(2),
+      freq_media: freq_media.toFixed(0),
+      trp: trp.toFixed(0),
       preco_tabela: preco_tabela.toLocaleString("pt-br", {
         style: "currency",
         currency: "brl",
