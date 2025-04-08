@@ -40,7 +40,7 @@ export async function fetchConcessoesPonto() {
 }
 
 export async function fetchProdutos() {
-  return apiFetch("produto");
+  return apiFetch("produto?fase=Ativo&fase=Planejado");
 }
 
 export async function fetchSimulacao(params: Record<string, any>) {

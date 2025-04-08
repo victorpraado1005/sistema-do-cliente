@@ -93,15 +93,23 @@ export default function HeaderSimulador() {
     setNameSimulacao(event.target.value);
   };
 
-  // const pontos_tot = pontos
-  //   .filter((ponto) => selectedPontos.includes(ponto.id_ponto))
-  //   .map((item) => item.concessoes[0]?.id_concessao_ponto);
+  const pontosComProdutos = pontos
+    .filter((ponto) => selectedPontos.includes(ponto.id_ponto))
+    .map((ponto) => {
+      const idsConcessao = ponto.concessoes.map(
+        (concessao: any) => concessao.id_concessao_ponto
+      );
 
-  // const produtos_tot = produtos.filter((produto) =>
-  //   pontos_tot.includes(produto.id_concessao_ponto)
-  // );
+      const produtosEncontrados = produtos.filter((produto) =>
+        idsConcessao.includes(produto.id_concessao_ponto)
+      );
 
-  // console.log(produtos_tot);
+      return { ...ponto, produtos: produtosEncontrados };
+    });
+
+  const products = selectedProducts?.map((produto) =>
+    String(produto.id_produto)
+  );
 
   return (
     <div>
@@ -198,13 +206,13 @@ export default function HeaderSimulador() {
 
         <div className="grid grid-cols-2 grid-rows-3 gap-2 my-auto">
           <div className="col-span-2 flex justify-center">
-            <div className="w-40 h-8 text-xs bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all rounded-md">
+            <div className="w-40 h-8 text-xs flex bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all rounded-md">
               <Dialog>
-                <DialogTrigger className="w-full h-full text-white flex items-center justify-center font-bold gap-2 outline-none">
+                <DialogTrigger className="w-full text-white flex items-center justify-center font-bold gap-2 outline-none">
                   <MonitorCog className="size-4" />
                   Editar Produtos
                 </DialogTrigger>
-                <DialogContent className="w-full">
+                <DialogContent className="w-full max-h-[80vh] overflow-y-auto">
                   <DialogHeader>
                     <div className="flex flex-col">
                       <DialogTitle className="text-2xl text-rzk_darker font-extrabold">
@@ -213,24 +221,15 @@ export default function HeaderSimulador() {
                     </div>
                   </DialogHeader>
                   <div className="flex flex-col gap-2">
-                    {pontos
-                      .filter((ponto) =>
-                        selectedPontos.includes(ponto.id_ponto)
-                      )
-                      .map((ponto) => (
-                        <div key={ponto.id_ponto}>
-                          <div className="border border-rzk_extra_ligth p-2 rounded-md text-rzk_darker font-medium flex gap-4">
-                            <div>{ponto.nome}</div>
-                            <div>
-                              <RadioGroup>
-                                {produtos
-                                  .filter(
-                                    (produto) =>
-                                      ponto.concessoes[0]
-                                        ?.id_concessao_ponto ===
-                                      produto.id_concessao_ponto
-                                  )
-                                  .map((produto) => (
+                    {pontosComProdutos.map(
+                      (ponto) =>
+                        ponto.produtos.length > 1 && (
+                          <div key={ponto.id_ponto}>
+                            <div className="border border-rzk_extra_ligth p-2 rounded-md text-rzk_darker font-medium flex gap-4">
+                              <div>{ponto.nome}</div>
+                              <div>
+                                <RadioGroup defaultValue={products[0]}>
+                                  {ponto.produtos.map((produto: any) => (
                                     <div key={produto.id_produto}>
                                       <RadioGroupItem
                                         value={produto.id_produto}
@@ -240,17 +239,20 @@ export default function HeaderSimulador() {
                                         htmlFor={produto.id_produto}
                                         className="ml-2"
                                       >
-                                        {produto.qtd_faces +
+                                        {produto.id_produto +
+                                          " -  " +
+                                          produto.qtd_faces +
                                           " Telas - Fase: " +
                                           produto.fase}
                                       </label>
                                     </div>
                                   ))}
-                              </RadioGroup>
+                                </RadioGroup>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        )
+                    )}
                   </div>
                 </DialogContent>
               </Dialog>
