@@ -102,21 +102,23 @@ export default function fnCalcularGraficoGenero(
   } else {
     masculino = pontos
       ?.map((ponto) => {
-        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
-        return (
-          usuarios_unicos *
-          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].masc
+        const fluxoEncontrado = fluxos.find(
+          (fluxo) => fluxo.id_ponto === ponto
         );
+        if (!fluxoEncontrado) return 0;
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return usuarios_unicos * (fluxoEncontrado.masc || 0);
       })
       .reduce((acc, ponto) => acc + ponto, 0);
 
     feminino = pontos
       ?.map((ponto) => {
-        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
-        return (
-          usuarios_unicos *
-          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].fem
+        const fluxoEncontrado = fluxos.find(
+          (fluxo) => fluxo.id_ponto === ponto
         );
+        if (!fluxoEncontrado) return 0;
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return usuarios_unicos * (fluxoEncontrado.fem || 0);
       })
       .reduce((acc, ponto) => acc + ponto, 0);
   }

@@ -216,51 +216,56 @@ export default function fnCalcularGraficoClasseSocial(
   } else {
     classe_a = pontos
       ?.map((ponto) => {
-        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
-        return (
-          usuarios_unicos *
-          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].classe_a
+        const fluxoEncontrado = fluxos.find(
+          (fluxo) => fluxo.id_ponto === ponto
         );
+        if (!fluxoEncontrado) return 0;
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return usuarios_unicos * (fluxoEncontrado.classe_a || 0);
       })
       .reduce((acc, ponto) => acc + ponto, 0);
 
     classe_b = pontos
       ?.map((ponto) => {
-        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
-        return (
-          usuarios_unicos *
-          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].classe_b
+        const fluxoEncontrado = fluxos.find(
+          (fluxo) => fluxo.id_ponto === ponto
         );
+        if (!fluxoEncontrado) return 0;
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return usuarios_unicos * (fluxoEncontrado.classe_b || 0);
       })
       .reduce((acc, ponto) => acc + ponto, 0);
 
     classe_c = pontos
       ?.map((ponto) => {
-        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
-        return (
-          usuarios_unicos *
-          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].classe_c
+        const fluxoEncontrado = fluxos.find(
+          (fluxo) => fluxo.id_ponto === ponto
         );
+        if (!fluxoEncontrado) return 0;
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return usuarios_unicos * (fluxoEncontrado.classe_c || 0);
       })
       .reduce((acc, ponto) => acc + ponto, 0);
 
     classe_d = pontos
       ?.map((ponto) => {
-        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
-        return (
-          usuarios_unicos *
-          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].classe_d
+        const fluxoEncontrado = fluxos.find(
+          (fluxo) => fluxo.id_ponto === ponto
         );
+        if (!fluxoEncontrado) return 0;
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return usuarios_unicos * (fluxoEncontrado.classe_d || 0);
       })
       .reduce((acc, ponto) => acc + ponto, 0);
 
     classe_e = pontos
       ?.map((ponto) => {
-        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
-        return (
-          usuarios_unicos *
-          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0].classe_e
+        const fluxoEncontrado = fluxos.find(
+          (fluxo) => fluxo.id_ponto === ponto
         );
+        if (!fluxoEncontrado) return 0;
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return usuarios_unicos * (fluxoEncontrado.classe_e || 0);
       })
       .reduce((acc, ponto) => acc + ponto, 0);
   }

@@ -511,17 +511,17 @@ export const SimuladorProvider = ({
     const pontos_totais = pontosQuery.data?.map((ponto) => ponto.id_ponto);
     dados_grafico_idade = fnCalcularGraficoIdade(
       pontos_totais,
-      dias,
+      1,
       isBonificadoPreenchido
     );
     dados_grafico_genero = fnCalcularGraficoGenero(
       pontos_totais,
-      dias,
+      1,
       isBonificadoPreenchido
     );
     dados_grafico_classe_social = fnCalcularGraficoClasseSocial(
       pontos_totais,
-      dias,
+      1,
       isBonificadoPreenchido
     );
   }

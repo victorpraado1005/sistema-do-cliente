@@ -214,53 +214,59 @@ export default function fnCalcularGraficoIdade(
     _41a60 = _41a60_pago + _41a60_bonificado + _41a60_pago_e_bonificado;
     _60_mais = _60_mais_pago + _60_mais_bonificado + _60_mais_pago_e_bonificado;
   } else {
+    console.log(pontos);
     _11a17 = pontos
       ?.map((ponto) => {
-        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
-        return (
-          usuarios_unicos *
-          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0]["11_a_17"]
+        const fluxoEncontrado = fluxos.find(
+          (fluxo) => fluxo.id_ponto === ponto
         );
+        if (!fluxoEncontrado) return 0;
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return usuarios_unicos * (fluxoEncontrado["11_a_17"] || 0);
       })
       .reduce((acc, ponto) => acc + ponto, 0);
 
     _18a30 = pontos
       ?.map((ponto) => {
-        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
-        return (
-          usuarios_unicos *
-          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0]["18_a_30"]
+        const fluxoEncontrado = fluxos.find(
+          (fluxo) => fluxo.id_ponto === ponto
         );
+        if (!fluxoEncontrado) return 0;
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return usuarios_unicos * (fluxoEncontrado["18_a_30"] || 0);
       })
       .reduce((acc, ponto) => acc + ponto, 0);
 
     _31a40 = pontos
       ?.map((ponto) => {
-        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
-        return (
-          usuarios_unicos *
-          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0]["31_a_40"]
+        const fluxoEncontrado = fluxos.find(
+          (fluxo) => fluxo.id_ponto === ponto
         );
+        if (!fluxoEncontrado) return 0;
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return usuarios_unicos * (fluxoEncontrado["31_a_40"] || 0);
       })
       .reduce((acc, ponto) => acc + ponto, 0);
 
     _41a60 = pontos
       ?.map((ponto) => {
-        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
-        return (
-          usuarios_unicos *
-          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0]["41_a_60"]
+        const fluxoEncontrado = fluxos.find(
+          (fluxo) => fluxo.id_ponto === ponto
         );
+        if (!fluxoEncontrado) return 0;
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return usuarios_unicos * (fluxoEncontrado["41_a_60"] || 0);
       })
       .reduce((acc, ponto) => acc + ponto, 0);
 
     _60_mais = pontos
       ?.map((ponto) => {
-        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
-        return (
-          usuarios_unicos *
-          fluxos.filter((fluxo) => fluxo.id_ponto === ponto)[0]["60_mais"]
+        const fluxoEncontrado = fluxos.find(
+          (fluxo) => fluxo.id_ponto === ponto
         );
+        if (!fluxoEncontrado) return 0;
+        const usuarios_unicos = fnCalcularUsuariosUnicosPorPonto(ponto, dias);
+        return usuarios_unicos * (fluxoEncontrado["60_mais"] || 0);
       })
       .reduce((acc, ponto) => acc + ponto, 0);
   }
