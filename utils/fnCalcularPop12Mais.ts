@@ -49,5 +49,9 @@ export function fnCalcularPop12Mais(pracas: string[]) {
     populacao += fnCalcularPopulacaoRmr();
   }
 
+  if (pracas.includes("Brasília")) {
+    populacao += 2374535;
+  }
+
   return populacao;
 }
