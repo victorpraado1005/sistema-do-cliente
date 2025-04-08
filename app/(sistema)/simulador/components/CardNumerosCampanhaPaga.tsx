@@ -131,7 +131,9 @@ export default function CardNumerosCampanhaPaga() {
                 Freq. Média
               </span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.frequencia_media.toFixed(0)}
+                {resultados.frequencia_media
+                  ? resultados.frequencia_media.toFixed(0)
+                  : 0}
               </span>
             </div>
           </div>
@@ -141,7 +143,7 @@ export default function CardNumerosCampanhaPaga() {
             <div className="flex flex-col">
               <span className="text-lg font-ligth w-full text-right">TRP</span>
               <span className="font-extrabold text-lg text-rzk_green text-right">
-                {resultados.trp}
+                {resultados.trp ? resultados.trp.toFixed(0) : 0}
               </span>
             </div>
           </div>
