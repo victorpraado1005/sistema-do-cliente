@@ -109,8 +109,6 @@ export default function HeaderSimulador() {
 
   const products = selectedProducts?.map((produto) => produto.id_produto);
 
-  console.log(products);
-
   return (
     <div>
       <div className="flex justify-between">

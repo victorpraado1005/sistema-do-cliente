@@ -23,7 +23,9 @@ export function fnCalcularPrecoTabela(
       segundos_funcionamento *
         (item.id_concessao_ponto === 12
           ? tabela_preco.preco_catarina
-          : tabela_preco.preco_terminal) *
+          : item.id_concessao_ponto === 47
+            ? tabela_preco.preco_brasilia
+            : tabela_preco.preco_terminal) *
         (1 / item.qtd_segundos_loop) *
         item.qtd_faces *
         dias *
