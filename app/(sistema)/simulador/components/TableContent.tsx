@@ -62,10 +62,18 @@ export default function TableContent() {
           </Button>
         </div>
         <TabsContent value="pago">
-          <TableDataCampaign data={dados_tabela_paga} />
+          <TableDataCampaign
+            data={dados_tabela_paga.sort((a, b) =>
+              a.nome_ponto.localeCompare(b.nome_ponto)
+            )}
+          />
         </TabsContent>
         <TabsContent value="bonificado">
-          <TableDataCampaign data={dados_tabela_bonificada} />
+          <TableDataCampaign
+            data={dados_tabela_bonificada.sort((a, b) =>
+              a.nome_ponto.localeCompare(b.nome_ponto)
+            )}
+          />
         </TabsContent>
       </Tabs>
     </div>

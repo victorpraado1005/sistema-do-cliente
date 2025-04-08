@@ -93,6 +93,16 @@ export default function HeaderSimulador() {
     setNameSimulacao(event.target.value);
   };
 
+  // const pontos_tot = pontos
+  //   .filter((ponto) => selectedPontos.includes(ponto.id_ponto))
+  //   .map((item) => item.concessoes[0]?.id_concessao_ponto);
+
+  // const produtos_tot = produtos.filter((produto) =>
+  //   pontos_tot.includes(produto.id_concessao_ponto)
+  // );
+
+  // console.log(produtos_tot);
+
   return (
     <div>
       <div className="flex justify-between">
@@ -209,30 +219,36 @@ export default function HeaderSimulador() {
                       )
                       .map((ponto) => (
                         <div key={ponto.id_ponto}>
-                          <div className="border border-rzk_extra_ligth p-2 rounded-md text-rzk_darker font-medium">
-                            {ponto.nome}
-                          </div>
-                          {/* <div>
-                            <RadioGroup>
-                              {produtos
-                                .filter((produto) =>
-                                  ponto.id_ponto.includes(
-                                    produto.id_concessao_ponto
+                          <div className="border border-rzk_extra_ligth p-2 rounded-md text-rzk_darker font-medium flex gap-4">
+                            <div>{ponto.nome}</div>
+                            <div>
+                              <RadioGroup>
+                                {produtos
+                                  .filter(
+                                    (produto) =>
+                                      ponto.concessoes[0]
+                                        ?.id_concessao_ponto ===
+                                      produto.id_concessao_ponto
                                   )
-                                )
-                                .map((produto) => (
-                                  <>
-                                    <RadioGroupItem
-                                      value={produto.id_produto}
-                                      id={produto.id_produto}
-                                    />
-                                    <label htmlFor={produto.id_produto}>
-                                      {produto.id_produto}
-                                    </label>
-                                  </>
-                                ))}
-                            </RadioGroup>
-                          </div> */}
+                                  .map((produto) => (
+                                    <div key={produto.id_produto}>
+                                      <RadioGroupItem
+                                        value={produto.id_produto}
+                                        id={produto.id_produto}
+                                      />
+                                      <label
+                                        htmlFor={produto.id_produto}
+                                        className="ml-2"
+                                      >
+                                        {produto.qtd_faces +
+                                          " Telas - Fase: " +
+                                          produto.fase}
+                                      </label>
+                                    </div>
+                                  ))}
+                              </RadioGroup>
+                            </div>
+                          </div>
                         </div>
                       ))}
                   </div>

@@ -214,7 +214,6 @@ export default function fnCalcularGraficoIdade(
     _41a60 = _41a60_pago + _41a60_bonificado + _41a60_pago_e_bonificado;
     _60_mais = _60_mais_pago + _60_mais_bonificado + _60_mais_pago_e_bonificado;
   } else {
-    console.log(pontos);
     _11a17 = pontos
       ?.map((ponto) => {
         const fluxoEncontrado = fluxos.find(
