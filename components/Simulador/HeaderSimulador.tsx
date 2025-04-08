@@ -107,9 +107,9 @@ export default function HeaderSimulador() {
       return { ...ponto, produtos: produtosEncontrados };
     });
 
-  const products = selectedProducts?.map((produto) =>
-    String(produto.id_produto)
-  );
+  const products = selectedProducts?.map((produto) => produto.id_produto);
+
+  console.log(products);
 
   return (
     <div>
@@ -228,21 +228,25 @@ export default function HeaderSimulador() {
                             <div className="border border-rzk_extra_ligth p-2 rounded-md text-rzk_darker font-medium flex gap-4">
                               <div>{ponto.nome}</div>
                               <div>
-                                <RadioGroup defaultValue={products[0]}>
+                                <RadioGroup
+                                  defaultValue={String(
+                                    ponto.produtos.filter((item: any) =>
+                                      products.includes(item.id_produto)
+                                    )[0]?.id_produto || ""
+                                  )}
+                                >
                                   {ponto.produtos.map((produto: any) => (
                                     <div key={produto.id_produto}>
                                       <RadioGroupItem
-                                        value={produto.id_produto}
+                                        value={produto.id_produto.toString()}
                                         id={produto.id_produto}
                                       />
                                       <label
-                                        htmlFor={produto.id_produto}
+                                        htmlFor={String(produto.id_produto)}
                                         className="ml-2"
                                       >
-                                        {produto.id_produto +
-                                          " -  " +
-                                          produto.qtd_faces +
-                                          " Telas - Fase: " +
+                                        {produto.qtd_faces +
+                                          " Telas - Status: " +
                                           produto.fase}
                                       </label>
                                     </div>

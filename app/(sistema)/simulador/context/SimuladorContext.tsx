@@ -218,8 +218,7 @@ export const SimuladorProvider = ({
   const selectedProducts = produtosQuery.data?.filter(
     (item) =>
       selectedPontos.includes(item.id_concessao_ponto) &&
-      !item.data_venda_termino &&
-      item.data_funcionamento_inicio
+      !item.data_venda_termino
   );
 
   // Varíavel para armazenar as face totais (Formulário Pago)
@@ -232,8 +231,7 @@ export const SimuladorProvider = ({
   const selectedProductsBonificados = produtosQuery.data?.filter(
     (item) =>
       selectedPontosBonificados.includes(item.id_concessao_ponto) &&
-      !item.data_venda_termino &&
-      item.data_funcionamento_inicio
+      !item.data_venda_termino
   );
 
   // Varíavel para armazenar as face totais (Formulário Bonificado)
