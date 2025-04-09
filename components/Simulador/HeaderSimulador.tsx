@@ -5,7 +5,6 @@ import {
   Database,
   Download,
   Eraser,
-  MonitorCog,
   Save,
 } from "lucide-react";
 import { Button } from "../ui/button";
@@ -36,7 +35,7 @@ import DialogCriarProposta from "@/app/(sistema)/simulador/components/DialogCria
 import DropDownMenuSimulacoes from "@/app/(sistema)/simulador/components/DropDownMenuSimulacoes";
 import TooltipMain from "@/app/(sistema)/simulador/components/Tooltip";
 import { Input } from "../ui/input";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import DialogEditarProduto from "@/app/(sistema)/simulador/components/DialogEditarProduto";
 
 export default function HeaderSimulador() {
   const {
@@ -53,10 +52,7 @@ export default function HeaderSimulador() {
     setSelectedPontos,
     setSelectedPontosBonificados,
     handleSalvarSimulacao,
-    pontos,
-    produtos,
-    selectedPontos,
-    selectedProducts,
+    pontos
   } = useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
@@ -92,22 +88,6 @@ export default function HeaderSimulador() {
   const handleNomeSimulacao = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNameSimulacao(event.target.value);
   };
-
-  const pontosComProdutos = pontos
-    .filter((ponto) => selectedPontos.includes(ponto.id_ponto))
-    .map((ponto) => {
-      const idsConcessao = ponto.concessoes.map(
-        (concessao: any) => concessao.id_concessao_ponto
-      );
-
-      const produtosEncontrados = produtos.filter((produto) =>
-        idsConcessao.includes(produto.id_concessao_ponto)
-      );
-
-      return { ...ponto, produtos: produtosEncontrados };
-    });
-
-  const products = selectedProducts?.map((produto) => produto.id_produto);
 
   return (
     <div>
@@ -205,59 +185,7 @@ export default function HeaderSimulador() {
         <div className="grid grid-cols-2 grid-rows-3 gap-2 my-auto">
           <div className="col-span-2 flex justify-center">
             <div className="w-40 h-8 text-xs flex bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all rounded-md">
-              <Dialog>
-                <DialogTrigger className="w-full text-white flex items-center justify-center font-bold gap-2 outline-none">
-                  <MonitorCog className="size-4" />
-                  Editar Produtos
-                </DialogTrigger>
-                <DialogContent className="w-full max-h-[80vh] overflow-y-auto">
-                  <DialogHeader>
-                    <div className="flex flex-col">
-                      <DialogTitle className="text-2xl text-rzk_darker font-extrabold">
-                        Editar Produtos
-                      </DialogTitle>
-                    </div>
-                  </DialogHeader>
-                  <div className="flex flex-col gap-2">
-                    {pontosComProdutos.map(
-                      (ponto) =>
-                        ponto.produtos.length > 1 && (
-                          <div key={ponto.id_ponto}>
-                            <div className="border border-rzk_extra_ligth p-2 rounded-md text-rzk_darker font-medium flex gap-4">
-                              <div>{ponto.nome}</div>
-                              <div>
-                                <RadioGroup
-                                  defaultValue={String(
-                                    ponto.produtos.filter((item: any) =>
-                                      products.includes(item.id_produto)
-                                    )[0]?.id_produto || ""
-                                  )}
-                                >
-                                  {ponto.produtos.map((produto: any) => (
-                                    <div key={produto.id_produto}>
-                                      <RadioGroupItem
-                                        value={produto.id_produto.toString()}
-                                        id={produto.id_produto}
-                                      />
-                                      <label
-                                        htmlFor={String(produto.id_produto)}
-                                        className="ml-2"
-                                      >
-                                        {produto.qtd_faces +
-                                          " Telas - Status: " +
-                                          produto.fase}
-                                      </label>
-                                    </div>
-                                  ))}
-                                </RadioGroup>
-                              </div>
-                            </div>
-                          </div>
-                        )
-                    )}
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <DialogEditarProduto />
             </div>
           </div>
 

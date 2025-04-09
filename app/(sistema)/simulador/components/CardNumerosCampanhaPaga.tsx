@@ -68,16 +68,16 @@ export default function CardNumerosCampanhaPaga() {
             </div>
           </div>
 
-          <div className="flex flex-col w-36">
-            <div className="flex w-full justify-between">
-              <Map className="size-6 ml-0.5" />
+          <div className="flex items-center justify-between w-36">
+            <Map className="size-7" />
+            <div className="flex flex-col w-full justify-between">
               <span className="text-lg font-ligth w-full text-right">
                 Praças
               </span>
+              <span className="font-extrabold text-xs text-rzk_green text-right">
+                {pracas.join(", ")}
+              </span>
             </div>
-            <span className="font-extrabold text-xs text-rzk_green text-right">
-              {pracas.join(", ")}
-            </span>
           </div>
 
           <div className="flex items-center justify-between w-36">
@@ -260,9 +260,9 @@ export default function CardNumerosCampanhaPaga() {
                 R${" "}
                 {resultados.cpm_medio
                   ? resultados.cpm_medio.toLocaleString("pt-br", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
                   : 0}
               </span>
             </div>

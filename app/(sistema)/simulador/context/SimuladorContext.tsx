@@ -78,7 +78,9 @@ type SimuladorContextType = {
   selectedTabelaPreco: string;
   setSelectedTabelaPreco: React.Dispatch<React.SetStateAction<string>>;
   selectedProducts: IProduto[];
+  setSelectedProducts: React.Dispatch<React.SetStateAction<IProduto[]>>;
   selectedProductsBonificados: IProduto[];
+  setSelectedProductsBonificados: React.Dispatch<React.SetStateAction<IProduto[]>>;
   isSimulacaoOpen: boolean;
   setIsSimulacaoOpen: React.Dispatch<React.SetStateAction<boolean>>;
   nomeSimulacao: string;
@@ -154,6 +156,8 @@ export const SimuladorProvider = ({
   const [selectedPontosBonificados, setSelectedPontosBonificados] = useState<
     number[]
   >([]);
+  const [selectedProducts, setSelectedProducts] = useState<IProduto[]>([]);
+  const [selectedProductsBonificados, setSelectedProductsBonificados] = useState<IProduto[]>([]);
   const ref = useRef<HTMLDivElement>(null);
   const { user } = useUser();
 
@@ -214,24 +218,34 @@ export const SimuladorProvider = ({
     setIsLoading(results.some((query) => query.isLoading));
   }, [results]);
 
-  // Varíavel para armazenar os produtos selecionados (Formulário Pago)
-  const selectedProducts = produtosQuery.data?.filter(
-    (item) =>
-      selectedPontos.includes(item.id_concessao_ponto) &&
-      !item.data_venda_termino
-  );
+  useEffect(() => {
+    if (produtosQuery.data) {
+      setSelectedProducts(
+        produtosQuery.data.filter(
+          (item) =>
+            selectedPontos.includes(item.id_concessao_ponto) &&
+            !item.data_venda_termino
+        )
+      );
+    }
+  }, [produtosQuery.data, selectedPontos]);
+
+  useEffect(() => {
+    if (produtosQuery.data) {
+      setSelectedProductsBonificados(
+        produtosQuery.data.filter(
+          (item) =>
+            selectedPontosBonificados.includes(item.id_concessao_ponto) &&
+            !item.data_venda_termino
+        )
+      );
+    }
+  }, [produtosQuery.data, selectedPontosBonificados]);
 
   // Varíavel para armazenar as face totais (Formulário Pago)
   const faces_totais_pagas = selectedProducts?.reduce(
     (acc, item) => acc + item.qtd_faces,
     0
-  );
-
-  // Varíavel para armazenar os produtos selecionados (Formulário Bonificado)
-  const selectedProductsBonificados = produtosQuery.data?.filter(
-    (item) =>
-      selectedPontosBonificados.includes(item.id_concessao_ponto) &&
-      !item.data_venda_termino
   );
 
   // Varíavel para armazenar as face totais (Formulário Bonificado)
@@ -262,29 +276,21 @@ export const SimuladorProvider = ({
     pracas = [
       ...new Set(
         pontosQuery.data
-          ?.filter((item) => item.id_ponto != 12) // removendo o catarina, pois a praça dele é ABD e não SP (como está cadastrado)
           .filter((item) => pontos_totais.includes(item.id_ponto))
           .map((item) => item.praca)
       ),
     ];
 
-    if (pontos_totais.includes(12) && !pracas.includes("ABD")) {
-      pracas.push("ABD");
-    }
   } else {
     // Praças formulário PAGO
     pracas = [
       ...new Set(
         pontosQuery.data
-          ?.filter((item) => item.id_ponto != 12) // removendo o catarina, pois a praça dele é ABD e não SP (como está cadastrado)
           .filter((item) => pontos_totais.includes(item.id_ponto))
           .map((item) => item.praca)
       ),
     ];
 
-    if (pontos_totais.includes(12) && !pracas.includes("ABD")) {
-      pracas.push("ABD");
-    }
   }
 
   const markers = pontosQuery.data
@@ -640,7 +646,9 @@ export const SimuladorProvider = ({
         selectedTabelaPreco,
         setSelectedTabelaPreco,
         selectedProducts,
+        setSelectedProducts,
         selectedProductsBonificados,
+        setSelectedProductsBonificados,
         isSimulacaoOpen,
         setIsSimulacaoOpen,
         nomeSimulacao,

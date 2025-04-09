@@ -42,16 +42,16 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex flex-col justify-between w-36">
-              <div className="flex w-full justify-between">
-                <Map className="size-6 ml-0.5" />
+            <div className="flex items-center justify-between w-36">
+              <Map className="size-7" />
+              <div className="flex flex-col w-full justify-between">
                 <span className="text-lg font-ligth w-full text-right">
                   Praças
                 </span>
+                <span className="font-extrabold text-rzk_green text-right text-xs mt-1">
+                  {pracas.join(", ")}
+                </span>
               </div>
-              <span className="font-extrabold text-rzk_green text-right text-xs mt-1">
-                {pracas.join(", ")}
-              </span>
             </div>
 
             <div className="flex items-center justify-between w-36">
@@ -93,9 +93,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 <span className="font-extrabold text-lg text-rzk_green text-right">
                   {resultados.frequencia_media
                     ? resultados.frequencia_media?.toLocaleString("pt-br", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
                     : 0}
                 </span>
               </div>
@@ -151,9 +151,9 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 <span className="font-extrabold text-lg text-rzk_green text-right">
                   {resultados.trp
                     ? resultados.trp?.toLocaleString("pt-br", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
                     : 0}
                 </span>
               </div>
