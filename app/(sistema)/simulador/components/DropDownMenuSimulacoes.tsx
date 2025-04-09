@@ -24,6 +24,7 @@ export default function DropDownMenuSimulacoes() {
     simulacao,
     setIsSimulacaoOpen,
     setNameSimulacao,
+    setSimulacaoObject
   } = useSimulador();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,6 +35,7 @@ export default function DropDownMenuSimulacoes() {
 
   function handleAbrirSimulacao(simulacao: ISimulacao) {
     setIsSimulacaoOpen(true);
+    setSimulacaoObject(simulacao);
     setNameSimulacao(simulacao.nome);
 
     const veiculacao_paga = simulacao.veiculacoes.filter(

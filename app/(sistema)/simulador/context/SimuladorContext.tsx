@@ -83,8 +83,11 @@ type SimuladorContextType = {
   setSelectedProductsBonificados: React.Dispatch<React.SetStateAction<IProduto[]>>;
   isSimulacaoOpen: boolean;
   setIsSimulacaoOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  simulacaoObject: ISimulacao | null;
+  setSimulacaoObject: React.Dispatch<React.SetStateAction<ISimulacao | null>>;
   nomeSimulacao: string;
   setNameSimulacao: React.Dispatch<React.SetStateAction<string>>;
+  pontos_totais: number[];
   dados_grafico_idade: ChartData[];
   dados_grafico_genero: ChartData[];
   dados_grafico_classe_social: ChartData[];
@@ -150,6 +153,7 @@ export const SimuladorProvider = ({
   const [selectedPontos, setSelectedPontos] = useState<number[]>([]);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isSimulacaoOpen, setIsSimulacaoOpen] = useState<boolean>(false);
+  const [simulacaoObject, setSimulacaoObject] = useState<ISimulacao | null>(null);
   const [nomeSimulacao, setNameSimulacao] = useState<string>("");
   const [selectedTabelaPreco, setSelectedTabelaPreco] =
     useState<string>("2025");
@@ -220,26 +224,89 @@ export const SimuladorProvider = ({
 
   useEffect(() => {
     if (produtosQuery.data) {
-      setSelectedProducts(
-        produtosQuery.data.filter(
-          (item) =>
-            selectedPontos.includes(item.id_concessao_ponto) &&
-            !item.data_venda_termino
-        )
-      );
+      const produtos_api = produtosQuery.data.filter(
+        (item) =>
+          selectedPontos.includes(item.id_concessao_ponto)
+      )
+
+      let array_filtrado: IProduto[] = []
+      if (isSimulacaoOpen) {
+        const produtos_simulacao: number[] = simulacaoObject?.veiculacoes.filter(item => !item.is_bonificacao)
+          .flatMap(veic => veic.produtos.map(prod => prod.id_produto)) || [];
+        console.log(produtos_simulacao)
+        array_filtrado = produtos_api.reduce<IProduto[]>((acumulador, produtoAtual) => {
+          const indiceExistente = acumulador.findIndex(item => item.id_concessao_ponto === produtoAtual.id_concessao_ponto);
+
+          if (indiceExistente === -1) {
+            acumulador.push(produtoAtual);
+          } else {
+            if (produtos_simulacao.includes(produtoAtual.id_produto) &&
+              !produtos_simulacao.includes(acumulador[indiceExistente].id_produto)) {
+              acumulador[indiceExistente] = produtoAtual;
+            }
+          }
+          return acumulador;
+        }, []);
+      } else {
+        array_filtrado = produtos_api.reduce<IProduto[]>((acumulador, produtoAtual) => {
+          const indiceExistente = acumulador.findIndex(item => item.id_concessao_ponto === produtoAtual.id_concessao_ponto);
+
+          if (indiceExistente === -1) {
+            acumulador.push(produtoAtual);
+          } else {
+            if (acumulador[indiceExistente].data_venda_inicio === null && produtoAtual.data_venda_inicio !== null) {
+              acumulador[indiceExistente] = produtoAtual;
+            }
+          }
+          return acumulador;
+        }, []);
+      }
+
+      setSelectedProducts(array_filtrado);
     }
   }, [produtosQuery.data, selectedPontos]);
 
   useEffect(() => {
     if (produtosQuery.data) {
-      setSelectedProductsBonificados(
-        produtosQuery.data.filter(
-          (item) =>
-            selectedPontosBonificados.includes(item.id_concessao_ponto) &&
-            !item.data_venda_termino
-        )
-      );
+      const produtos_api = produtosQuery.data.filter(
+        (item) =>
+          selectedPontosBonificados.includes(item.id_concessao_ponto)
+      )
+      let array_filtrado: IProduto[] = []
+      if (isSimulacaoOpen) {
+        const produtos_simulacao: number[] = simulacaoObject?.veiculacoes.filter(item => item.is_bonificacao)
+          .flatMap(veic => veic.produtos.map(prod => prod.id_produto)) || [];
+        array_filtrado = produtos_api.reduce<IProduto[]>((acumulador, produtoAtual) => {
+          const indiceExistente = acumulador.findIndex(item => item.id_concessao_ponto === produtoAtual.id_concessao_ponto);
+
+          if (indiceExistente === -1) {
+            acumulador.push(produtoAtual);
+          } else {
+            if (produtos_simulacao.includes(produtoAtual.id_produto) &&
+              !produtos_simulacao.includes(acumulador[indiceExistente].id_produto)) {
+              acumulador[indiceExistente] = produtoAtual;
+            }
+          }
+          return acumulador;
+        }, []);
+      } else {
+        array_filtrado = produtos_api.reduce<IProduto[]>((acumulador, produtoAtual) => {
+          const indiceExistente = acumulador.findIndex(item => item.id_concessao_ponto === produtoAtual.id_concessao_ponto);
+
+          if (indiceExistente === -1) {
+            acumulador.push(produtoAtual);
+          } else {
+            if (acumulador[indiceExistente].data_venda_inicio === null && produtoAtual.data_venda_inicio !== null) {
+              acumulador[indiceExistente] = produtoAtual;
+            }
+          }
+          return acumulador;
+        }, []);
+      }
+
+      setSelectedProductsBonificados(array_filtrado);
     }
+
   }, [produtosQuery.data, selectedPontosBonificados]);
 
   // Varíavel para armazenar as face totais (Formulário Pago)
@@ -651,8 +718,11 @@ export const SimuladorProvider = ({
         setSelectedProductsBonificados,
         isSimulacaoOpen,
         setIsSimulacaoOpen,
+        simulacaoObject,
+        setSimulacaoObject,
         nomeSimulacao,
         setNameSimulacao,
+        pontos_totais,
         pracas,
         downloadZip,
         handleSalvarSimulacao,

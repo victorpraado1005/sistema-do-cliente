@@ -52,6 +52,7 @@ export default function HeaderSimulador() {
     setSelectedPontos,
     setSelectedPontosBonificados,
     handleSalvarSimulacao,
+    setSimulacaoObject,
     pontos
   } = useSimulador();
 
@@ -72,6 +73,7 @@ export default function HeaderSimulador() {
     setSelectedPontos([]);
     setSelectedPontosBonificados([]);
     setNameSimulacao("");
+    setSimulacaoObject(null);
   };
 
   const handleResetSimulacao = () => {

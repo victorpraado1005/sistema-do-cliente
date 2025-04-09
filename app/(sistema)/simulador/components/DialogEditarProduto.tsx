@@ -9,11 +9,14 @@ export default function DialogEditarProduto() {
     produtos,
     selectedPontos,
     selectedProducts,
-    setSelectedProducts
+    setSelectedProducts,
+    selectedProductsBonificados,
+    setSelectedProductsBonificados,
+    pontos_totais
   } = useSimulador();
 
   const pontosComProdutos = pontos
-    .filter((ponto) => selectedPontos.includes(ponto.id_ponto))
+    .filter((ponto) => pontos_totais.includes(ponto.id_ponto))
     .map((ponto) => {
       const idsConcessao = ponto.concessoes.map(
         (concessao: any) => concessao.id_concessao_ponto
@@ -26,19 +29,33 @@ export default function DialogEditarProduto() {
       return { ...ponto, produtos: produtosEncontrados };
     });
 
-  const products = selectedProducts?.map((produto) => produto.id_produto);
+  const productsTotais = [
+    ...new Set(selectedProducts?.concat(selectedProductsBonificados)),
+  ];
+
+  const products = productsTotais?.map((produto) => produto.id_produto);
 
   const handleEditarProduto = (id_produto: number) => {
     const new_product = produtos.filter(produto => produto.id_produto === id_produto)[0]
+    if (selectedProducts.filter(item => item.id_concessao_ponto === new_product.id_concessao_ponto).length) {
+      const novoArray = [
+        ...selectedProducts.filter(
+          (objeto) => objeto.id_concessao_ponto !== new_product.id_concessao_ponto
+        ),
+        new_product,
+      ];
+      setSelectedProducts(novoArray)
+    }
 
-    const novoArray = [
-      ...selectedProducts.filter(
-        (objeto) => objeto.id_concessao_ponto !== new_product.id_concessao_ponto
-      ),
-      new_product,
-    ];
-    setSelectedProducts(novoArray)
-    console.log(novoArray);
+    if (selectedProductsBonificados.filter(item => item.id_concessao_ponto === new_product.id_concessao_ponto).length) {
+      const novoArray = [
+        ...selectedProductsBonificados.filter(
+          (objeto) => objeto.id_concessao_ponto !== new_product.id_concessao_ponto
+        ),
+        new_product,
+      ];
+      setSelectedProductsBonificados(novoArray)
+    }
   }
 
   return (
