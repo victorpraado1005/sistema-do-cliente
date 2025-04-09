@@ -34,6 +34,52 @@ export default function TableContent() {
     window.URL.revokeObjectURL(url);
   };
 
+  const dados_formatados_tabela_paga = dados_tabela_paga.map((item) => ({
+    id_ponto: item.id_ponto,
+    nome_ponto: item.nome_ponto,
+    dias: item.dias,
+    faces: item.faces,
+    visitas: item.visitas.toLocaleString("pt-br"),
+    insercoes: item.insercoes.toLocaleString("pt-br"),
+    impactos: item.impactos.toLocaleString("pt-br"),
+    usuarios_unicos: item.usuarios_unicos.toLocaleString("pt-br"),
+    freq_media: item.freq_media,
+    alcance: (item.alcance * 100).toFixed(2) + "%",
+    trp: item.trp,
+    preco_tabela: item.preco_tabela.toLocaleString("pt-br", {
+      style: "currency",
+      currency: "brl",
+    }),
+    investimento: item.investimento.toLocaleString("pt-br", {
+      style: "currency",
+      currency: "brl",
+    }),
+  }));
+
+  const dados_formatados_tabela_bonificada = dados_tabela_bonificada.map(
+    (item) => ({
+      id_ponto: item.id_ponto,
+      nome_ponto: item.nome_ponto,
+      dias: item.dias,
+      faces: item.faces,
+      visitas: item.visitas.toLocaleString("pt-br"),
+      insercoes: item.insercoes.toLocaleString("pt-br"),
+      impactos: item.impactos.toLocaleString("pt-br"),
+      usuarios_unicos: item.usuarios_unicos.toLocaleString("pt-br"),
+      freq_media: item.freq_media,
+      alcance: (item.alcance * 100).toFixed(2) + "%",
+      trp: item.trp,
+      preco_tabela: item.preco_tabela.toLocaleString("pt-br", {
+        style: "currency",
+        currency: "brl",
+      }),
+      investimento: item.investimento.toLocaleString("pt-br", {
+        style: "currency",
+        currency: "brl",
+      }),
+    })
+  );
+
   return (
     <div>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -63,14 +109,14 @@ export default function TableContent() {
         </div>
         <TabsContent value="pago">
           <TableDataCampaign
-            data={dados_tabela_paga.sort((a, b) =>
+            data={dados_formatados_tabela_paga.sort((a, b) =>
               a.nome_ponto.localeCompare(b.nome_ponto)
             )}
           />
         </TabsContent>
         <TabsContent value="bonificado">
           <TableDataCampaign
-            data={dados_tabela_bonificada.sort((a, b) =>
+            data={dados_formatados_tabela_bonificada.sort((a, b) =>
               a.nome_ponto.localeCompare(b.nome_ponto)
             )}
           />

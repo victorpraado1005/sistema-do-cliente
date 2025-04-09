@@ -68,9 +68,9 @@ export default function CardNumerosCampanhaPaga() {
             </div>
           </div>
 
-          <div className="flex flex-col justify-between w-36">
+          <div className="flex flex-col w-36">
             <div className="flex w-full justify-between">
-              <Map className="size-6" />
+              <Map className="size-6 ml-0.5" />
               <span className="text-lg font-ligth w-full text-right">
                 Praças
               </span>

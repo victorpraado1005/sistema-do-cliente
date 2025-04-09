@@ -9,7 +9,23 @@ import {
 } from "@tanstack/react-table";
 import { IDadosTabela } from "@/app/types/IDadosTabela";
 
-const columns: ColumnDef<IDadosTabela>[] = [
+interface IDadosTabelaFormatado {
+  id_ponto: number;
+  nome_ponto: string;
+  dias: number;
+  faces: number;
+  visitas: string;
+  insercoes: string;
+  impactos: string;
+  usuarios_unicos: string;
+  alcance: string;
+  freq_media: number;
+  trp: number;
+  preco_tabela: string;
+  investimento: string;
+}
+
+const columns: ColumnDef<IDadosTabelaFormatado>[] = [
   {
     accessorKey: "nome_ponto",
     header: "Ponto",
@@ -61,7 +77,7 @@ const columns: ColumnDef<IDadosTabela>[] = [
 ];
 
 interface TableDataCampaignProps {
-  data: IDadosTabela[];
+  data: IDadosTabelaFormatado[];
 }
 
 export default function TableDataCampaign({ data }: TableDataCampaignProps) {

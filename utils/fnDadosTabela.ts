@@ -51,21 +51,15 @@ export function fnDadosTabela(
       nome_ponto,
       dias,
       faces,
-      visitas: visitas.toLocaleString("pt-br"),
-      insercoes: insercoes.toLocaleString("pt-br"),
-      impactos: impactos.toLocaleString("pt-br"),
-      usuarios_unicos: usuarios_unicos.toLocaleString("pt-br"),
-      alcance: `${alcance.toFixed(2)}%`,
-      freq_media: freq_media.toFixed(0),
-      trp: trp.toFixed(0),
-      preco_tabela: preco_tabela.toLocaleString("pt-br", {
-        style: "currency",
-        currency: "brl",
-      }),
-      investimento: investimento.toLocaleString("pt-br", {
-        style: "currency",
-        currency: "brl",
-      }),
+      visitas,
+      insercoes,
+      impactos,
+      usuarios_unicos,
+      alcance,
+      freq_media: Math.round(freq_media),
+      trp,
+      preco_tabela,
+      investimento,
     };
   });
 }

@@ -45,13 +45,13 @@ export default function CardMapsInvestimento({
     activeMarkers.forEach(({ lat, lng }) => {
       const customMarker = document.createElement("div");
       customMarker.style.position = "absolute";
-      customMarker.style.width = "40px";
-      customMarker.style.height = "40px";
+      customMarker.style.width = "20px";
+      customMarker.style.height = "20px";
       customMarker.style.transform = "translate(-50%, -100%)";
 
       customMarker.innerHTML = `
               <img src="/rzk_logo_maps.png" 
-                   width="30" height="30" 
+                   width="20" height="20" 
                    style="display: block; position: absolute; left: 50%; top: 100%; transform: translate(-50%, -100%);" />
             `;
 
