@@ -286,7 +286,7 @@ export const SimuladorProvider = ({
     pracas = [
       ...new Set(
         pontosQuery.data
-          .filter((item) => pontos_totais.includes(item.id_ponto))
+          ?.filter((item) => pontos_totais.includes(item.id_ponto))
           .map((item) => item.praca)
       ),
     ];
