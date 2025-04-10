@@ -10,6 +10,7 @@ export interface IDadosTabela {
   alcance: number;
   freq_media: number;
   trp: number;
+  cpm: number;
   preco_tabela: number;
   investimento: number;
 }

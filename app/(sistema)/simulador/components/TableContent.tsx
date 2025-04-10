@@ -57,6 +57,10 @@ export default function TableContent() {
     freq_media: item.freq_media.toFixed(2),
     alcance: (item.alcance * 100).toFixed(2) + "%",
     trp: item.trp,
+    cpm: item.cpm.toLocaleString("pt-br", {
+      style: "currency",
+      currency: "brl",
+    }),
     preco_tabela: item.preco_tabela.toLocaleString("pt-br", {
       style: "currency",
       currency: "brl",
@@ -80,6 +84,10 @@ export default function TableContent() {
       freq_media: item.freq_media.toFixed(2),
       alcance: (item.alcance * 100).toFixed(2) + "%",
       trp: item.trp,
+      cpm: item.cpm.toLocaleString("pt-br", {
+        style: "currency",
+        currency: "brl",
+      }),
       preco_tabela: item.preco_tabela.toLocaleString("pt-br", {
         style: "currency",
         currency: "brl",

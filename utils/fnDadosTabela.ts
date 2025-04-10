@@ -42,11 +42,11 @@ export function fnDadosTabela(
       saturacao,
       anoTabelaPreco
     );
-
     let investimento = 0;
     if (!isBonificado) {
       investimento = preco_tabela * (1 - desconto / 100);
     }
+    const cpm = (investimento / impactos) * 1000;
 
     return {
       id_ponto,
@@ -60,6 +60,7 @@ export function fnDadosTabela(
       alcance,
       freq_media,
       trp,
+      cpm,
       preco_tabela,
       investimento,
     };

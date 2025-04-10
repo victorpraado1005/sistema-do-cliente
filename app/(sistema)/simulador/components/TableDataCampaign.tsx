@@ -21,6 +21,7 @@ interface IDadosTabelaFormatado {
   alcance: string;
   freq_media: string;
   trp: number;
+  cpm: string;
   preco_tabela: string;
   investimento: string;
 }
@@ -65,6 +66,10 @@ const columns: ColumnDef<IDadosTabelaFormatado>[] = [
   {
     accessorKey: "trp",
     header: "TRP",
+  },
+  {
+    accessorKey: "cpm",
+    header: "CPM",
   },
   {
     accessorKey: "preco_tabela",
