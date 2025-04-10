@@ -20,27 +20,37 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
+import { deleteSimulacao, fetchSimulacao } from "@/lib/api";
+import { useUser } from "../../context/UserContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function DropDownMenuSimulacoes() {
+  const queryClient = useQueryClient();
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedSimulacao, setSelectedSimulacao] = useState<ISimulacao>();
+  const [selectedSimulacao, setSelectedSimulacao] = useState<ISimulacao | null>(
+    null
+  );
   const {
     setValue,
     setSelectedPontos,
     setSelectedPontosBonificados,
     setSelectedTabelaPreco,
-    selectedPontosBonificados,
     concessoes_ponto,
     produtos,
     simulacao,
+    isSimulacaoOpen,
+    simulacaoObject,
+    reset,
     setIsSimulacaoOpen,
     setNameSimulacao,
     setSimulacaoObject,
   } = useSimulador();
 
+  const { user } = useUser();
+
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Função para abrir o dialog com a simulação selecionada para exclusão
   const abrirDialogExcluir = (simulacao: ISimulacao) => {
     setSelectedSimulacao(simulacao);
     setOpenDialog(true);
@@ -113,7 +123,30 @@ export default function DropDownMenuSimulacoes() {
     setSelectedTabelaPreco(String(simulacao.ano_preco_tabela));
   }
 
-  function handleDeletarSimulacao(simulacao: ISimulacao) {}
+  async function handleDeletarSimulacao(id_simulacao: number) {
+    try {
+      await deleteSimulacao(id_simulacao);
+      setOpenDialog(false);
+      toast.success("Simulação deletada com sucesso!");
+      if (simulacaoObject?.id_simulacao === id_simulacao) {
+        setIsSimulacaoOpen(false);
+        reset();
+        setNameSimulacao("");
+        setSelectedPontos([]);
+        setSelectedPontosBonificados([]);
+      }
+      setSelectedSimulacao(null);
+      await queryClient.fetchQuery({
+        queryKey: ["simulacao", user?.id_colaborador],
+        queryFn: ({ queryKey }) => {
+          const [, id_colaborador] = queryKey;
+          return fetchSimulacao({ id_colaborador });
+        },
+      });
+    } catch {
+      toast.error("Houve um erro ao tentar deletar a simulação.");
+    }
+  }
 
   return (
     <>
@@ -147,11 +180,11 @@ export default function DropDownMenuSimulacoes() {
                         : s.nome}
                     </span>
                     <div className="flex gap-3 items-center">
-                      <Button className="bg-transparent hover:bg-transparent w-2 p-3">
-                        <Trash
-                          onClick={() => abrirDialogExcluir(s)}
-                          className="size-5 text-red-500"
-                        />
+                      <Button
+                        className="bg-transparent hover:bg-transparent w-2 p-3"
+                        onClick={() => abrirDialogExcluir(s)}
+                      >
+                        <Trash className="size-5 text-red-500" />
                       </Button>
                       <Button
                         className="h-7 bg-rzk_green hover:bg-rzk_green/80 hover:transition-all"
@@ -177,30 +210,37 @@ export default function DropDownMenuSimulacoes() {
         </DropdownMenuContent>
       </DropdownMenu>
 
+      {/* Dialog confirmar exclusão de Simulação */}
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogTrigger asChild>
           <span />
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Excluir Simulação</DialogTitle>
+            <DialogTitle className="text-xl text-red-500 font-bold">
+              Excluir Simulação
+            </DialogTitle>
           </DialogHeader>
-          <div className="mt-4">
-            <p>
-              Tem certeza que deseja excluir a simulação{" "}
-              <strong>{selectedSimulacao?.nome}</strong>?
-            </p>
-            <div className="flex gap-2 mt-4">
+          <div className="flex flex-col gap-4">
+            <div className="w-full flex flex-col items-center text-rzk_darker">
+              <p>Tem certeza que deseja excluir a simulação: </p>
+              <strong>{selectedSimulacao?.nome}?</strong>
+            </div>
+            <div className="flex gap-2 justify-center">
               <Button
+                variant="outline"
+                onClick={() => setOpenDialog(false)}
+                className="text-rzk_darker border-rzk_darker"
+              >
+                Cancelar
+              </Button>
+              <Button
+                className="bg-red-500 hover:bg-red-500/90"
                 onClick={() => {
-                  handleDeletarSimulacao(selectedSimulacao!);
-                  setOpenDialog(false);
+                  handleDeletarSimulacao(selectedSimulacao!.id_simulacao!);
                 }}
               >
-                Confirmar
-              </Button>
-              <Button variant="outline" onClick={() => setOpenDialog(false)}>
-                Cancelar
+                Excluir
               </Button>
             </div>
           </div>

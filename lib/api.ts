@@ -66,7 +66,7 @@ export async function postProposta(proposta: IProposta) {
 }
 
 export async function postSimulacao(simulacao: IPostSimulacao) {
-  return apiFetch("simulacao", {
+  return apiFetch("simulacao?verbose=True", {
     method: "POST",
     body: JSON.stringify(simulacao),
   });
@@ -79,5 +79,11 @@ export async function putSimulacao(
   return apiFetch(`simulacao/${id_simulacao}`, {
     method: "PUT",
     body: JSON.stringify(simulacao),
+  });
+}
+
+export async function deleteSimulacao(id_simulacao: number) {
+  return apiFetch(`simulacao/${id_simulacao}`, {
+    method: "DELETE",
   });
 }

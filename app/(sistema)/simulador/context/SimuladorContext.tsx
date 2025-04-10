@@ -551,7 +551,7 @@ export const SimuladorProvider = ({
     // Cálculo de CPM Médio considerando os Impactos Totais
     cpm_medio = (investimento / impactos_totais) * 1000;
   } else {
-    // Cálculo de Preço de Tabela Pago
+    // Cálculo de Preço de Tabela Pagox
     preco_tabela = fnCalcularPrecoTabela(
       selectedProducts,
       dias,
@@ -730,13 +730,13 @@ export const SimuladorProvider = ({
     };
 
     try {
-      const res = await postSimulacao(simulacao);
+      const res: ISimulacao = await postSimulacao(simulacao);
       if (res) {
         toast.success("Simulação criada com sucesso!");
       }
       setIsModalSalvarPropostaOpen(false);
       setIsSimulacaoOpen(true);
-      //setSimulacaoObject(simulacao);
+      setSimulacaoObject(res);
       await queryClient.fetchQuery({
         queryKey: ["simulacao", user?.id_colaborador],
         queryFn: ({ queryKey }) => {
@@ -760,7 +760,7 @@ export const SimuladorProvider = ({
     if (valores.dias && selectedProducts.length) {
       const id_veiculacao_paga = simulacaoObject!.veiculacoes.filter(
         (veic) => !veic.is_bonificacao
-      )[0].produtos[0].id_veiculacao;
+      )[0]?.produtos[0].id_veiculacao;
       const veiculacao_paga = {
         qtd_segundos_veiculacao: valores.dias * 86400,
         saturacao: valores.saturacao,
@@ -778,7 +778,7 @@ export const SimuladorProvider = ({
     if (isBonificadoPreenchido && selectedProductsBonificados.length) {
       const id_veiculacao_bonificada = simulacaoObject!.veiculacoes.filter(
         (veic) => veic.is_bonificacao
-      )[0].produtos[0].id_veiculacao;
+      )[0]?.produtos[0].id_veiculacao;
       const veiculacao_bonificada = {
         qtd_segundos_veiculacao: valores.dias_bonificados * 86400,
         saturacao: valores.saturacao_bonificada,
