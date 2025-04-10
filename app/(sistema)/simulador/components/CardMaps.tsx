@@ -75,7 +75,7 @@ export default function CardMaps() {
 
   return (
     <div className="w-full h-auto mb-2 rounded-2xl mt-2 overflow-hidden border border-rzk_ligth shadow-md">
-      <div className="p-2 flex gap-1 items-center justify-center">
+      <div className="p-2 flex gap-1 items-center justify-center py-2">
         <div className="flex gap-1 items-center text-rzk_darker">
           <Map className="size-5" />
           <strong>Praças:</strong>

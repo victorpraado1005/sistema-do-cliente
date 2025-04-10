@@ -23,7 +23,7 @@ export default function CardNumerosCampanhaPaga() {
   const { resultados, valores, pracas, nomeSimulacao } = useSimulador();
 
   return (
-    <div className="w-[850px] border border-rzk_ligth rounded-2xl flex flex-col mt-2 py-4 px-6 gap-4">
+    <div className="w-[850px] border border-rzk_ligth rounded-2xl flex flex-col mt-2 py-2 px-6 gap-4">
       <div className="flex items-center gap-2">
         <h2 className="text-lg text-rzk_darker font-bold">Campanha:</h2>
         <span className="text-lg text-rzk_regular font-bold">
