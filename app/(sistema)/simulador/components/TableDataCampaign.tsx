@@ -10,7 +10,6 @@ import {
 import { IDadosTabela } from "@/app/types/IDadosTabela";
 
 interface IDadosTabelaFormatado {
-  id_ponto: number;
   nome_ponto: string;
   dias: number;
   faces: number;
@@ -23,6 +22,7 @@ interface IDadosTabelaFormatado {
   trp: number;
   cpm: string;
   preco_tabela: string;
+  desconto: string;
   investimento: string;
 }
 
@@ -53,11 +53,11 @@ const columns: ColumnDef<IDadosTabelaFormatado>[] = [
   },
   {
     accessorKey: "usuarios_unicos",
-    header: "Únicos",
+    header: "Únicos*",
   },
   {
     accessorKey: "alcance",
-    header: "Alcance",
+    header: "Alcance*",
   },
   {
     accessorKey: "freq_media",
@@ -74,6 +74,10 @@ const columns: ColumnDef<IDadosTabelaFormatado>[] = [
   {
     accessorKey: "preco_tabela",
     header: "Valor de Tabela",
+  },
+  {
+    accessorKey: "desconto",
+    header: "Desconto",
   },
   {
     accessorKey: "investimento",
@@ -93,7 +97,7 @@ export default function TableDataCampaign({ data }: TableDataCampaignProps) {
   });
 
   return (
-    <div className="overflow-x-auto max-h-[250px] overflow-y-auto mt-4">
+    <div className="overflow-x-auto max-h-[350px] overflow-y-aut">
       <table className="w-full border-collapse border border-gray-300">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (

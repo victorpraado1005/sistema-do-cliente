@@ -3,11 +3,11 @@
 import React, { useEffect, useRef } from "react";
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import { useSimulador } from "../context/SimuladorContext";
+import { Map } from "lucide-react";
 
 const mapContainerStyle = {
   width: "100%",
   height: "100%",
-  borderRadius: "16px",
 };
 
 const defaultMarker = { lat: -23.5970804, lng: -46.688371 }; // RZK
@@ -19,6 +19,7 @@ export default function CardMaps() {
   const mapRef = useRef<google.maps.Map | null>(null);
   const markerRefs = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
   const [mapLoaded, setMapLoaded] = React.useState(false);
+  const { pracas } = useSimulador();
 
   if (!apiKey || !mapId) {
     return <p>Erro: API Key ou Map ID não configurado.</p>;
@@ -74,6 +75,13 @@ export default function CardMaps() {
 
   return (
     <div className="w-full h-auto mb-2 rounded-2xl mt-2 overflow-hidden border border-rzk_ligth shadow-md">
+      <div className="p-2 flex gap-1 items-center justify-center">
+        <div className="flex gap-1 items-center text-rzk_darker">
+          <Map className="size-5" />
+          <strong>Praças:</strong>
+        </div>
+        <strong className="text-rzk_green">{pracas.join(", ")}</strong>
+      </div>
       <LoadScript googleMapsApiKey={apiKey} libraries={["marker"]}>
         <GoogleMap
           mapContainerStyle={mapContainerStyle}

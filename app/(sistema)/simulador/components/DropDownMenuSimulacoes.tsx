@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { deleteSimulacao, fetchSimulacao } from "@/lib/api";
 import { useUser } from "../../context/UserContext";
 import { useQueryClient } from "@tanstack/react-query";
+import moment from "moment";
 
 export default function DropDownMenuSimulacoes() {
   const queryClient = useQueryClient();
@@ -56,9 +57,14 @@ export default function DropDownMenuSimulacoes() {
     setOpenDialog(true);
   };
 
-  const filteredSimulacoes = simulacao.filter((s) =>
-    s.nome.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredSimulacoes = simulacao
+    .filter((s) => s.nome.toLowerCase().includes(searchTerm.toLowerCase()))
+    .sort((a, b) => {
+      const dateA = new Date(a.insert_data_horario ?? "1970-01-01T00:00:00Z");
+      const dateB = new Date(b.insert_data_horario ?? "1970-01-01T00:00:00Z");
+
+      return dateB.getTime() - dateA.getTime();
+    });
 
   function handleAbrirSimulacao(simulacao: ISimulacao) {
     setIsSimulacaoOpen(true);
@@ -174,10 +180,13 @@ export default function DropDownMenuSimulacoes() {
               filteredSimulacoes.map((s, index) => (
                 <DropdownMenuItem key={index}>
                   <div className="w-full p-2 flex items-center justify-between gap-4">
-                    <span>
-                      {s.nome.length > 30
-                        ? s.nome.substring(0, 30) + "..."
+                    <span className="w-[200px] text-rzk_darker font-bold">
+                      {s.nome.length > 25
+                        ? s.nome.substring(0, 25) + "..."
                         : s.nome}
+                    </span>
+                    <span className="text-rzk_darker font-medium">
+                      {moment(s.insert_data_horario).format("DD/MM/YYYY")}
                     </span>
                     <div className="flex gap-3 items-center">
                       <Button

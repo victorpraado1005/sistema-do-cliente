@@ -46,7 +46,6 @@ export default function TableContent() {
   };
 
   const dados_formatados_tabela_paga = dados_tabela_paga.map((item) => ({
-    id_ponto: item.id_ponto,
     nome_ponto: item.nome_ponto,
     dias: item.dias,
     faces: item.faces,
@@ -65,6 +64,7 @@ export default function TableContent() {
       style: "currency",
       currency: "brl",
     }),
+    desconto: `${item.desconto.toFixed(2)}%`,
     investimento: item.investimento.toLocaleString("pt-br", {
       style: "currency",
       currency: "brl",
@@ -73,7 +73,6 @@ export default function TableContent() {
 
   const dados_formatados_tabela_bonificada = dados_tabela_bonificada.map(
     (item) => ({
-      id_ponto: item.id_ponto,
       nome_ponto: item.nome_ponto,
       dias: item.dias,
       faces: item.faces,
@@ -92,6 +91,7 @@ export default function TableContent() {
         style: "currency",
         currency: "brl",
       }),
+      desconto: `${item.desconto.toFixed(2)}%`,
       investimento: item.investimento.toLocaleString("pt-br", {
         style: "currency",
         currency: "brl",
@@ -126,20 +126,26 @@ export default function TableContent() {
             Exportar
           </Button>
         </div>
-        <TabsContent value="pago">
-          <TableDataCampaign
-            data={dados_formatados_tabela_paga.sort((a, b) =>
-              a.nome_ponto.localeCompare(b.nome_ponto)
-            )}
-          />
-        </TabsContent>
-        <TabsContent value="bonificado">
-          <TableDataCampaign
-            data={dados_formatados_tabela_bonificada.sort((a, b) =>
-              a.nome_ponto.localeCompare(b.nome_ponto)
-            )}
-          />
-        </TabsContent>
+        <div className="flex flex-col gap-2">
+          <TabsContent value="pago">
+            <TableDataCampaign
+              data={dados_formatados_tabela_paga.sort((a, b) =>
+                a.nome_ponto.localeCompare(b.nome_ponto)
+              )}
+            />
+          </TabsContent>
+          <TabsContent value="bonificado">
+            <TableDataCampaign
+              data={dados_formatados_tabela_bonificada.sort((a, b) =>
+                a.nome_ponto.localeCompare(b.nome_ponto)
+              )}
+            />
+          </TabsContent>
+          <span className="text-rzk_darker text-sm">
+            *Usuários únicos e alcance não são somáveis entre pontos devido à
+            sobreposição de usuários
+          </span>
+        </div>
       </Tabs>
     </div>
   );

@@ -31,7 +31,7 @@ export default function CardNumerosCampanhaPaga() {
         </span>
       </div>
       <div className="grid grid-cols-4 gap-5 text-rzk_regular">
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="flex items-center justify-between w-36">
             <CalendarDays className="size-6" />
             <div className="flex flex-col">
@@ -69,18 +69,6 @@ export default function CardNumerosCampanhaPaga() {
           </div>
 
           <div className="flex items-center justify-between w-36">
-            <Map className="size-7" />
-            <div className="flex flex-col w-full justify-between">
-              <span className="text-lg font-ligth w-full text-right">
-                Praças
-              </span>
-              <span className="font-extrabold text-xs text-rzk_green text-right">
-                {pracas.join(", ")}
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between w-36">
             <History className="size-6" />
             <div className="flex flex-col">
               <span className="text-lg font-ligth w-full text-right">
@@ -93,7 +81,7 @@ export default function CardNumerosCampanhaPaga() {
           </div>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-6">
           <div className="flex items-center justify-between w-36">
             <CirclePlay className="size-6" />
             <div className="flex flex-col">
@@ -149,7 +137,7 @@ export default function CardNumerosCampanhaPaga() {
           </div>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-6">
           <div className="flex items-center justify-between w-40">
             <View className="size-6" />
             <div className="flex flex-col">
@@ -205,7 +193,7 @@ export default function CardNumerosCampanhaPaga() {
           </div>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-6">
           <div className="flex items-center justify-between w-40">
             <CircleDollarSign className="size-6" />
             <div className="flex flex-col">

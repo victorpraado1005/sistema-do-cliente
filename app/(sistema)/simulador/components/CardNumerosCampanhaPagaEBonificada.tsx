@@ -31,7 +31,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
       <div className=" flex flex-col py-4 px-6 justify-evenly">
         <div className="grid grid-cols-3 gap-4 text-rzk_regular items-start justify-items-center">
           <div className="space-y-4">
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <CalendarDays className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -43,7 +43,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <CirclePlay className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -58,7 +58,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <View className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -70,7 +70,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <Target className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -85,7 +85,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <SquareUser className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -101,7 +101,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <Smartphone className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -113,7 +113,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <UserRoundCheck className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -128,7 +128,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <Users className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -143,7 +143,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <UsersRound className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -155,7 +155,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <ChartLine className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -169,18 +169,18 @@ export default function CardNumerosCampanhaPagaEBonificada() {
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <Map className="size-6" />
               <div className="flex flex-col w-full justify-between">
                 <span className="text-lg font-ligth w-full text-right">
                   Praças
                 </span>
-                <span className="font-extrabold text-rzk_green text-right text-xs mt-1">
+                <span className="font-extrabold text-rzk_green text-right text-xs ">
                   {pracas.join(", ")}
                 </span>
               </div>
             </div>
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <CircleDollarSign className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -195,7 +195,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <CirclePercent className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -207,7 +207,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <DollarSign className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -222,7 +222,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-40">
+            <div className="flex items-center justify-between w-40 h-14">
               <DollarSign className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">

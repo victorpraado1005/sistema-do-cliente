@@ -4,6 +4,7 @@ export interface ISimulacao {
   nome: string;
   desconto: number;
   ano_preco_tabela: number;
+  insert_data_horario?: string;
   veiculacoes: {
     qtd_segundos_veiculacao: number;
     saturacao: number;

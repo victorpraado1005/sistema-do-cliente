@@ -1,5 +1,4 @@
 export interface IDadosTabela {
-  id_ponto: number;
   nome_ponto: string;
   dias: number;
   faces: number;
@@ -12,5 +11,6 @@ export interface IDadosTabela {
   trp: number;
   cpm: number;
   preco_tabela: number;
+  desconto: number;
   investimento: number;
 }

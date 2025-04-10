@@ -49,7 +49,6 @@ export function fnDadosTabela(
     const cpm = (investimento / impactos) * 1000;
 
     return {
-      id_ponto,
       nome_ponto,
       dias,
       faces,
@@ -62,6 +61,7 @@ export function fnDadosTabela(
       trp,
       cpm,
       preco_tabela,
+      desconto,
       investimento,
     };
   });
