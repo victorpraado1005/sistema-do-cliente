@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { ISimulacao } from "@/app/types/ISimulacao";
 import { Button } from "@/components/ui/button";
@@ -9,10 +11,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MenuIcon, SearchX } from "lucide-react";
+import { MenuIcon, SearchX, Trash } from "lucide-react";
 import { useSimulador } from "../context/SimuladorContext";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function DropDownMenuSimulacoes() {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedSimulacao, setSelectedSimulacao] = useState<ISimulacao>();
   const {
     setValue,
     setSelectedPontos,
@@ -24,10 +35,16 @@ export default function DropDownMenuSimulacoes() {
     simulacao,
     setIsSimulacaoOpen,
     setNameSimulacao,
-    setSimulacaoObject
+    setSimulacaoObject,
   } = useSimulador();
 
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Função para abrir o dialog com a simulação selecionada para exclusão
+  const abrirDialogExcluir = (simulacao: ISimulacao) => {
+    setSelectedSimulacao(simulacao);
+    setOpenDialog(true);
+  };
 
   const filteredSimulacoes = simulacao.filter((s) =>
     s.nome.toLowerCase().includes(searchTerm.toLowerCase())
@@ -96,57 +113,99 @@ export default function DropDownMenuSimulacoes() {
     setSelectedTabelaPreco(String(simulacao.ano_preco_tabela));
   }
 
+  function handleDeletarSimulacao(simulacao: ISimulacao) {}
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="outline-none">
-        <MenuIcon className="hover:size-7 hover:transition-all" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="mx-2">
-        <DropdownMenuLabel className="text-lg text-center text-rzk_darker">
-          Minhas Simulações
-        </DropdownMenuLabel>
-        <div className="p-1">
-          <input
-            type="text"
-            placeholder="Buscar simulação..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={(e) => e.stopPropagation()}
-            className="w-full p-2 text-sm border border-gray-300 rounded-md"
-          />
-        </div>
-        <DropdownMenuSeparator />
-        <div className="max-h-[400px] overflow-y-auto">
-          {filteredSimulacoes.length > 0 ? (
-            filteredSimulacoes.map((s, index) => (
-              <DropdownMenuItem key={index}>
-                <div className="w-full p-2 flex items-center justify-between gap-4">
-                  <span>
-                    {s.nome.length > 30
-                      ? s.nome.substring(0, 30) + "..."
-                      : s.nome}
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="outline-none">
+          <MenuIcon className="hover:size-7 hover:transition-all" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="mx-2">
+          <DropdownMenuLabel className="text-lg text-center text-rzk_darker">
+            Minhas Simulações
+          </DropdownMenuLabel>
+          <div className="p-1">
+            <input
+              type="text"
+              placeholder="Buscar simulação..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => e.stopPropagation()}
+              className="w-full p-2 text-sm border border-gray-300 rounded-md"
+            />
+          </div>
+          <DropdownMenuSeparator />
+          <div className="max-h-[400px] overflow-y-auto">
+            {filteredSimulacoes.length > 0 ? (
+              filteredSimulacoes.map((s, index) => (
+                <DropdownMenuItem key={index}>
+                  <div className="w-full p-2 flex items-center justify-between gap-4">
+                    <span>
+                      {s.nome.length > 30
+                        ? s.nome.substring(0, 30) + "..."
+                        : s.nome}
+                    </span>
+                    <div className="flex gap-3 items-center">
+                      <Button className="bg-transparent hover:bg-transparent w-2 p-3">
+                        <Trash
+                          onClick={() => abrirDialogExcluir(s)}
+                          className="size-5 text-red-500"
+                        />
+                      </Button>
+                      <Button
+                        className="h-7 bg-rzk_green hover:bg-rzk_green/80 hover:transition-all"
+                        onClick={() => handleAbrirSimulacao(s)}
+                      >
+                        Abrir
+                      </Button>
+                    </div>
+                  </div>
+                </DropdownMenuItem>
+              ))
+            ) : (
+              <DropdownMenuItem disabled>
+                <div className="w-full p-2 flex items-center justify-center gap-2">
+                  <SearchX className="w-5 h-5 text-gray-800" />
+                  <span className="text-gray-800 text-sm">
+                    Nenhuma simulação encontrada
                   </span>
-                  <Button
-                    className="h-7 bg-rzk_green hover:bg-rzk_green/80 hover:transition-all"
-                    onClick={() => handleAbrirSimulacao(s)}
-                  >
-                    Abrir
-                  </Button>
                 </div>
               </DropdownMenuItem>
-            ))
-          ) : (
-            <DropdownMenuItem disabled>
-              <div className="w-full p-2 flex items-center justify-center gap-2">
-                <SearchX className="w-5 h-5 text-gray-800" />
-                <span className="text-gray-800 text-sm">
-                  Nenhuma simulação encontrada
-                </span>
-              </div>
-            </DropdownMenuItem>
-          )}
-        </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+            )}
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+        <DialogTrigger asChild>
+          <span />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Excluir Simulação</DialogTitle>
+          </DialogHeader>
+          <div className="mt-4">
+            <p>
+              Tem certeza que deseja excluir a simulação{" "}
+              <strong>{selectedSimulacao?.nome}</strong>?
+            </p>
+            <div className="flex gap-2 mt-4">
+              <Button
+                onClick={() => {
+                  handleDeletarSimulacao(selectedSimulacao!);
+                  setOpenDialog(false);
+                }}
+              >
+                Confirmar
+              </Button>
+              <Button variant="outline" onClick={() => setOpenDialog(false)}>
+                Cancelar
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

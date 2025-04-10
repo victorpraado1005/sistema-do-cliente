@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -169,9 +171,9 @@ export default function DialogCriarProposta({
           "https://rzkdigital.retool.com/apps/adddb598-2821-11ef-9a86-4bf40b7b321c/Propostas"
         );
         setOpen(false);
-        reset();
-        setSelectedPontos([]);
-        setSelectedPontosBonificados([]);
+        // reset();
+        // setSelectedPontos([]);
+        // setSelectedPontosBonificados([]);
       }
     } catch {
       toast.error("Houve um erro ao criar a proposta!", {

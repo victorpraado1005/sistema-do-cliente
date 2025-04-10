@@ -71,3 +71,13 @@ export async function postSimulacao(simulacao: IPostSimulacao) {
     body: JSON.stringify(simulacao),
   });
 }
+
+export async function putSimulacao(
+  id_simulacao: number,
+  simulacao: ISimulacao
+) {
+  return apiFetch(`simulacao/${id_simulacao}`, {
+    method: "PUT",
+    body: JSON.stringify(simulacao),
+  });
+}

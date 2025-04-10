@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  CircleX,
-  Database,
-  Download,
-  Eraser,
-  Save,
-} from "lucide-react";
+import { CircleX, Database, Download, Eraser, Save } from "lucide-react";
 import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import FormSimuladorBonificado from "./FormSimuladorBonificado";
@@ -36,6 +30,7 @@ import DropDownMenuSimulacoes from "@/app/(sistema)/simulador/components/DropDow
 import TooltipMain from "@/app/(sistema)/simulador/components/Tooltip";
 import { Input } from "../ui/input";
 import DialogEditarProduto from "@/app/(sistema)/simulador/components/DialogEditarProduto";
+import DialogSalvarProposta from "@/app/(sistema)/simulador/components/DialogSalvarProposta";
 
 export default function HeaderSimulador() {
   const {
@@ -53,7 +48,7 @@ export default function HeaderSimulador() {
     setSelectedPontosBonificados,
     handleSalvarSimulacao,
     setSimulacaoObject,
-    pontos
+    pontos,
   } = useSimulador();
 
   const [activeTab, setActiveTab] = useState("pago");
@@ -228,13 +223,17 @@ export default function HeaderSimulador() {
           </div>
 
           <div>
-            <Button
-              onClick={handleSalvarSimulacao}
-              className="w-32 h-8 text-xs text-white bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all rounded-md flex items-center justify-center font-bold gap-2 outline-none"
-            >
-              <Save className="size-4" />
-              <strong>Salvar</strong>
-            </Button>
+            {isSimulacaoOpen ? (
+              <DialogSalvarProposta />
+            ) : (
+              <Button
+                onClick={handleSalvarSimulacao}
+                className="w-32 h-8 text-xs text-white bg-rzk_darker hover:bg-rzk_darker/90 hover:transition-all rounded-md flex items-center justify-center font-bold gap-2 outline-none"
+              >
+                <Save className="size-4" />
+                <strong>Salvar</strong>
+              </Button>
+            )}
           </div>
 
           <div>

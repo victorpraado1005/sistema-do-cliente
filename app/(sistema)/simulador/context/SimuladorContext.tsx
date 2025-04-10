@@ -15,7 +15,7 @@ import {
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { z } from "zod";
-import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueries, useQueryClient } from "@tanstack/react-query";
 import { simuladorSchema } from "../schemas/simuladorSchema";
 import {
   fetchConcessoes,
@@ -24,6 +24,7 @@ import {
   fetchProdutos,
   fetchSimulacao,
   postSimulacao,
+  putSimulacao,
 } from "@/lib/api";
 import { RefObject } from "react";
 import moment from "moment";
@@ -60,6 +61,7 @@ import { IVeiculacao } from "../components/DialogCriarProposta";
 import { IPostSimulacao } from "@/app/types/IPostSimulacao";
 import { toast } from "sonner";
 import { delay } from "@/lib/delay";
+import { IVeiculacaoPut } from "@/app/types/IVeiculacaoPut";
 
 interface IMarkerObject {
   latitude: number;
@@ -80,19 +82,24 @@ type SimuladorContextType = {
   selectedProducts: IProduto[];
   setSelectedProducts: React.Dispatch<React.SetStateAction<IProduto[]>>;
   selectedProductsBonificados: IProduto[];
-  setSelectedProductsBonificados: React.Dispatch<React.SetStateAction<IProduto[]>>;
+  setSelectedProductsBonificados: React.Dispatch<
+    React.SetStateAction<IProduto[]>
+  >;
   isSimulacaoOpen: boolean;
   setIsSimulacaoOpen: React.Dispatch<React.SetStateAction<boolean>>;
   simulacaoObject: ISimulacao | null;
   setSimulacaoObject: React.Dispatch<React.SetStateAction<ISimulacao | null>>;
   nomeSimulacao: string;
   setNameSimulacao: React.Dispatch<React.SetStateAction<string>>;
+  isModalSalvarPropostaOpen: boolean;
+  setIsModalSalvarPropostaOpen: React.Dispatch<React.SetStateAction<boolean>>;
   pontos_totais: number[];
   dados_grafico_idade: ChartData[];
   dados_grafico_genero: ChartData[];
   dados_grafico_classe_social: ChartData[];
   downloadZip: () => Promise<void>;
   handleSalvarSimulacao: () => Promise<void>;
+  handleAtualizarSimulacao: () => Promise<void>;
   ref: RefObject<HTMLDivElement | null>;
   pracas: string[];
   markers: IMarkerObject[];
@@ -153,7 +160,9 @@ export const SimuladorProvider = ({
   const [selectedPontos, setSelectedPontos] = useState<number[]>([]);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isSimulacaoOpen, setIsSimulacaoOpen] = useState<boolean>(false);
-  const [simulacaoObject, setSimulacaoObject] = useState<ISimulacao | null>(null);
+  const [simulacaoObject, setSimulacaoObject] = useState<ISimulacao | null>(
+    null
+  );
   const [nomeSimulacao, setNameSimulacao] = useState<string>("");
   const [selectedTabelaPreco, setSelectedTabelaPreco] =
     useState<string>("2025");
@@ -161,7 +170,10 @@ export const SimuladorProvider = ({
     number[]
   >([]);
   const [selectedProducts, setSelectedProducts] = useState<IProduto[]>([]);
-  const [selectedProductsBonificados, setSelectedProductsBonificados] = useState<IProduto[]>([]);
+  const [selectedProductsBonificados, setSelectedProductsBonificados] =
+    useState<IProduto[]>([]);
+  const [isModalSalvarPropostaOpen, setIsModalSalvarPropostaOpen] =
+    useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
   const { user } = useUser();
 
@@ -224,42 +236,62 @@ export const SimuladorProvider = ({
 
   useEffect(() => {
     if (produtosQuery.data) {
-      const produtos_api = produtosQuery.data.filter(
-        (item) =>
-          selectedPontos.includes(item.id_concessao_ponto)
-      )
+      const produtos_api = produtosQuery.data.filter((item) =>
+        selectedPontos.includes(item.id_concessao_ponto)
+      );
 
-      let array_filtrado: IProduto[] = []
+      let array_filtrado: IProduto[] = [];
       if (isSimulacaoOpen) {
-        const produtos_simulacao: number[] = simulacaoObject?.veiculacoes.filter(item => !item.is_bonificacao)
-          .flatMap(veic => veic.produtos.map(prod => prod.id_produto)) || [];
-        console.log(produtos_simulacao)
-        array_filtrado = produtos_api.reduce<IProduto[]>((acumulador, produtoAtual) => {
-          const indiceExistente = acumulador.findIndex(item => item.id_concessao_ponto === produtoAtual.id_concessao_ponto);
+        const produtos_simulacao: number[] =
+          simulacaoObject?.veiculacoes
+            .filter((item) => !item.is_bonificacao)
+            .flatMap((veic) => veic.produtos.map((prod) => prod.id_produto)) ||
+          [];
+        array_filtrado = produtos_api.reduce<IProduto[]>(
+          (acumulador, produtoAtual) => {
+            const indiceExistente = acumulador.findIndex(
+              (item) =>
+                item.id_concessao_ponto === produtoAtual.id_concessao_ponto
+            );
 
-          if (indiceExistente === -1) {
-            acumulador.push(produtoAtual);
-          } else {
-            if (produtos_simulacao.includes(produtoAtual.id_produto) &&
-              !produtos_simulacao.includes(acumulador[indiceExistente].id_produto)) {
-              acumulador[indiceExistente] = produtoAtual;
+            if (indiceExistente === -1) {
+              acumulador.push(produtoAtual);
+            } else {
+              if (
+                produtos_simulacao.includes(produtoAtual.id_produto) &&
+                !produtos_simulacao.includes(
+                  acumulador[indiceExistente].id_produto
+                )
+              ) {
+                acumulador[indiceExistente] = produtoAtual;
+              }
             }
-          }
-          return acumulador;
-        }, []);
+            return acumulador;
+          },
+          []
+        );
       } else {
-        array_filtrado = produtos_api.reduce<IProduto[]>((acumulador, produtoAtual) => {
-          const indiceExistente = acumulador.findIndex(item => item.id_concessao_ponto === produtoAtual.id_concessao_ponto);
+        array_filtrado = produtos_api.reduce<IProduto[]>(
+          (acumulador, produtoAtual) => {
+            const indiceExistente = acumulador.findIndex(
+              (item) =>
+                item.id_concessao_ponto === produtoAtual.id_concessao_ponto
+            );
 
-          if (indiceExistente === -1) {
-            acumulador.push(produtoAtual);
-          } else {
-            if (acumulador[indiceExistente].data_venda_inicio === null && produtoAtual.data_venda_inicio !== null) {
-              acumulador[indiceExistente] = produtoAtual;
+            if (indiceExistente === -1) {
+              acumulador.push(produtoAtual);
+            } else {
+              if (
+                acumulador[indiceExistente].data_venda_inicio === null &&
+                produtoAtual.data_venda_inicio !== null
+              ) {
+                acumulador[indiceExistente] = produtoAtual;
+              }
             }
-          }
-          return acumulador;
-        }, []);
+            return acumulador;
+          },
+          []
+        );
       }
 
       setSelectedProducts(array_filtrado);
@@ -268,45 +300,65 @@ export const SimuladorProvider = ({
 
   useEffect(() => {
     if (produtosQuery.data) {
-      const produtos_api = produtosQuery.data.filter(
-        (item) =>
-          selectedPontosBonificados.includes(item.id_concessao_ponto)
-      )
-      let array_filtrado: IProduto[] = []
+      const produtos_api = produtosQuery.data.filter((item) =>
+        selectedPontosBonificados.includes(item.id_concessao_ponto)
+      );
+      let array_filtrado: IProduto[] = [];
       if (isSimulacaoOpen) {
-        const produtos_simulacao: number[] = simulacaoObject?.veiculacoes.filter(item => item.is_bonificacao)
-          .flatMap(veic => veic.produtos.map(prod => prod.id_produto)) || [];
-        array_filtrado = produtos_api.reduce<IProduto[]>((acumulador, produtoAtual) => {
-          const indiceExistente = acumulador.findIndex(item => item.id_concessao_ponto === produtoAtual.id_concessao_ponto);
+        const produtos_simulacao: number[] =
+          simulacaoObject?.veiculacoes
+            .filter((item) => item.is_bonificacao)
+            .flatMap((veic) => veic.produtos.map((prod) => prod.id_produto)) ||
+          [];
+        array_filtrado = produtos_api.reduce<IProduto[]>(
+          (acumulador, produtoAtual) => {
+            const indiceExistente = acumulador.findIndex(
+              (item) =>
+                item.id_concessao_ponto === produtoAtual.id_concessao_ponto
+            );
 
-          if (indiceExistente === -1) {
-            acumulador.push(produtoAtual);
-          } else {
-            if (produtos_simulacao.includes(produtoAtual.id_produto) &&
-              !produtos_simulacao.includes(acumulador[indiceExistente].id_produto)) {
-              acumulador[indiceExistente] = produtoAtual;
+            if (indiceExistente === -1) {
+              acumulador.push(produtoAtual);
+            } else {
+              if (
+                produtos_simulacao.includes(produtoAtual.id_produto) &&
+                !produtos_simulacao.includes(
+                  acumulador[indiceExistente].id_produto
+                )
+              ) {
+                acumulador[indiceExistente] = produtoAtual;
+              }
             }
-          }
-          return acumulador;
-        }, []);
+            return acumulador;
+          },
+          []
+        );
       } else {
-        array_filtrado = produtos_api.reduce<IProduto[]>((acumulador, produtoAtual) => {
-          const indiceExistente = acumulador.findIndex(item => item.id_concessao_ponto === produtoAtual.id_concessao_ponto);
+        array_filtrado = produtos_api.reduce<IProduto[]>(
+          (acumulador, produtoAtual) => {
+            const indiceExistente = acumulador.findIndex(
+              (item) =>
+                item.id_concessao_ponto === produtoAtual.id_concessao_ponto
+            );
 
-          if (indiceExistente === -1) {
-            acumulador.push(produtoAtual);
-          } else {
-            if (acumulador[indiceExistente].data_venda_inicio === null && produtoAtual.data_venda_inicio !== null) {
-              acumulador[indiceExistente] = produtoAtual;
+            if (indiceExistente === -1) {
+              acumulador.push(produtoAtual);
+            } else {
+              if (
+                acumulador[indiceExistente].data_venda_inicio === null &&
+                produtoAtual.data_venda_inicio !== null
+              ) {
+                acumulador[indiceExistente] = produtoAtual;
+              }
             }
-          }
-          return acumulador;
-        }, []);
+            return acumulador;
+          },
+          []
+        );
       }
 
       setSelectedProductsBonificados(array_filtrado);
     }
-
   }, [produtosQuery.data, selectedPontosBonificados]);
 
   // Varíavel para armazenar as face totais (Formulário Pago)
@@ -347,7 +399,6 @@ export const SimuladorProvider = ({
           .map((item) => item.praca)
       ),
     ];
-
   } else {
     // Praças formulário PAGO
     pracas = [
@@ -357,7 +408,6 @@ export const SimuladorProvider = ({
           .map((item) => item.praca)
       ),
     ];
-
   }
 
   const markers = pontosQuery.data
@@ -684,7 +734,9 @@ export const SimuladorProvider = ({
       if (res) {
         toast.success("Simulação criada com sucesso!");
       }
+      setIsModalSalvarPropostaOpen(false);
       setIsSimulacaoOpen(true);
+      //setSimulacaoObject(simulacao);
       await queryClient.fetchQuery({
         queryKey: ["simulacao", user?.id_colaborador],
         queryFn: ({ queryKey }) => {
@@ -696,6 +748,73 @@ export const SimuladorProvider = ({
       toast.error("Houve um erro ao criar a Simulação!", {
         description: "Tente novamente mais tarde.",
       });
+    }
+  };
+
+  const handleAtualizarSimulacao = async () => {
+    const id_simulacao = simulacaoObject!.id_simulacao;
+    console.log(simulacaoObject);
+
+    let veiculacoes: IVeiculacaoPut[] = [];
+
+    if (valores.dias && selectedProducts.length) {
+      const id_veiculacao_paga = simulacaoObject!.veiculacoes.filter(
+        (veic) => !veic.is_bonificacao
+      )[0].produtos[0].id_veiculacao;
+      const veiculacao_paga = {
+        qtd_segundos_veiculacao: valores.dias * 86400,
+        saturacao: valores.saturacao,
+        qtd_segundos_insercao: 10,
+        is_bonificacao: false,
+        produtos: selectedProducts.map((produto) => ({
+          id_produto: produto.id_produto,
+          id_veiculacao: id_veiculacao_paga,
+        })),
+      };
+
+      veiculacoes = veiculacoes.concat(veiculacao_paga);
+    }
+
+    if (isBonificadoPreenchido && selectedProductsBonificados.length) {
+      const id_veiculacao_bonificada = simulacaoObject!.veiculacoes.filter(
+        (veic) => veic.is_bonificacao
+      )[0].produtos[0].id_veiculacao;
+      const veiculacao_bonificada = {
+        qtd_segundos_veiculacao: valores.dias_bonificados * 86400,
+        saturacao: valores.saturacao_bonificada,
+        qtd_segundos_insercao: 10,
+        is_bonificacao: true,
+        produtos: selectedProductsBonificados.map((produto) => ({
+          id_produto: produto.id_produto,
+          id_veiculacao: id_veiculacao_bonificada,
+        })),
+      };
+
+      veiculacoes = veiculacoes.concat(veiculacao_bonificada);
+    }
+    const simulacao: ISimulacao = {
+      id_colaborador: simulacaoObject!.id_colaborador,
+      nome: nomeSimulacao,
+      desconto: valores.desconto,
+      ano_preco_tabela: Number(selectedTabelaPreco),
+      veiculacoes,
+    };
+
+    try {
+      const res = await putSimulacao(id_simulacao!, simulacao);
+      if (res) {
+        toast.success("Simulação atualizada com sucesso!");
+      }
+      setIsModalSalvarPropostaOpen(false);
+      await queryClient.fetchQuery({
+        queryKey: ["simulacao", user?.id_colaborador],
+        queryFn: ({ queryKey }) => {
+          const [, id_colaborador] = queryKey;
+          return fetchSimulacao({ id_colaborador });
+        },
+      });
+    } catch {
+      toast.error("Houve um erro ao atualizar a simulação!");
     }
   };
 
@@ -722,10 +841,13 @@ export const SimuladorProvider = ({
         setSimulacaoObject,
         nomeSimulacao,
         setNameSimulacao,
+        isModalSalvarPropostaOpen,
+        setIsModalSalvarPropostaOpen,
         pontos_totais,
         pracas,
         downloadZip,
         handleSalvarSimulacao,
+        handleAtualizarSimulacao,
         dados_grafico_idade,
         dados_grafico_genero,
         dados_grafico_classe_social,
