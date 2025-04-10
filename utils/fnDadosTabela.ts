@@ -17,6 +17,7 @@ export function fnDadosTabela(
   saturacao: number,
   concessoes_ponto: IConcessaoPonto[],
   pontos: IPonto[],
+  anoTabelaPreco: string,
   isBonificado?: boolean
 ) {
   return products?.map((produto) => {
@@ -38,7 +39,8 @@ export function fnDadosTabela(
     const preco_tabela = fnCalcularPrecoTabelaPorPonto(
       produto,
       dias,
-      saturacao
+      saturacao,
+      anoTabelaPreco
     );
 
     let investimento = 0;
@@ -56,7 +58,7 @@ export function fnDadosTabela(
       impactos,
       usuarios_unicos,
       alcance,
-      freq_media: Math.round(freq_media),
+      freq_media,
       trp,
       preco_tabela,
       investimento,

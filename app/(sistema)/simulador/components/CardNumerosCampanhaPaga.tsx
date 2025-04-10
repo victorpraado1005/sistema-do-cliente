@@ -260,9 +260,9 @@ export default function CardNumerosCampanhaPaga() {
                 R${" "}
                 {resultados.cpm_medio
                   ? resultados.cpm_medio.toLocaleString("pt-br", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
                   : 0}
               </span>
             </div>

@@ -19,9 +19,20 @@ export default function TableContent() {
   const handleExport = () => {
     let data = new Blob();
     if (isBonificadoPreenchido) {
-      data = exportAllTablesToExcel(dados_tabela_paga, dados_tabela_bonificada);
+      data = exportAllTablesToExcel(
+        dados_tabela_paga.sort((a, b) =>
+          a.nome_ponto.localeCompare(b.nome_ponto)
+        ),
+        dados_tabela_bonificada.sort((a, b) =>
+          a.nome_ponto.localeCompare(b.nome_ponto)
+        )
+      );
     } else {
-      data = exportTableToExcel(dados_tabela_paga);
+      data = exportTableToExcel(
+        dados_tabela_paga.sort((a, b) =>
+          a.nome_ponto.localeCompare(b.nome_ponto)
+        )
+      );
     }
 
     const url = window.URL.createObjectURL(data);
@@ -43,7 +54,7 @@ export default function TableContent() {
     insercoes: item.insercoes.toLocaleString("pt-br"),
     impactos: item.impactos.toLocaleString("pt-br"),
     usuarios_unicos: item.usuarios_unicos.toLocaleString("pt-br"),
-    freq_media: item.freq_media,
+    freq_media: item.freq_media.toFixed(2),
     alcance: (item.alcance * 100).toFixed(2) + "%",
     trp: item.trp,
     preco_tabela: item.preco_tabela.toLocaleString("pt-br", {
@@ -66,7 +77,7 @@ export default function TableContent() {
       insercoes: item.insercoes.toLocaleString("pt-br"),
       impactos: item.impactos.toLocaleString("pt-br"),
       usuarios_unicos: item.usuarios_unicos.toLocaleString("pt-br"),
-      freq_media: item.freq_media,
+      freq_media: item.freq_media.toFixed(2),
       alcance: (item.alcance * 100).toFixed(2) + "%",
       trp: item.trp,
       preco_tabela: item.preco_tabela.toLocaleString("pt-br", {

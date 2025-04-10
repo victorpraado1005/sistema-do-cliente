@@ -1,5 +1,6 @@
 import {
   BadgeDollarSign,
+  CalendarDays,
   ChartLine,
   CircleDollarSign,
   CirclePercent,
@@ -28,33 +29,21 @@ export default function CardNumerosCampanhaPagaEBonificada() {
         </span>
       </div>
       <div className=" flex flex-col py-4 px-6 justify-evenly">
-        <div className="grid grid-cols-3 gap-5 text-rzk_regular items-start justify-items-center">
+        <div className="grid grid-cols-3 gap-4 text-rzk_regular items-start justify-items-center">
           <div className="space-y-4">
-            <div className="flex items-center justify-between w-36">
-              <Smartphone className="size-6" />
+            <div className="flex items-center justify-between w-40">
+              <CalendarDays className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
-                  Faces Totais
+                  Dias Totais
                 </span>
                 <span className="font-extrabold text-lg text-rzk_green text-right">
-                  {resultados.faces_totais}
+                  {resultados.dias_totais}
                 </span>
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-36">
-              <Map className="size-7" />
-              <div className="flex flex-col w-full justify-between">
-                <span className="text-lg font-ligth w-full text-right">
-                  Praças
-                </span>
-                <span className="font-extrabold text-rzk_green text-right text-xs mt-1">
-                  {pracas.join(", ")}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between w-36">
+            <div className="flex items-center justify-between w-40">
               <CirclePlay className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -69,7 +58,19 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-36">
+            <div className="flex items-center justify-between w-40">
+              <View className="size-6" />
+              <div className="flex flex-col">
+                <span className="text-lg font-ligth w-full text-right">
+                  Visitas
+                </span>
+                <span className="font-extrabold text-lg text-rzk_green text-right">
+                  {resultados.visitas?.toLocaleString("pt-br")}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between w-40">
               <Target className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -84,7 +85,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between w-36">
+            <div className="flex items-center justify-between w-40">
               <SquareUser className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -92,10 +93,7 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 </span>
                 <span className="font-extrabold text-lg text-rzk_green text-right">
                   {resultados.frequencia_media
-                    ? resultados.frequencia_media?.toLocaleString("pt-br", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
+                    ? resultados.frequencia_media.toFixed(0)
                     : 0}
                 </span>
               </div>
@@ -104,6 +102,18 @@ export default function CardNumerosCampanhaPagaEBonificada() {
 
           <div className="space-y-4">
             <div className="flex items-center justify-between w-40">
+              <Smartphone className="size-6" />
+              <div className="flex flex-col">
+                <span className="text-lg font-ligth w-full text-right">
+                  Faces Totais
+                </span>
+                <span className="font-extrabold text-lg text-rzk_green text-right">
+                  {resultados.faces_totais}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between w-40">
               <UserRoundCheck className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
@@ -111,6 +121,21 @@ export default function CardNumerosCampanhaPagaEBonificada() {
                 </span>
                 <span className="font-extrabold text-lg text-rzk_green text-right">
                   {resultados.usuarios_unicos?.toLocaleString("pt-br", {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between w-40">
+              <Users className="size-6" />
+              <div className="flex flex-col">
+                <span className="text-lg font-ligth w-full text-right">
+                  Pop. 12+ (IBGE)
+                </span>
+                <span className="font-extrabold text-lg text-rzk_green text-right">
+                  {resultados.populacao_12_mais?.toLocaleString("pt-br", {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}
@@ -131,51 +156,30 @@ export default function CardNumerosCampanhaPagaEBonificada() {
             </div>
 
             <div className="flex items-center justify-between w-40">
-              <View className="size-6" />
-              <div className="flex flex-col">
-                <span className="text-lg font-ligth w-full text-right">
-                  Visitas
-                </span>
-                <span className="font-extrabold text-lg text-rzk_green text-right">
-                  {resultados.visitas?.toLocaleString("pt-br")}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between w-40">
               <ChartLine className="size-6" />
               <div className="flex flex-col">
                 <span className="text-lg font-ligth w-full text-right">
                   TRP
                 </span>
                 <span className="font-extrabold text-lg text-rzk_green text-right">
-                  {resultados.trp
-                    ? resultados.trp?.toLocaleString("pt-br", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                    : 0}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between w-40">
-              <Users className="size-6" />
-              <div className="flex flex-col">
-                <span className="text-lg font-ligth w-full text-right">
-                  Pop. 12+ (IBGE)
-                </span>
-                <span className="font-extrabold text-lg text-rzk_green text-right">
-                  {resultados.populacao_12_mais?.toLocaleString("pt-br", {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  })}
+                  {resultados.trp ? resultados.trp.toFixed(0) : 0}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between w-40">
+              <Map className="size-6" />
+              <div className="flex flex-col w-full justify-between">
+                <span className="text-lg font-ligth w-full text-right">
+                  Praças
+                </span>
+                <span className="font-extrabold text-rzk_green text-right text-xs mt-1">
+                  {pracas.join(", ")}
+                </span>
+              </div>
+            </div>
             <div className="flex items-center justify-between w-40">
               <CircleDollarSign className="size-6" />
               <div className="flex flex-col">

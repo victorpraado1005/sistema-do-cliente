@@ -19,7 +19,7 @@ interface IDadosTabelaFormatado {
   impactos: string;
   usuarios_unicos: string;
   alcance: string;
-  freq_media: number;
+  freq_media: string;
   trp: number;
   preco_tabela: string;
   investimento: string;

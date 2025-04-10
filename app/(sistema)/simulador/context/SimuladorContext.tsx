@@ -444,8 +444,8 @@ export const SimuladorProvider = ({
       valores.saturacao_bonificada
     );
     // Cálculo de inserções totais da campanha (Pago + Bonificada)
-    insercoes_totais = insercoes + insercoes_bonificadas;
   }
+  insercoes_totais = insercoes + insercoes_bonificadas;
 
   // Cálculo de impactos totais da campanha (Paga)
   const impactos = fnCalcularImpactos(
@@ -572,7 +572,8 @@ export const SimuladorProvider = ({
     desconto,
     valores.saturacao,
     concessoesPontoQuery.data,
-    pontosQuery.data
+    pontosQuery.data,
+    selectedTabelaPreco
   );
 
   let dados_tabela_bonificada: IDadosTabela[] = [];
@@ -584,6 +585,7 @@ export const SimuladorProvider = ({
       valores.saturacao_bonificada,
       concessoesPontoQuery.data,
       pontosQuery.data,
+      selectedTabelaPreco,
       isBonificadoPreenchido
     );
   }
