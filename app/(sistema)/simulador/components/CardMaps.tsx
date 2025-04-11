@@ -28,9 +28,9 @@ export default function CardMaps() {
   const activeMarkers =
     markers?.length > 0
       ? markers.map(({ latitude, longitude }) => ({
-          lat: latitude,
-          lng: longitude,
-        }))
+        lat: latitude,
+        lng: longitude,
+      }))
       : [defaultMarker];
 
   useEffect(() => {
@@ -75,12 +75,10 @@ export default function CardMaps() {
 
   return (
     <div className="w-full h-auto mb-2 rounded-2xl mt-2 overflow-hidden border border-rzk_ligth shadow-md">
-      <div className="p-2 flex gap-1 items-center justify-center py-2">
-        <div className="flex gap-1 items-center text-rzk_darker">
-          <Map className="size-5" />
-          <strong>Praças:</strong>
-        </div>
-        <strong className="text-rzk_green">{pracas.join(", ")}</strong>
+      <div className="flex gap-1 items-center justify-center text-rzk_darker h-8">
+        <Map className="size-5 mt-0.5" />
+        <strong className="mb-1.5">Praças: </strong>
+        <strong className="text-rzk_green mb-1.5">{pracas.join(", ")}</strong>
       </div>
       <LoadScript googleMapsApiKey={apiKey} libraries={["marker"]}>
         <GoogleMap

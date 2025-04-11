@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className={`${ibm.className} antialiased`}>
         <Providers>
           <Toaster richColors />
-          <div className="flex flex-col min-h-screen w-[1280px] m-auto">
+          <div className="flex flex-col min-h-screen w-[1320px] m-auto">
             <main className="flex-1">{children}</main>
           </div>
         </Providers>

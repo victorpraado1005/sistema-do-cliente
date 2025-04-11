@@ -20,7 +20,7 @@ import {
 import { useSimulador } from "../context/SimuladorContext";
 
 export default function CardNumerosCampanhaPaga() {
-  const { resultados, valores, pracas, nomeSimulacao } = useSimulador();
+  const { resultados, valores, nomeSimulacao } = useSimulador();
 
   return (
     <div className="w-[850px] border border-rzk_ligth rounded-2xl flex flex-col mt-2 py-2 px-6 gap-4">
@@ -248,9 +248,9 @@ export default function CardNumerosCampanhaPaga() {
                 R${" "}
                 {resultados.cpm_medio
                   ? resultados.cpm_medio.toLocaleString("pt-br", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
                   : 0}
               </span>
             </div>

@@ -23,6 +23,8 @@ import { useUserData } from "@/hooks/useUserData";
 import { IProposta } from "@/app/types/IProposta";
 import { postProposta } from "@/lib/api";
 import { toast } from "sonner";
+import { delay } from "@/lib/delay";
+import fnCaptureScreenshot from "@/utils/captureScreenshot/fnCaptureScreenshot";
 
 interface FormValues {
   nome: string;
@@ -69,11 +71,10 @@ export default function DialogCriarProposta({
     selectedTabelaPreco,
     selectedProducts,
     selectedProductsBonificados,
-    setSelectedPontos,
-    setSelectedPontosBonificados,
     isBonificadoPreenchido,
-    reset,
     nomeSimulacao,
+    uploadPrintSimulador,
+    uploadTabelaSimulador
   } = useSimulador();
   const { data: user } = useUserData();
   const {
@@ -136,6 +137,13 @@ export default function DialogCriarProposta({
       veiculacoes = veiculacoes.concat(veiculacao_bonificada);
     }
 
+    const arquivo_print = await uploadPrintSimulador(data.nome);
+    const arquivo_tabela = await uploadTabelaSimulador(data.nome);
+    const arquivos = [
+      arquivo_print,
+      arquivo_tabela
+    ]
+
     const proposta: IProposta = {
       nome: data.nome,
       modelo: data.modelo,
@@ -156,7 +164,7 @@ export default function DialogCriarProposta({
       ],
       empresas: [],
       notificacoes: [],
-      arquivos: [],
+      arquivos,
       comissoes: [],
       veiculacoes,
     };

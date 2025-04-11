@@ -192,7 +192,7 @@ export default function HeaderSimulador() {
                 <Database className="size-4" />
                 Tabela
               </DialogTrigger>
-              <DialogContent className="max-w-7xl w-full">
+              <DialogContent className="max-w-[1320px] w-full">
                 <DialogHeader>
                   <div className="flex">
                     <DialogTitle className="text-2xl text-rzk_darker font-extrabold">

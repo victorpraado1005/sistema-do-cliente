@@ -12,7 +12,7 @@ import {
   UseFormReset,
   UseFormSetValue,
 } from "react-hook-form";
-import JSZip from "jszip";
+import JSZip, { file } from "jszip";
 import { saveAs } from "file-saver";
 import { z } from "zod";
 import { useQueries, useQueryClient } from "@tanstack/react-query";
@@ -66,6 +66,13 @@ import { IVeiculacaoPut } from "@/app/types/IVeiculacaoPut";
 interface IMarkerObject {
   latitude: number;
   longitude: number;
+}
+
+export interface UploadResult {
+  nome: string;
+  formato: string;
+  url: string;
+  categoria: string;
 }
 
 type SimuladorContextType = {
@@ -136,6 +143,8 @@ type SimuladorContextType = {
   simulacao: ISimulacao[];
   isLoading: boolean;
   error: any;
+  uploadPrintSimulador: (nome: string) => Promise<UploadResult>;
+  uploadTabelaSimulador: (nome: string) => Promise<UploadResult>;
 };
 
 const SimuladorContext = createContext<SimuladorContextType | null>(null);
@@ -755,7 +764,6 @@ export const SimuladorProvider = ({
 
   const handleAtualizarSimulacao = async () => {
     const id_simulacao = simulacaoObject!.id_simulacao;
-    console.log(simulacaoObject);
 
     let veiculacoes: IVeiculacaoPut[] = [];
 
@@ -817,6 +825,107 @@ export const SimuladorProvider = ({
       });
     } catch {
       toast.error("Houve um erro ao atualizar a simulação!");
+    }
+  };
+
+  const blobToBase64 = (blob: Blob): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result;
+        if (typeof result === 'string') {
+          // O result geralmente possui o formato "data:application/octet-stream;base64,..."
+          // Se você precisar da parte somente base64, pode fazer um split(",")
+          const base64 = result.split(',')[1];
+          resolve(base64);
+        } else {
+          reject(new Error("Falha na conversão do Blob para base64"));
+        }
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
+  const uploadPrintSimulador = async (nome: string) => {
+    await delay(300);
+
+    const imageDataUrl = await fnCaptureScreenshot(ref.current!);
+
+    const base64Image = imageDataUrl.split(",")[1];
+
+    const file_name = `Proposta-${nome}-Print.png`
+
+    await handleUpload(base64Image, file_name, 'print');
+
+    return {
+      "nome": file_name,
+      "formato": "png",
+      "url": `https://storage.cloud.google.com/rzkdigital-bucket-private/${file_name}`,
+      "categoria": "Proposta"
+    }
+  }
+
+  const uploadTabelaSimulador = async (nome: string) => {
+    let tabela = undefined;
+    if (isBonificadoPreenchido) {
+      tabela = exportAllTablesToExcel(
+        dados_tabela_paga,
+        dados_tabela_bonificada
+      );
+    } else {
+      tabela = exportTableToExcel(dados_tabela_paga);
+    }
+
+    const file_name = `Proposta-${nome}-Tabela.xlsx`
+
+    const base64Image = await blobToBase64(tabela);
+
+    await handleUpload(base64Image, file_name, 'table');
+
+    return {
+      "nome": file_name,
+      "formato": "xlsx",
+      "url": `https://storage.cloud.google.com/rzkdigital-bucket-private/${file_name}`,
+      "categoria": "Proposta"
+    }
+  }
+
+
+
+  const handleUpload = async (base64: string | Blob, file_name: string, type: string) => {
+    try {
+      const base64Data = base64;
+      const filename = file_name;
+
+      const customMetadata = {
+        file_name,
+        retool_user_fullname: user!.nome + ' ' + user!.sobrenome,
+        postgresql_categoria: 'Proposta',
+        retool_environment: 'production',
+        app_name: 'Simulador'
+      };
+      const path = type === 'print' ? 'print' : 'table'
+      const route = `/api/upload-${path}`
+      const res = await fetch(route, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          filename,
+          data: base64Data,
+          customMetadata
+        }),
+      });
+
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(`Erro: ${data.error || 'Não foi possível realizar o upload.'}`);
+        return;
+      }
+    } catch (error: any) {
+      toast.error(`Erro inesperado: ${error.message}`);
     }
   };
 
@@ -892,6 +1001,8 @@ export const SimuladorProvider = ({
           faces_totais,
         },
         isBonificadoPreenchido,
+        uploadPrintSimulador,
+        uploadTabelaSimulador
       }}
     >
       {children}

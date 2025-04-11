@@ -1,4 +1,5 @@
 import { IVeiculacao } from "../(sistema)/simulador/components/DialogCriarProposta";
+import { UploadResult } from "../(sistema)/simulador/context/SimuladorContext";
 
 export interface IProposta {
   nome: string;
@@ -20,7 +21,7 @@ export interface IProposta {
   ];
   empresas: [];
   notificacoes: [];
-  arquivos: [];
+  arquivos: UploadResult[];
   comissoes: [];
   veiculacoes: IVeiculacao[];
 }
