@@ -7,7 +7,6 @@ export default function DialogEditarProduto() {
   const {
     pontos,
     produtos,
-    selectedPontos,
     selectedProducts,
     setSelectedProducts,
     selectedProductsBonificados,
