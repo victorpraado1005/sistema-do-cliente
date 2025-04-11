@@ -62,14 +62,14 @@ export function MultiSelectCombobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="flex items-center gap-1 w-24 bg-gray-100"
+          className="flex items-center gap-1 w-20 text-xs bg-gray-100"
         >
           {selectedValues.length === 1
             ? "1 Ponto"
             : selectedValues.length > 1
               ? `${selectedValues.length} Pontos`
               : "Selecione"}
-          <ChevronsUpDown className="opacity-50" />
+          <ChevronsUpDown className="opacity-50 size-3" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[250px] p-0">

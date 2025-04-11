@@ -134,7 +134,7 @@ export default function HeaderSimulador() {
           </div>
         </div>
 
-        <div className="w-[650px]">
+        <div className="w-[730px]">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <div className="w-full flex items-center justify-between">
               <TabsList>

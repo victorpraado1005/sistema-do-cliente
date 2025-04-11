@@ -55,10 +55,10 @@ export function MultiSelectDropdown({
         <Button
           disabled={isLoading}
           variant="outline"
-          className="flex items-center gap-1 w-24 bg-gray-100"
+          className="flex items-center gap-1 w-20 text-xs bg-gray-100"
         >
           {!selectedItems.length ? "Selecione" : selectedItems.length}{" "}
-          <ChevronDown className="size-4" />
+          <ChevronDown className="size-3" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
